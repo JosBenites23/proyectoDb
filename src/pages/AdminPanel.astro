@@ -43,11 +43,11 @@ import Layout from "../layouts/Layout.astro"
             </div>
             <div class="bg-gray-500/20 p-4 w-full rounded-lg ">
                 <h3 class="text-2xl font-medium text-center">Colaboradores</h3>
-                <form id="noticiaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+                <form id="colaboradorForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
                     <label class="mb-2">Imagen</label>
-                    <input id="imagen" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+                    <input id="imagenCol" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">Actualizar imagen</button>
-                    <textarea id="descripcion"
+                    <textarea id="descripcionCol"
                     placeholder="Descripción" 
                     class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32"
                     required></textarea>
@@ -56,10 +56,10 @@ import Layout from "../layouts/Layout.astro"
             </div>
             <div class="bg-gray-500/20 p-4 w-full rounded-lg ">
                 <h3 class="text-2xl font-medium text-center">Empresas</h3>
-                <form id="noticiaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
-                    <input id="titulo" type="text" placeholder="Url" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
+                <form id="EmpresaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+                    <input id="urlE" type="text" placeholder="Url" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
                     <label class="mb-2">Imagen</label>
-                    <input id="imagen" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+                    <input id="imagenE" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Empresa</button>
                     
                 </form>
@@ -76,14 +76,14 @@ import Layout from "../layouts/Layout.astro"
             </div>
             <div class="bg-gray-500/20 p-4 w-full rounded-lg ">
                 <h3 class="text-2xl font-medium text-center">Departamentos</h3>
-                <form id="noticiaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
-                    <input id="titulo" type="text" placeholder="Título" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
-                    <textarea id="descripcion"
+                <form id="depForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+                    <input id="tituloD" type="text" placeholder="Título" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
+                    <textarea id="descripcionD"
                     placeholder="Descripción" 
                     class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32"
                     required></textarea>
                     <label class="mb-2">Imagen</label>
-                    <input id="imagen" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+                    <input id="imagenD" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Departamento</button>
                     
                 </form>
@@ -282,4 +282,148 @@ import Layout from "../layouts/Layout.astro"
 
         })
     })
+
+    async function subirColaboradores(nuevoTeam: FormData) {
+        const response = await fetch('http://127.0.0.1:8000/team/', {
+            method: 'POST',
+            body: nuevoTeam
+        });
+
+        //console.log(response)
+
+        if (!response.ok) {
+            throw new Error('Error al subir el colaborador');
+        }
+
+        const colaboradorCreado = await response.json();
+        console.log('cumpleanos subido exitosamente:', colaboradorCreado);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#colaboradorForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const descripcion = (document.querySelector('#descripcionCol') as HTMLTextAreaElement).value;
+            const imagenInput = document.querySelector('#imagenCol') as HTMLInputElement;
+
+            const archivo = imagenInput.files?.[0]
+
+            if (!archivo) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('descripcion', descripcion);
+            formData.append('contenido', archivo);
+
+            try {
+                await subirColaboradores(formData);
+                alert('colaborador subido correctamente.');
+                formulario.reset(); // Limpiar el formulario
+            } catch (error) {
+                console.error('Error al subir el colaborador:', error);
+                alert('Error al subir el colaborador.');
+            }
+
+        })
+    })
+
+    async function subirCo(nuevaCo: FormData) {
+        const response = await fetch('http://127.0.0.1:8000/company/', {
+            method: 'POST',
+            body: nuevaCo
+        });
+
+        //console.log(response)
+
+        if (!response.ok) {
+            throw new Error('Error al subir la empresa');
+        }
+
+        const CoCreada = await response.json();
+        console.log('empresa subida exitosamente:', CoCreada);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#EmpresaForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const contenido = (document.querySelector('#urlE') as HTMLTextAreaElement).value;
+            const imagenInput = document.querySelector('#imagenE') as HTMLInputElement;
+
+            const archivo = imagenInput.files?.[0]
+
+            if (!archivo) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('contenido', contenido);
+            formData.append('imagen', archivo);
+
+            try {
+                await subirCo(formData);
+                alert('empresa subida correctamente.');
+                formulario.reset(); // Limpiar el formulario
+            } catch (error) {
+                console.error('Error al subir la empresa:', error);
+                alert('Error al subir la empresa.');
+            }
+
+        })
+    })
+
+    async function subirDep(nuevoDep: FormData) {
+        const response = await fetch('http://127.0.0.1:8000/departamento', {
+            method: 'POST',
+            body: nuevoDep
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al subir departamento');
+        }
+
+        const departamentoCreado = await response.json();
+        console.log('departamento subido exitosamente:', departamentoCreado);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#depForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const titulo = (document.querySelector('#tituloD') as HTMLInputElement).value;
+            const descripcion = (document.querySelector('#descripcionD') as HTMLTextAreaElement).value;
+
+            const imagenInput = document.querySelector('#imagenD') as HTMLInputElement;
+
+            // Revisamos qué archivo subieron
+            const contenido = imagenInput.files?.[0]
+
+            const nuevoDep = new FormData() 
+
+            nuevoDep.append('titulo', titulo)
+            nuevoDep.append('descripcion', descripcion)
+            if (contenido) {
+                nuevoDep.append('contenido', contenido)
+            }
+
+            try {
+                await subirDep(nuevoDep);
+                alert('Departamento subido correctamente.');
+                formulario.reset(); // Limpiar formulario
+            } catch (error) {
+                console.error(error);
+                alert('Error al subir Departamento.');
+            }
+        });
+    });
+
 </script>

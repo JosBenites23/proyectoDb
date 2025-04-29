@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from config import DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
-from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_news, create_link, vanish_link, Birthday
+from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_news, create_link, vanish_link, Birthday, Team, company, Dep
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from client import engine, Base
-from dataBase.modelBirthday import birthdayModel
 
 app = FastAPI() 
 
@@ -28,6 +27,9 @@ app.include_router(vanish_news.router)
 app.include_router(create_link.router)
 app.include_router(vanish_link.router)
 app.include_router(Birthday.router)
+app.include_router(Team.router)
+app.include_router(company.router)
+app.include_router(Dep.router)
 
 Base.metadata.create_all(bind=engine)
 

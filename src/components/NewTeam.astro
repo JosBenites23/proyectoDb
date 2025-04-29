@@ -1,0 +1,44 @@
+<section class="w-full">
+    <section class="min-h-screen w-full mt-5 py-5 px-10 justify-items-center text-gray-200">
+        <h1 class="text-3xl font-medium">Nuevos Colaboradores</h1>
+        <section id="contenedorColaboradores">
+
+        </section>
+    </section>
+
+    <script>
+        interface Team {
+            id: number;
+            descripcion: string;
+            contenido: string;
+        }
+    
+        const token = localStorage.getItem('token');        
+    
+        async function cargarColaboradores() {
+            const response = await fetch('http://127.0.0.1:8000/team/');
+            if (!response.ok) {
+                console.error('Error al obtener los colaboradores');
+                return;
+            }
+            
+            const Colaboradores: Team[] = await response.json();
+
+            const ultimoTeam = Colaboradores[0]
+    
+            const contenedorColaboradores = document.getElementById('contenedorColaboradores') as HTMLElement;
+
+            contenedorColaboradores.innerHTML = '';
+    
+                const card = document.createElement('div');
+                card.className = 'mb-4 h-auto w-full flex flex-col rounded-lg px-8 py-4 text-xl w-full text-center justify-center items-center';
+    
+                card.innerHTML = `
+                    <p class="mb-4">${ultimoTeam.descripcion}</p>
+                        <img src="${ultimoTeam.contenido}" alt="Imagen de Noticia" class="object-contain w-full max-w-xl h-auto rounded-lg shadow-lg">                        
+                `;
+    
+                contenedorColaboradores.appendChild(card);
+        }   
+        document.addEventListener('DOMContentLoaded', cargarColaboradores);
+    </script>

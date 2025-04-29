@@ -52,10 +52,104 @@ import Layout from "../layouts/Layout.astro"
 
             <footer class="flex flex-col items-center justify-center mt-10">
                 <h2 class="text-2xl font-medium text-gray-200">Nuestras empresas</h2>
-                aqui van las empresas, imagenes con un href a la pagina de la empresa
+                <section id="contenedorEmpresas" class="flex items-center gap-4 p-4 overflow-hidden no-scrollbar relative w-1/2">
+                    <!-- Aquí se cargarán las empresas --> 
+                </section>
             </footer>
             
             
         </section>
     </section>
+
+<script>
+    interface Empresa {
+        id: number;
+        contenido: string;
+        imagen: string;
+    }
+
+    const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement;
+    let scrollAmount = 0;
+    let scrollSpeed = 1;
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let autoScrollId: number;
+    let resumeTimeout: number;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const empresas = await cargarEmpresas();
+            if (empresas.length >= 4) {
+                duplicarContenido(); // Para efecto infinito
+                autoScroll();
+                setupDrag();
+            }
+        } catch (error) {
+            console.error("Error al cargar empresas:", error);
+        }
+    });
+
+    async function cargarEmpresas(): Promise<Empresa[]> {
+        const response = await fetch('http://127.0.0.1:8000/company/');
+        if (!response.ok) throw new Error('Error al obtener las empresas');
+
+        const empresas: Empresa[] = await response.json();
+        if (!contenedor) return [];
+
+        contenedor.innerHTML = '';
+        empresas.forEach(empresa => {
+            const card = document.createElement('div');
+            card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
+            card.innerHTML = `
+                <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
+                    <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
+                </a>`;
+            contenedor.appendChild(card);
+        });
+        return empresas;
+    }
+
+    function duplicarContenido() {
+        contenedor.innerHTML += contenedor.innerHTML; // Duplicamos el contenido para loop
+    }
+
+    function autoScroll() {
+        scrollAmount += scrollSpeed;
+        if (scrollAmount >= contenedor.scrollWidth / 2) {
+            scrollAmount = 0; // Reinicia al llegar a la mitad (ya que está duplicado)
+        }
+        contenedor.scrollLeft = scrollAmount;
+        autoScrollId = requestAnimationFrame(autoScroll);
+    }
+
+    function setupDrag() {
+        contenedor.addEventListener('pointerdown', e => {
+            isDragging = true;
+            startX = e.pageX;
+            scrollLeft = contenedor.scrollLeft;
+            cancelAnimationFrame(autoScrollId);
+            clearTimeout(resumeTimeout);
+        });
+
+        contenedor.addEventListener('pointermove', e => {
+            if (!isDragging) return;
+            const x = e.pageX;
+            const walk = (startX - x); // Qué tanto se mueve
+            contenedor.scrollLeft = scrollLeft + walk;
+        });
+
+        const stopDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            resumeTimeout = setTimeout(() => autoScroll(), 1000);
+        };
+
+        contenedor.addEventListener('pointerup', stopDrag);
+        contenedor.addEventListener('mouseleave', stopDrag);
+    }
+</script>
+
+
+        
 </Layout>
