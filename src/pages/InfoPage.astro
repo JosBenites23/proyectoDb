@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout>
+    <section class="w-full">
+        <section class="min-h-screen w-full mt-32 py-5 px-10 justify-items-center text-gray-200">
+            <h1 class="text-2xl font-bold py-5 px-10">
+                Sobre Nosotros
+            </h1>
+            
+            <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1 ">
+                <!-- Caja de texto grande -->
+                <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
+                    <h3 class="text-center font-medium text-2xl">Historia</h3>
+                    <p class="text-gray-200">Almacenes La Ganga empezó sus operaciones en 1983, abriendo su primer local en el sector de “La Bahía” en Guayaquil. Desde sus inicios, el local se especializó en la comercialización y venta de electrodomésticos de las mejores marcas a nivel mundial, ofreciendo como ventaja lo que ningún otro local daba: garantía en sus productos. Desde esta época, se popularizó su slogan <strong>“Precios de Bahía con Garantía”.</strong>
+                    </br>
+                    Con el pasar de los años, el crecimiento de la cadena fue intenso, llegando a estar en la mayoría de provincias del Ecuador. Hoy, Almacenes La Ganga cuenta con más de 130 locales en todo el país y busca continuar expandiéndose hasta abarcar cada rincón de nuestra patria. Con esfuerzo y tenacidad, la empresa ha alcanzado el liderazgo en un ambiente competitivo, destacando por sus productos y las mejores ofertas del mercado.</p>
+                </div>
+            
+                <!-- Caja de imagen grande -->
+                <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out">
+                    <img src="/images/local.webp" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
+                </div>
+            
+                <!-- 3 cajas pequeñas debajo -->
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium">Mision</h3>
+                    <p >Somos una empresa líder que comercializa electrodomésticos, confiando en nuestros clientes y colaboradores, otorgando bienestar, comodidad y entretenimiento a los precios más bajos y con garantía.</p>
+                </div>
+            
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium">Visión</h3>
+                    <p >Ser la primera opción de compra de nuestros clientes y lograr que en cada hogar ecuatoriano haya un electrodoméstico de La Ganga.
+
+                    </p>
+                </div>
+
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium mb-3">Valores</h3>
+                    <ul class="text-center">
+                        <li></li>
+                        <li>Lealtad</li>
+                        <li>Eficiencia</li>
+                        <li>Honradez</li>
+                        <li>Trabajo en Equipo</li>
+                        <li>Respeto</li>
+                        <li>Responsabilidad</li>
+                    </ul>
+                </div>
+            </div>
+
+            <footer class="flex flex-col items-center justify-center mt-10">
+                <h2 class="text-2xl font-medium text-gray-200">Nuestras empresas</h2>
+                aqui van las empresas, imagenes con un href a la pagina de la empresa
+            </footer>
+            
+            
+        </section>
+    </section>
+</Layout>

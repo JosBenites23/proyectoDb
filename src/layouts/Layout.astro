@@ -1,0 +1,31 @@
+---
+import Hero from '../components/Hero.astro'
+import './src/styles/global.css'
+---
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Intranet La Ganga</title>
+	</head>
+	<body class="bg-cover bg-[url('/images/background.png')] w-screen h-screen bg-center bg-no-repeat bg-fixed"> <!-- poner opacidad al fondo-->
+		<header class="relative z-70">
+			<Hero />
+		</header>
+		<main class="bg-black/35">
+			<slot />
+		</main>
+		<footer>
+
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	body {
+		overflow-x: hidden;
+	}
+</style>

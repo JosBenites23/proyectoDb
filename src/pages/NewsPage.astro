@@ -1,0 +1,103 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+<Layout>
+    <section class="w-full">
+        <section id="contenedorNoticias" class="min-h-screen w-full mt-36 py-5 px-10 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1  gap-4 text-sky-300 justify-items-center">
+
+        </section>
+    </section>
+
+    <script>
+        declare global {
+            interface Window {
+                eliminarNoticia: (id: number) => Promise<void>;
+            }
+        }
+        interface Noticia {
+            id: number;
+            titulo: string;
+            descripcion: string;
+            tipo_contenido: string;
+            contenido: string;
+            fecha_creacion: string;
+        }
+
+        const token = localStorage.getItem('token');        
+    
+        async function cargarNoticias() {
+            const response = await fetch('http://127.0.0.1:8000/noticias');
+            if (!response.ok) {
+                console.error('Error al obtener noticias');
+                return;
+            }
+            
+            const noticias: Noticia[] = await response.json();
+    
+            // Ordenar por fecha más reciente primero
+            noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+    
+            const contenedorNoticias = document.getElementById('contenedorNoticias') as HTMLElement;
+            contenedorNoticias.innerHTML = '';
+    
+            noticias.forEach((noticia) => {
+                const card = document.createElement('div');
+                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
+    
+                const contenidoHTML = noticia.tipo_contenido === 'imagen' ? `
+                    <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
+                ` : noticia.tipo_contenido === 'video' ? `
+                    <video controls class="w-full h-48">
+                        <source src="${noticia.contenido}" type="video/mp4">
+                        Tu navegador no soporta videos.
+                    </video>
+                ` : `
+                    <div class="w-full h-auto bg-gray-200 flex items-center justify-center text-gray-500 text-center p-4">
+                        ${noticia.contenido}
+                    </div>
+                `;
+    
+                card.innerHTML = `
+                    <div class="w-full bg-gray-200 overflow-hidden">
+                        ${contenidoHTML}
+                    </div>
+                    <div class="p-4">
+                        <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
+                        <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
+                        ${token ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                    </div>
+                `;
+    
+                contenedorNoticias.appendChild(card);
+            });
+        }
+
+        // Función para eliminar la noticia
+        async function eliminarNoticia(id: number) {
+            console.log("Eliminando noticia con ID:", id);
+            const response = await fetch(`http://127.0.0.1:8000/eliminar-noticia/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}` // Agrega el token si lo necesitas
+                }
+            });
+
+            if (response.ok) {
+                alert('Noticia eliminada');
+                cargarNoticias(); // Recargar las noticias
+            }else if (response.status === 401) {
+                // Token inválido o expirado
+                alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
+                localStorage.removeItem('token');
+                location.reload();
+            } else {
+                alert('Error al eliminar la noticia');
+            }
+        }
+        window.eliminarNoticia = eliminarNoticia;
+        
+        document.addEventListener('DOMContentLoaded', cargarNoticias);
+    </script>
+    
+    
+</Layout>

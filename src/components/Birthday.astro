@@ -1,0 +1,46 @@
+<section class="w-full">
+    <section class="min-h-screen w-full mt-5 py-5 px-10 justify-items-center text-gray-200">
+        <h1 class="text-3xl font-medium rainbow-text animate-rainbow">Cumpleaños</h1>
+        <section id="contenedorCumpleanos">
+
+        </section>
+    </section>
+
+</section>
+
+<script>
+        interface cumpleanos {
+            id: number;
+            descripcion: string;
+            contenido: string;
+        }
+    
+        const token = localStorage.getItem('token');        
+    
+        async function cargarCumpleanos() {
+            const response = await fetch('http://127.0.0.1:8000/birthday/');
+            if (!response.ok) {
+                console.error('Error al obtener los cumpleaños');
+                return;
+            }
+            
+            const cumpleanos: cumpleanos[] = await response.json();
+
+            const ultimoCumple = cumpleanos[0]
+    
+            const contenedorCumpleanos = document.getElementById('contenedorCumpleanos') as HTMLElement;
+
+            contenedorCumpleanos.innerHTML = '';
+    
+                const card = document.createElement('div');
+                card.className = 'mb-4 h-auto w-full flex flex-col rounded-lg px-8 py-4 text-xl w-full text-center justify-center items-center';
+    
+                card.innerHTML = `
+                    <p class="mb-4">${ultimoCumple.descripcion}</p>
+                        <img src="${ultimoCumple.contenido}" alt="Imagen de Noticia" class="object-contain w-full max-w-xl h-auto rounded-lg shadow-lg">                        
+                `;
+    
+                contenedorCumpleanos.appendChild(card);
+        }   
+        document.addEventListener('DOMContentLoaded', cargarCumpleanos);
+    </script>

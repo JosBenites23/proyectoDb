@@ -1,0 +1,103 @@
+<section class="text-center flex-col flex justify-center h-36 w-full items-center fixed top-0">
+    <div class="bg-white h-24 w-full flex">
+        <figure class="flex px-5 py-5">
+            <img class="h-16 w-auto" src="/images/LogoBanner.png" alt="logo laGanga" />
+        </figure>
+
+        <div class="absolute left-1/2 transform -translate-x-1/2 mt-8">
+            <h1 class="text-4xl font-bold text-gray-900">La Ganga Intranet</h1>
+        </div>
+    </div>
+
+    <section id="landing-header" class="flex justify-center h-12 w-full bg-blue-950">
+        <button id="menu-btn" class="left-1 mt-2 bg-blue-500/30 backdrop-blur-lg rounded-full w-10 h-10 flex items-center justify-center text-white hover:bg-blue-400 transition-colors duration-300 md:hidden lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+        <nav id="menu" class="hidden md:flex z-30 lg:flex">
+            <ul class="flex [&>li>a]:px-7 [&>li>a]:py-2 [&>li>a]:inline-block [&>li>a]:text-xl [&>li>a]:font-medium [&>li>a]:text-blue-400 [&>li>a:hover]:text-white [&>li>a]:transition-colors [&>li>a]:duration-300">
+                <li><a href="/" >Inicio</a></li>
+                <li><a href="/NewsPage">Novedades</a></li>
+                <li><a href="/InfoPage">¿Quiénes somos?</a></li>
+                <li><a href="/Links">Links</a></li>
+                <li><a id="adminBtn" href="/Admin">Admin</a></li>
+            </ul>
+        </nav>
+    
+        <div id="menu-backdrop" class={`
+        
+            absolute bg-blue-500/30 backdrop-blur-lg 
+            rounded left-[var(--left)] top-[var(--top)] 
+            w-[var(--width)] h-[var(--height)] 
+            transition-all duration-400 
+            ease-in-out opacity-0 z-10
+        `}/>
+    </section>
+</section>
+
+
+    
+
+<script>
+    const listItem = document.querySelectorAll("#landing-header li")
+    const menuBackDrop = document.querySelector('#menu-backdrop') as HTMLElement
+
+    listItem.forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+            const {left, top, width, height} = item.getBoundingClientRect()
+
+            menuBackDrop.style.setProperty("--left", `${left}px`)
+            menuBackDrop.style.setProperty("--top", `${top}px`)
+            menuBackDrop.style.setProperty("--width", `${width}px`)
+            menuBackDrop.style.setProperty("--height", `${height}px`)
+            menuBackDrop.style.opacity = "1"
+            menuBackDrop.style.visibility = "visible"
+
+        })
+        item.addEventListener("mouseleave", () => {
+            menuBackDrop.style.opacity = "0"
+            menuBackDrop.style.visibility = "hidden"
+        })
+    })
+
+    const adminBtn = document.querySelector('#adminBtn')
+    
+    adminBtn?.addEventListener('click', () => {
+    const token = localStorage.getItem('token');
+    console.log(token)
+
+    if (!token) {
+        // No hay token, llevar a login
+        window.location.href = '/Admin';
+        return;
+    }
+
+    // Validar token con backend
+    fetch('http://127.0.0.1:8000/protegida', {
+        method: 'GET',
+        headers: {
+        'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+        // Token válido, llevar al panel
+        window.location.href = '/AdminPanel';
+        } else {
+        // Token inválido, llevar a login
+        localStorage.removeItem('token');
+        window.location.href = '/Admin';
+        }
+    })
+    .catch(err => {
+        console.error('Error al validar token:', err);
+        window.location.href = '/Admin';
+    });
+    });
+
+    const menuToggle = document.querySelector('#menu-btn') as HTMLElement
+    const menu = document.querySelector('#menu') as HTMLElement
+
+    menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>

@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <section class="text-gray-200 min-h-screen w-full flex flex-col items-center justify-center pt-10">
+        <div class="bg-white/20 shadow-md rounded-2xl w-72 h-72 flex flex-col items-center justify-center">
+            <h2 class="text-2xl font-bold text-gray-200 py-5 px-10">Iniciar Sesión</h2>
+            <form id="loginForm" class="flex flex-col items-center justify-center w-full h-auto">
+                <input id="username" type="text" placeholder="Usuario" class="border-2 border-gray-200 rounded-md p-2 mb-4 text-gray-800 bg-white" required/>
+                <input id="password" type="password" placeholder="Contraseña" class="border-2 border-gray-200 rounded-md p-2 mb-4 text-gray-800 bg-white" required/>
+                <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer">Iniciar Sesión</button>
+            </form>
+        </div>
+
+        <div id="errorMsg" style="color: red;"></div>
+    </section>
+
+    <script>
+        const loginform = document.querySelector('#loginForm') as HTMLFormElement
+        const errorMsg = document.querySelector('#errorMsg') as HTMLElement
+
+        loginform.addEventListener('submit', async function (e: Event) {
+            e.preventDefault();
+            
+            const username = (document.querySelector('#username') as HTMLInputElement).value
+            const password = (document.querySelector('#password') as HTMLInputElement).value
+          
+            try {
+              const response = await fetch('http://127.0.0.1:8000/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                  username: username,
+                  password: password
+                })
+              });
+
+              interface ResponseData {
+                access_token: string;
+                token_type: string;
+              }          
+              if (response.ok) {
+                const data: ResponseData = await response.json();
+                localStorage.setItem('token', data.access_token); // Guarda el token en localStorage
+                window.location.href = '/AdminPanel'; // Redirige al panel
+              } else {
+                const errorText = await response.text();
+                errorMsg.innerText = 'Credenciales inválidas';
+                console.error('Error de login:', errorText);
+              }
+            } 
+            
+            catch (error) {
+              console.error('Error de red o servidor:', error);
+              errorMsg.innerText = 'Error del servidor';
+            }
+          });
+          
+    </script>
+
+</Layout>
