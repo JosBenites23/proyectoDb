@@ -12,6 +12,7 @@ async def crear_departamento(
     titulo: str = Form(..., max_length=600),
     descripcion: str = Form(..., max_length=100000),
     contenido: UploadFile = File(...),
+    pdf: UploadFile = File(...),
     db: Session = Depends(get_db)):
     
 
@@ -21,12 +22,20 @@ async def crear_departamento(
         file_object.write(contenido.file.read())
 
     url_contenido = f"http://127.0.0.1:8000/uploads/{contenido.filename}"
+
+    upload_dir = "uploads"
+    file_location = f"{upload_dir}/{pdf.filename}"
+    with open(file_location, "wb+") as file_object:
+        file_object.write(pdf.file.read())
+
+    url_pdf = f"http://127.0.0.1:8000/uploads/{pdf.filename}"
  
     db_departamento = Dep(
         #id=noticia.id,
         titulo=titulo,
         descripcion=descripcion,
-        contenido=url_contenido
+        contenido=url_contenido,
+        pdf=url_pdf,
     )
 
     db.add(db_departamento)

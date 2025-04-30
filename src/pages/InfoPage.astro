@@ -62,6 +62,11 @@ import Layout from "../layouts/Layout.astro"
     </section>
 
 <script>
+    declare global {
+        interface Window {
+            eliminarCo: (id: number) => Promise<void>;
+        }
+    }
     interface Empresa {
         id: number;
         contenido: string;
@@ -76,6 +81,7 @@ import Layout from "../layouts/Layout.astro"
     let scrollLeft = 0;
     let autoScrollId: number;
     let resumeTimeout: number;
+    const token = localStorage.getItem('token');
 
     document.addEventListener('DOMContentLoaded', async () => {
         try {
@@ -104,9 +110,12 @@ import Layout from "../layouts/Layout.astro"
             card.innerHTML = `
                 <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
                     <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
-                </a>`;
+                </a>
+                ${token ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 transition cursor-pointer">Eliminar</button>` : ''}
+            `;
             contenedor.appendChild(card);
         });
+
         return empresas;
     }
 
@@ -148,6 +157,29 @@ import Layout from "../layouts/Layout.astro"
         contenedor.addEventListener('pointerup', stopDrag);
         contenedor.addEventListener('mouseleave', stopDrag);
     }
+
+    async function eliminarCo(id: number) {
+        const response = await fetch(`http://127.0.0.1:8000/eliminar-empresa/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            alert('empresa eliminada');
+            location.reload(); // recarga todo para evitar problemas con contenido duplicado
+        } else if (response.status === 401) {
+            alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
+            localStorage.removeItem('token');
+            location.reload();
+        } else {
+            alert('Error al eliminar empresa');
+        }
+    }
+
+    window.eliminarCo=eliminarCo
+
 </script>
 
 

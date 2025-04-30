@@ -34,3 +34,17 @@ async def crear_Empresa(
 @router.get("/company/", response_model=list[CoSchema])
 async def obtener_Co(db: Session = Depends(get_db)):
     return db.query(CoModel).order_by(CoModel.id.desc()).all()
+
+@router.delete("/eliminar-empresa/{id}", response_model=CoSchema)
+async def eliminar_Co(id: int, db: Session = Depends(get_db)):
+    # Buscar la noticia por su ID
+    db_co = db.query(CoModel).filter(CoModel.id == id).first()
+    
+    if db_co is None:
+        raise HTTPException(status_code=404, detail="Departamento no encontrada")
+    
+    # Eliminar la noticia de la base de datos
+    db.delete(db_co)
+    db.commit()
+    
+    return db_co

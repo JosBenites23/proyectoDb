@@ -1,95 +1,14 @@
 <section class="w-full">
-    <section class="min-h-screen w-full mt-3 py-5 px-10 justify-items-center text-gray-200">
+    <section class="min-h-screen w-full py-5 px-10 justify-items-center text-gray-200">
         <h1 class="text-3xl font-medium mb-2">Departamentos</h1>
         <p>Informacion sobre Nuestros Departamentos</p>
-        <section id="contenedorDep"  class="flex items-center gap-4 p-4 overflow-hidden no-scrollbar mt-5 relative w-1/2">
+        <section id="contenedorDep"  class="grid lg:grid-cols-3 md:grid-cols-2 sm-grid-cols-1 place-items-center gap-4 p-4 overflow-hidden no-scrollbar mt-5 relative w-full">
 
         </section>
     </section>
 
 </section>
 
-<!-----
-
-<script>
-    declare global {
-        interface Window {
-            eliminarDep: (id: number) => Promise<void>;
-        }
-    }
-    interface Dep {
-        id: number;
-        titulo: string;
-        descripcion: string;
-        contenido: string;
-        fecha_creacion: string;
-    }
-
-    const token = localStorage.getItem('token');        
-
-    async function cargarDep() {
-        const response = await fetch('http://127.0.0.1:8000/departamento');
-        if (!response.ok) {
-            console.error('Error al obtener departamento');
-            return;
-        }
-        
-        const departamento: Dep[] = await response.json();
-
-        // Ordenar por fecha más reciente primero
-        departamento.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
-
-        const contenedorDep = document.getElementById('contenedorDep') as HTMLElement;
-        contenedorDep.innerHTML = '';
-
-        departamento.forEach((departamento) => {
-            const card = document.createElement('div');
-            card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
-             `
-                <img src="${departamento.contenido}" alt="Imagen de departamento" class="object-contain w-full h-auto">
-            ` 
-
-            card.innerHTML = `
-                <img src="${departamento.contenido}" alt="Imagen de departamento" class="object-contain w-full h-auto">
-                <div class="p-4">
-                <h2 class="text-xl font-medium mb-2 text-gray-200">${departamento.titulo}</h2>
-                <p class="text-gray-200 text-sm mb-3">${departamento.descripcion}</p>
-                ${token ? `<button onclick="eliminarDep(${departamento.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
-                </div>
-            `;
-
-
-            contenedorDep.appendChild(card);
-        });
-    }
-
-    // Función para eliminar la noticia
-    async function eliminarDep(id: number) {
-        console.log("Eliminando dep con ID:", id);
-        const response = await fetch(`http://127.0.0.1:8000/eliminar-dep/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("token")}` // Agrega el token si lo necesitas
-            }
-        });
-
-        if (response.ok) {
-            alert('Departamento eliminado');
-            cargarDep(); // Recargar las noticias
-        }else if (response.status === 401) {
-            // Token inválido o expirado
-            alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
-            localStorage.removeItem('token');
-            location.reload();
-        } else {
-            alert('Error al eliminar departamento');
-        }
-    }
-    window.eliminarDep = eliminarDep;
-    
-    document.addEventListener('DOMContentLoaded', cargarDep);
-</script>
---- -->
 <script>
     declare global {
         interface Window {
@@ -101,27 +20,16 @@
         titulo: string;
         descripcion: string;
         contenido: string;
+        pdf: string;
         fecha_creacion: string;
     }
+    const token = localStorage.getItem('token')
 
     const contenedor = document.getElementById('contenedorDep') as HTMLElement;
-    let scrollAmount = 0;
-    let scrollSpeed = 1;
-    let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    let autoScrollId: number;
-    let resumeTimeout: number;
-    const token = localStorage.getItem('token');
 
     document.addEventListener('DOMContentLoaded', async () => {
         try {
-            const departamentos = await cargarDepartamentos();
-            if (departamentos.length >= 4) {
-                duplicarContenido(); // Para efecto infinito
-                autoScroll();
-                setupDrag();
-            }
+            await cargarDepartamentos();
         } catch (error) {
             console.error("Error al cargar departamentos:", error);
         }
@@ -139,9 +47,11 @@
 
         departamentos.forEach(dep => {
             const card = document.createElement('div');
-            card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-auto max-w-sm mb-4 mx-2 hover:scale-105 transition duration-300 ease-in-out';
+            card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-72 gap-4 hover:scale-105 transition duration-300 ease-in-out flex flex-shink-0 flex-col';
             card.innerHTML = `
-                <img src="${dep.contenido}" alt="Imagen de departamento" class="object-contain w-full h-auto">
+                <a href="${dep.pdf}" target="_blank" class="w-full h-auto flex justify-center items-center overflow-hidden">
+                    <img src="${dep.contenido}" alt="Imagen de departamento" class="object-contain w-full h-auto">
+                </a>
                 <div class="p-4">
                     <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
                     <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
@@ -153,44 +63,7 @@
         return departamentos;
     }
 
-    function duplicarContenido() {
-        contenedor.innerHTML += contenedor.innerHTML;
-    }
 
-    function autoScroll() {
-        scrollAmount += scrollSpeed;
-        if (scrollAmount >= contenedor.scrollWidth / 2) {
-            scrollAmount = 0;
-        }
-        contenedor.scrollLeft = scrollAmount;
-        autoScrollId = requestAnimationFrame(autoScroll);
-    }
-
-    function setupDrag() {
-        contenedor.addEventListener('pointerdown', e => {
-            isDragging = true;
-            startX = e.pageX;
-            scrollLeft = contenedor.scrollLeft;
-            cancelAnimationFrame(autoScrollId);
-            clearTimeout(resumeTimeout);
-        });
-
-        contenedor.addEventListener('pointermove', e => {
-            if (!isDragging) return;
-            const x = e.pageX;
-            const walk = startX - x;
-            contenedor.scrollLeft = scrollLeft + walk;
-        });
-
-        const stopDrag = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            resumeTimeout = setTimeout(() => autoScroll(), 1000);
-        };
-
-        contenedor.addEventListener('pointerup', stopDrag);
-        contenedor.addEventListener('mouseleave', stopDrag);
-    }
 
     async function eliminarDep(id: number) {
         const response = await fetch(`http://127.0.0.1:8000/eliminar-dep/${id}`, {

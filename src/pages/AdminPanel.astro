@@ -84,6 +84,8 @@ import Layout from "../layouts/Layout.astro"
                     required></textarea>
                     <label class="mb-2">Imagen</label>
                     <input id="imagenD" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+                    <label class="mb-2">Seleccione Manual(PDF)</label>
+                    <input id="pdf" type="file" accept=".pdf" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Departamento</button>
                     
                 </form>
@@ -386,11 +388,11 @@ import Layout from "../layouts/Layout.astro"
         });
 
         if (!response.ok) {
-            throw new Error('Error al subir departamento');
+            throw new Error('Error al subir departamento')
         }
 
-        const departamentoCreado = await response.json();
-        console.log('departamento subido exitosamente:', departamentoCreado);
+        const departamentoCreado = await response.json()
+        console.log('departamento subido exitosamente:', departamentoCreado)
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -403,17 +405,30 @@ import Layout from "../layouts/Layout.astro"
             const descripcion = (document.querySelector('#descripcionD') as HTMLTextAreaElement).value;
 
             const imagenInput = document.querySelector('#imagenD') as HTMLInputElement;
+            const pdfInput = document.querySelector('#pdf') as HTMLInputElement;
 
             // Revisamos qué archivo subieron
             const contenido = imagenInput.files?.[0]
+            const Pdf = pdfInput.files?.[0]
 
             const nuevoDep = new FormData() 
 
             nuevoDep.append('titulo', titulo)
             nuevoDep.append('descripcion', descripcion)
             if (contenido) {
-                nuevoDep.append('contenido', contenido)
+                nuevoDep.append('contenido', contenido);
+            } else {
+                alert('Debes subir una imagen');
+                return;
             }
+
+            if (Pdf) {
+                nuevoDep.append('pdf', Pdf);
+            } else {
+                alert('Debes subir un PDF');
+                return;
+            }
+            
 
             try {
                 await subirDep(nuevoDep);

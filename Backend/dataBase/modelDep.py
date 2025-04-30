@@ -9,6 +9,7 @@ class Dep(Base):
     titulo = Column(String(255), index=True)
     descripcion = Column(Text)
     contenido = Column(Text)  # Este es el contenido principal de la noticia (puede ser texto, URL de imagen o video)
+    pdf = Column(Text)  # URL del PDF
     fecha_creacion = Column(DateTime, default=func.now())  # Fecha de creación
 
     class Config:

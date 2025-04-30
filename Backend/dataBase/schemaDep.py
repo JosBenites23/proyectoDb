@@ -7,6 +7,7 @@ class DepSchema(BaseModel):
     titulo: str 
     descripcion: str 
     contenido: str # Puede ser texto, URL de imagen o URL de video
+    pdf:str
     fecha_creacion: Optional[datetime] = None
 
     class Config:

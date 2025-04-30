@@ -21,9 +21,7 @@ import Layout from "../layouts/Layout.astro"
             tipo_contenido: string;
             contenido: string;
             fecha_creacion: string;
-        }
-
-        const token = localStorage.getItem('token');        
+        }       
     
         async function cargarNoticias() {
             const response = await fetch('http://127.0.0.1:8000/noticias');
@@ -64,7 +62,7 @@ import Layout from "../layouts/Layout.astro"
                     <div class="p-4">
                         <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
                         <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
-                        ${token ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                        ${tokenValido ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
                     </div>
                 `;
     
@@ -96,7 +94,37 @@ import Layout from "../layouts/Layout.astro"
         }
         window.eliminarNoticia = eliminarNoticia;
         
-        document.addEventListener('DOMContentLoaded', cargarNoticias);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await verificarToken();
+            cargarNoticias();
+        });
+
+        let tokenValido = false; // esto lo usaremos para decidir si mostrar los botones
+
+        async function verificarToken() {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                tokenValido = false;
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/protegida', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                tokenValido = response.ok;
+                if (!tokenValido) {
+                    localStorage.removeItem('token');
+                }
+            } catch (error) {
+                tokenValido = false;
+                localStorage.removeItem('token');
+            }
+        }
     </script>
     
     
