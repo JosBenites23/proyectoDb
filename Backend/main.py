@@ -7,11 +7,13 @@ from client import engine, Base
 
 app = FastAPI() 
 
+app.mount("/images", StaticFiles(directory="C:/inetpub/wwwroot/intraner10/public/images/"), name="images")
+
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://9.0.1.247:8090/"],  # origen de tu frontend
+    allow_origins=["*"],  # origen de tu frontend
     allow_credentials=True,
     allow_methods=["*"],  # puedes restringir si quieres
     allow_headers=["*"],  # puedes restringir si quieres
