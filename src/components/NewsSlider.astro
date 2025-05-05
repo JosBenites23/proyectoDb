@@ -20,7 +20,7 @@
     }
 
     async function obtenerNoticias(): Promise<Noticia[]> {
-        const response = await fetch('http://127.0.0.1:8000/noticias');
+        const response = await fetch('http://9.0.1.247:8090/noticias');
 
         if (!response.ok) {
             throw new Error('Error al obtener noticias');

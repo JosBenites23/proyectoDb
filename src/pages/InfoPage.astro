@@ -97,7 +97,7 @@ import Layout from "../layouts/Layout.astro"
     });
 
     async function cargarEmpresas(): Promise<Empresa[]> {
-        const response = await fetch('http://127.0.0.1:8000/company/');
+        const response = await fetch('http://9.0.1.247:8090/company/');
         if (!response.ok) throw new Error('Error al obtener las empresas');
 
         const empresas: Empresa[] = await response.json();
@@ -159,7 +159,7 @@ import Layout from "../layouts/Layout.astro"
     }
 
     async function eliminarCo(id: number) {
-        const response = await fetch(`http://127.0.0.1:8000/eliminar-empresa/${id}`, {
+        const response = await fetch(`http://9.0.1.247:8090/eliminar-empresa/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`

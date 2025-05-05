@@ -16,7 +16,7 @@
         const token = localStorage.getItem('token');        
     
         async function cargarColaboradores() {
-            const response = await fetch('http://127.0.0.1:8000/team/');
+            const response = await fetch('http://9.0.1.247:8090/team/');
             if (!response.ok) {
                 console.error('Error al obtener los colaboradores');
                 return;

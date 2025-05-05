@@ -36,7 +36,7 @@
     });
 
     async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch('http://127.0.0.1:8000/departamento');
+        const response = await fetch('http://9.0.1.247:8090/departamento');
         if (!response.ok) throw new Error('Error al obtener departamentos');
 
         const departamentos: Departamento[] = await response.json();
@@ -66,7 +66,7 @@
 
 
     async function eliminarDep(id: number) {
-        const response = await fetch(`http://127.0.0.1:8000/eliminar-dep/${id}`, {
+        const response = await fetch(`http://9.0.1.247:8090/eliminar-dep/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
