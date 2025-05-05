@@ -6,8 +6,8 @@ class TeamModel(Base):
     __tablename__ = "Team"
 
     id = Column(Integer, primary_key=True, index=True)
-    descripcion = Column(String(10000))
-    contenido = Column(Text, index=True)  # texto, imagen, video, mixto
+    descripcion = Column(Text)
+    contenido = Column(String(500))  # texto, imagen, video, mixto
 
     class Config:
         orm_mode = True

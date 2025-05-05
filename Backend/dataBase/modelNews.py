@@ -14,7 +14,7 @@ class Noticia(Base):
     __tablename__ = 'news'
 
     id = Column(Integer, primary_key=True, index=True)
-    titulo = Column(String(255), index=True)
+    titulo = Column(String(500), index=True)
     descripcion = Column(Text)
     tipo_contenido = Column(Enum(TipoContenido), default=TipoContenido.texto)
     contenido = Column(Text)  # Este es el contenido principal de la noticia (puede ser texto, URL de imagen o video)

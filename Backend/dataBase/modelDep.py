@@ -6,10 +6,10 @@ class Dep(Base):
     __tablename__ = 'departamento'
 
     id = Column(Integer, primary_key=True, index=True)
-    titulo = Column(String(255), index=True)
+    titulo = Column(String(500), index=True)
     descripcion = Column(Text)
-    contenido = Column(Text)  # Este es el contenido principal de la noticia (puede ser texto, URL de imagen o video)
-    pdf = Column(Text)  # URL del PDF
+    contenido = Column(String(500))  # Este es el contenido principal de la noticia (puede ser texto, URL de imagen o video)
+    pdf = Column(String(500))  # URL del PDF
     fecha_creacion = Column(DateTime, default=func.now())  # Fecha de creación
 
     class Config:
