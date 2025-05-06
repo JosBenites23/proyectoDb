@@ -98,7 +98,7 @@ import Layout from "../layouts/Layout.astro"
 <script>
     const token = localStorage.getItem('token');
 
-    fetch('http://9.0.1.247:8090/protegida', {
+    fetch('http://9.0.1.247:8081/protegida', {
     headers: {
         'Authorization': `Bearer ${token}`
     }
@@ -126,7 +126,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir noticia
     async function subirNoticia(nuevaNoticia: FormData) {
-        const response = await fetch('http://9.0.1.247:8090/subir-noticia', {
+        const response = await fetch('http://9.0.1.247:8081/subir-noticia', {
             method: 'POST',
             body: nuevaNoticia
         });
@@ -197,7 +197,7 @@ import Layout from "../layouts/Layout.astro"
     }
     // Función para subir link 
     async function subirLinkInterno(nuevoLink:Link) {
-        const response = await fetch('http://9.0.1.247:8090/links/', {
+        const response = await fetch('http://9.0.1.247:8081/links/', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -238,7 +238,7 @@ import Layout from "../layouts/Layout.astro"
     });
 
     async function subirCumpleanos(nuevoCumpleanos: FormData) {
-        const response = await fetch('http://9.0.1.247:8090/birthday/', {
+        const response = await fetch('http://9.0.1.247:8081/birthday/', {
             method: 'POST',
             body: nuevoCumpleanos
         });
@@ -286,7 +286,7 @@ import Layout from "../layouts/Layout.astro"
     })
 
     async function subirColaboradores(nuevoTeam: FormData) {
-        const response = await fetch('http://9.0.1.247:8090/team/', {
+        const response = await fetch('http://9.0.1.247:8081/team/', {
             method: 'POST',
             body: nuevoTeam
         });
@@ -334,7 +334,7 @@ import Layout from "../layouts/Layout.astro"
     })
 
     async function subirCo(nuevaCo: FormData) {
-        const response = await fetch('http://9.0.1.247:8090/company/', {
+        const response = await fetch('http://9.0.1.247:8081/company/', {
             method: 'POST',
             body: nuevaCo
         });
@@ -382,7 +382,7 @@ import Layout from "../layouts/Layout.astro"
     })
 
     async function subirDep(nuevoDep: FormData) {
-        const response = await fetch('http://9.0.1.247:8090/departamento', {
+        const response = await fetch('http://9.0.1.247:8081/departamento', {
             method: 'POST',
             body: nuevoDep
         });

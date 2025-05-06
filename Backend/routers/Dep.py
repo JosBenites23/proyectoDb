@@ -21,14 +21,14 @@ async def crear_departamento(
     with open(file_location, "wb+") as file_object:
         file_object.write(contenido.file.read())
 
-    url_contenido = f"http://127.0.0.1:8000/uploads/{contenido.filename}"
+    url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
 
     upload_dir = "uploads"
     file_location = f"{upload_dir}/{pdf.filename}"
     with open(file_location, "wb+") as file_object:
         file_object.write(pdf.file.read())
 
-    url_pdf = f"http://127.0.0.1:8000/uploads/{pdf.filename}"
+    url_pdf = f"http://9.0.1.247:8081/uploads/{pdf.filename}"
  
     db_departamento = Dep(
         #id=noticia.id,

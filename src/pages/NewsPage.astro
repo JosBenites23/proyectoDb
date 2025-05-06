@@ -24,7 +24,7 @@ import Layout from "../layouts/Layout.astro"
         }       
     
         async function cargarNoticias() {
-            const response = await fetch('http://9.0.1.247:8090/noticias');
+            const response = await fetch('http://9.0.1.247:8081/noticias');
             if (!response.ok) {
                 console.error('Error al obtener noticias');
                 return;
@@ -73,7 +73,7 @@ import Layout from "../layouts/Layout.astro"
         // Función para eliminar la noticia
         async function eliminarNoticia(id: number) {
             console.log("Eliminando noticia con ID:", id);
-            const response = await fetch(`http://9.0.1.247:8090/eliminar-noticia/${id}`, {
+            const response = await fetch(`http://9.0.1.247:8081/eliminar-noticia/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}` // Agrega el token si lo necesitas
@@ -110,7 +110,7 @@ import Layout from "../layouts/Layout.astro"
             }
 
             try {
-                const response = await fetch('http://9.0.1.247:8090/protegida', {
+                const response = await fetch('http://9.0.1.247:8081/protegida', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

@@ -18,7 +18,7 @@ async def crear_Empresa(
     with open(file_location, "wb+") as file_object:
         file_object.write(imagen.file.read())
 
-    url_contenido = f"http://127.0.0.1:8000/uploads/{imagen.filename}"
+    url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
 
     nueva_Empresa = CoModel(
         #id=noticia.id,

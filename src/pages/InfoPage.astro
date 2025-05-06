@@ -20,7 +20,7 @@ import Layout from "../layouts/Layout.astro"
             
                 <!-- Caja de imagen grande -->
                 <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out">
-                    <img src="http://9.0.1.247:8090/images/local.webp" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
+                    <img src="http://9.0.1.247:8081/images/local.webp" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
                 </div>
             
                 <!-- 3 cajas pequeñas debajo -->
@@ -97,7 +97,7 @@ import Layout from "../layouts/Layout.astro"
     });
 
     async function cargarEmpresas(): Promise<Empresa[]> {
-        const response = await fetch('http://9.0.1.247:8090/company/');
+        const response = await fetch('http://9.0.1.247:8081/company/');
         if (!response.ok) throw new Error('Error al obtener las empresas');
 
         const empresas: Empresa[] = await response.json();
@@ -159,7 +159,7 @@ import Layout from "../layouts/Layout.astro"
     }
 
     async function eliminarCo(id: number) {
-        const response = await fetch(`http://9.0.1.247:8090/eliminar-empresa/${id}`, {
+        const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`

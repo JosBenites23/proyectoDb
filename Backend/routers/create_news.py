@@ -21,7 +21,7 @@ async def crear_noticia(
     with open(file_location, "wb+") as file_object:
         file_object.write(contenido.file.read())
 
-    url_contenido = f"http://127.0.0.1:8000/uploads/{contenido.filename}"
+    url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
  
     db_noticia = Noticia(
         #id=noticia.id,

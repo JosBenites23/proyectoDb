@@ -34,7 +34,7 @@ import Layout from "../layouts/Layout.astro";
         const token = localStorage.getItem('token');        
     
         async function cargarLinks() {
-            const response = await fetch('http://9.0.1.247:8090/links');
+            const response = await fetch('http://9.0.1.247:8081/links');
             if (!response.ok) {
                 console.error('Error al obtener los links');
                 return;
@@ -60,7 +60,7 @@ import Layout from "../layouts/Layout.astro";
     
         // Función para eliminar un link
         async function eliminarLink(id: number) {
-            const response = await fetch(`http://9.0.1.247:8090/eliminar-link/${id}`, {
+            const response = await fetch(`http://9.0.1.247:8081/eliminar-link/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
