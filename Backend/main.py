@@ -7,7 +7,7 @@ from client import engine, Base
 
 app = FastAPI() 
 
-app.mount("/images", StaticFiles(directory="file:///C:/inetpub/wwwroot/intraner10/dist/images/local.webp"), name="images")
+app.mount("/images", StaticFiles(directory="file:///C:/inetpub/wwwroot/intraner10/dist/images/"), name="images")
 
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
