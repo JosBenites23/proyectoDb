@@ -2,7 +2,7 @@
     <section class="flex flex-col items-center justify-center mt-32 min-h-screen w-full">
         <div>
             <h2 class="text-3xl px-10 font-bold text-gray-200 text-center">Novedades</h2>
-            <div id="ultimasNoticias" class="py-5 px-10 flex flex-wrap min-h-full w-auto gap-4 text-sky-300 justify-center">
+            <div id="ultimasNoticias" class="py-5 px-10 flex flex-wrap min-h-96 w-auto gap-4 text-sky-300 justify-center">
                 <!-- Aquí se cargarán dinámicamente las 3 noticias -->
             </div>
         </div>
@@ -39,7 +39,7 @@
 
             ultimasTres.forEach((noticia) => {
                 const card = document.createElement('div');
-                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-h-96 max-w-sm mb-4 mx-2';
+                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
     
                 const contenidoHTML = noticia.tipo_contenido === 'imagen' ? `
                     <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
