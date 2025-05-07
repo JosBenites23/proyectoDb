@@ -39,7 +39,7 @@
 
             ultimasTres.forEach((noticia) => {
                 const card = document.createElement('div');
-                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
+                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-h-96 max-w-sm mb-4 mx-2';
     
                 const contenidoHTML = noticia.tipo_contenido === 'imagen' ? `
                     <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
