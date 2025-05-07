@@ -15,6 +15,14 @@
     animation: rainbow 6s ease infinite;
 }
 
+.scrollbar-none{
+    -webkit-scrollbar:none /* Safari y Chrome */
+}
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none    /* Firefox */
+  }
+
 /* Animación del fondo */
 @keyframes rainbow {
     0% {
