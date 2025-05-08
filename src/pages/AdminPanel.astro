@@ -99,9 +99,8 @@ import Layout from "../layouts/Layout.astro"
     const token = localStorage.getItem('token');
 
     fetch('http://9.0.1.247:8081/protegida', {
-    headers: {
-        'Authorization': `Bearer ${token}`
-    }
+        method: 'GET',
+        credentials: 'include'
     })
     .then(response => {
     if (!response.ok) {
@@ -112,10 +111,10 @@ import Layout from "../layouts/Layout.astro"
     }
     })
     .then(data => {
-    console.log('Bienvenido:', 'bienvenido');
+    console.log('Bienvenido:', data.username);
     })
     .catch(error => {
-        console.error('Error al verificar el token:', error);
+        console.error('Error al verificar sesión:', error);
         window.location.href = '/Admin';
     });
 

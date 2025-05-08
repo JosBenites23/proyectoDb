@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
 import os
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from fastapi import HTTPException, status, Request
 
 load_dotenv()
 
@@ -14,9 +15,18 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def verify_token(token: str):
+def verify_token_from_cookie(request: Request):
+    token = request.cookies.get("access_token")
+
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No autorizado")
+
     try:
+        token = token.replace("Bearer ", "")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload.get("sub")
+        username = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return username
     except JWTError:
-        return None
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")

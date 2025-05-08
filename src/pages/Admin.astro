@@ -29,6 +29,7 @@ import Layout from "../layouts/Layout.astro";
             try {
               const response = await fetch('http://9.0.1.247:8081/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -37,14 +38,8 @@ import Layout from "../layouts/Layout.astro";
                   password: password
                 })
               });
-
-              interface ResponseData {
-                access_token: string;
-                token_type: string;
-              }          
+       
               if (response.ok) {
-                const data: ResponseData = await response.json();
-                localStorage.setItem('token', data.access_token); // Guarda el token en localStorage
                 window.location.href = '/AdminPanel'; // Redirige al panel
               } else {
                 const errorText = await response.text();
