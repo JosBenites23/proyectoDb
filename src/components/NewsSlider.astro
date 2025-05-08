@@ -48,17 +48,26 @@
           const card = document.createElement('div');
           card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
           
-          const contenidoHTML = noticia.tipo_contenido === 'imagen' ? `
-            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-48">
-          ` : noticia.tipo_contenido === 'video' ? `
-            <video controls class="w-full h-48">
-              <source src="${noticia.contenido}" type="video/mp4">
-            </video>
-          ` : `
-            <div class="w-full h-auto bg-gray-200 flex items-center justify-center text-gray-500 text-center p-4">
-              ${noticia.contenido}
-            </div>
-          `;
+          let contenidoHTML = ""
+
+          if (noticia.tipo_contenido === 'imagen') {
+              contenidoHTML = `
+                <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
+                 `;
+          } else if (noticia.tipo_contenido === 'video') {
+                    contenidoHTML = `
+                        <video controls class="w-full h-48">
+                            <source src="${noticia.contenido}" type="video/mp4">
+                            Tu navegador no soporta videos.
+                        </video>
+                    `;
+          } else if (noticia.tipo_contenido === 'texto') {
+                    contenidoHTML = `
+                        <div class="w-full h-auto bg-gray-200 flex items-center justify-center text-2xl text-blue-600 font-semibold text-center p-4 bg-[url('/images/LogoBanner.png')] bg-blck/40 object-contain">
+                            <a href="${noticia.contenido}" target="_blank" class="hover:underline">Lea aquí</a>
+                        </div>
+                    `;
+              }
     
           card.innerHTML = `
             <div class="w-full bg-gray-200 overflow-hidden">
