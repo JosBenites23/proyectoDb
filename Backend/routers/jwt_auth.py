@@ -19,13 +19,13 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
     if user.disabled:
         raise HTTPException(status_code=400, detail="Usuario inactivo")
     ...
-    token = create_access_token(data={"sub": user.username})
+    acces_token = create_access_token(data={"sub": user.username})
     response.set_cookie(
         key="access_token",
-        value=f"Bearer {token}",
+        value=acces_token,
         httponly=True,
         secure=False,  # importante si usas HTTPS
-        samesite="None",  # o "lax" dependiendo de tu caso
+        samesite="Lax",  # o "lax" dependiendo de tu caso
     )
     return {"message": "Login exitoso"}
 
