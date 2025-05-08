@@ -33,8 +33,10 @@
         fecha_creacion: string;
     }
 
-        async function obtenerNoticias(): Promise<Noticia[]> {
-        const res = await fetch('http://9.0.1.247:8081/noticias');
+    async function obtenerNoticias(): Promise<Noticia[]> {
+        const res = await fetch('http://9.0.1.247:8081/noticias', {
+            credentials: 'include' // Incluye cookies en la solicitud
+        });
         if (!res.ok) throw new Error('Error al obtener noticias');
         const data: Noticia[] = await res.json()
         return data;

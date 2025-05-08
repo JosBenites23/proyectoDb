@@ -34,7 +34,9 @@ import Layout from "../layouts/Layout.astro";
         const token = localStorage.getItem('token');        
     
         async function cargarLinks() {
-            const response = await fetch('http://9.0.1.247:8081/links');
+            const response = await fetch('http://9.0.1.247:8081/links', {
+                credentials: 'include'
+            });
             if (!response.ok) {
                 console.error('Error al obtener los links');
                 return;
@@ -51,7 +53,7 @@ import Layout from "../layouts/Layout.astro";
     
                 card.innerHTML = `
                     <a href="${link.link}" target="_blank">${link.name}</a>
-                    ${token ? `<button onclick="eliminarLink(${link.id})" class="mt-4 bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-700 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                    <button onclick="eliminarLink(${link.id})" class="mt-4 bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-700 transition duration-300 ease-in-out">Eliminar</button>
                 `;
     
                 contenedorLinks.appendChild(card);
@@ -62,23 +64,17 @@ import Layout from "../layouts/Layout.astro";
         async function eliminarLink(id: number) {
             const response = await fetch(`http://9.0.1.247:8081/eliminar-link/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
-                }
+                credentials: 'include' // Incluye cookies en la solicitud
             });
     
             if (response.ok) {
                 alert('Link eliminado');
                 cargarLinks(); // Recargar los links
-            }else if (response.status === 401) {
-                // Token inválido o expirado
-                alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
-                localStorage.removeItem('token');
-                location.reload();
             } else {
                 alert('Error al eliminar el link');
             }
         }
+
         window.eliminarLink = eliminarLink;    
         document.addEventListener('DOMContentLoaded', cargarLinks);
     </script>

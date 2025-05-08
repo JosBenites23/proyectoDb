@@ -119,14 +119,23 @@ import Layout from "../layouts/Layout.astro"
     });
 
     document.querySelector('#logoutButton')!.addEventListener('click', () => {
-    localStorage.removeItem('token');
-    window.location.href = '/Admin';
+        fetch('http://9.0.1.247:8081/logout', {
+            method: 'POST',
+            credentials: 'include' // Incluye cookies en la solicitud
+        })
+        .then(() => {
+            window.location.href = '/Admin';
+        })
+        .catch(error => {
+            console.error('Error al cerrar sesión:', error);
+        });
     });
 
     // Función para subir noticia
     async function subirNoticia(nuevaNoticia: FormData) {
         const response = await fetch('http://9.0.1.247:8081/subir-noticia', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             body: nuevaNoticia
         });
 
@@ -198,6 +207,7 @@ import Layout from "../layouts/Layout.astro"
     async function subirLinkInterno(nuevoLink:Link) {
         const response = await fetch('http://9.0.1.247:8081/links/', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             headers: {
                 'content-type': 'application/json',
             },
@@ -239,6 +249,7 @@ import Layout from "../layouts/Layout.astro"
     async function subirCumpleanos(nuevoCumpleanos: FormData) {
         const response = await fetch('http://9.0.1.247:8081/birthday/', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             body: nuevoCumpleanos
         });
 
@@ -287,6 +298,7 @@ import Layout from "../layouts/Layout.astro"
     async function subirColaboradores(nuevoTeam: FormData) {
         const response = await fetch('http://9.0.1.247:8081/team/', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             body: nuevoTeam
         });
 
@@ -335,6 +347,7 @@ import Layout from "../layouts/Layout.astro"
     async function subirCo(nuevaCo: FormData) {
         const response = await fetch('http://9.0.1.247:8081/company/', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             body: nuevaCo
         });
 
@@ -383,6 +396,7 @@ import Layout from "../layouts/Layout.astro"
     async function subirDep(nuevoDep: FormData) {
         const response = await fetch('http://9.0.1.247:8081/departamento', {
             method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
             body: nuevoDep
         });
 

@@ -25,7 +25,7 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
         value=f"Bearer {token}",
         httponly=True,
         secure=False,  # importante si usas HTTPS
-        samesite="Lax"
+        samesite=None,  # o "lax" dependiendo de tu caso
     )
     return {"message": "Login exitoso"}
 

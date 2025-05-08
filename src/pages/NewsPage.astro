@@ -24,7 +24,9 @@ import Layout from "../layouts/Layout.astro"
         }       
     
         async function cargarNoticias() {
-            const response = await fetch('http://9.0.1.247:8081/noticias');
+            const response = await fetch('http://9.0.1.247:8081/noticias', {
+                credentials: 'include'
+            });
             if (!response.ok) {
                 console.error('Error al obtener noticias');
                 return;
@@ -83,58 +85,38 @@ import Layout from "../layouts/Layout.astro"
             console.log("Eliminando noticia con ID:", id);
             const response = await fetch(`http://9.0.1.247:8081/eliminar-noticia/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}` // Agrega el token si lo necesitas
-                }
+                credentials: 'include' // Incluye cookies en la solicitud
             });
 
             if (response.ok) {
                 alert('Noticia eliminada');
                 cargarNoticias(); // Recargar las noticias
-            }else if (response.status === 401) {
-                // Token inválido o expirado
-                alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
-                localStorage.removeItem('token');
-                location.reload();
             } else {
                 alert('Error al eliminar la noticia');
             }
         }
+
         window.eliminarNoticia = eliminarNoticia;
-        
+
         document.addEventListener('DOMContentLoaded', async () => {
             await verificarToken();
             cargarNoticias();
         });
 
-        let tokenValido = false; // esto lo usaremos para decidir si mostrar los botones
+        let tokenValido = false; // Variable para almacenar el estado del token
 
         async function verificarToken() {
-            const token = localStorage.getItem('token');
-
-            if (!token) {
-                tokenValido = false;
-                return;
-            }
-
             try {
                 const response = await fetch('http://9.0.1.247:8081/protegida', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    credentials: 'include' // Incluye cookies en la solicitud
                 });
 
                 tokenValido = response.ok;
-                if (!tokenValido) {
-                    localStorage.removeItem('token');
-                }
             } catch (error) {
                 tokenValido = false;
-                localStorage.removeItem('token');
+                console.error('Error al verificar el token:', error);
             }
         }
-
-
     </script>
     
     

@@ -97,7 +97,9 @@ import Layout from "../layouts/Layout.astro"
     });
 
     async function cargarEmpresas(): Promise<Empresa[]> {
-        const response = await fetch('http://9.0.1.247:8081/company/');
+        const response = await fetch('http://9.0.1.247:8081/company/', {
+            credentials: 'include'
+        });
         if (!response.ok) throw new Error('Error al obtener las empresas');
 
         const empresas: Empresa[] = await response.json();
@@ -111,7 +113,7 @@ import Layout from "../layouts/Layout.astro"
                 <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
                     <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
                 </a>
-                ${token ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 transition cursor-pointer">Eliminar</button>` : ''}
+                <button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 transition cursor-pointer">Eliminar</button>
             `;
             contenedor.appendChild(card);
         });
@@ -161,25 +163,18 @@ import Layout from "../layouts/Layout.astro"
     async function eliminarCo(id: number) {
         const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            credentials: 'include' // Incluye cookies en la solicitud
         });
 
         if (response.ok) {
-            alert('empresa eliminada');
-            location.reload(); // recarga todo para evitar problemas con contenido duplicado
-        } else if (response.status === 401) {
-            alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
-            localStorage.removeItem('token');
-            location.reload();
+            alert('Empresa eliminada');
+            location.reload(); // Recarga todo para evitar problemas con contenido duplicado
         } else {
             alert('Error al eliminar empresa');
         }
     }
 
-    window.eliminarCo=eliminarCo
-
+    window.eliminarCo = eliminarCo;
 </script>
 
 

@@ -18,7 +18,10 @@
         const token = localStorage.getItem('token');        
     
         async function cargarCumpleanos() {
-            const response = await fetch('http://9.0.1.247:8081/birthday/');
+            const response = await fetch('http://9.0.1.247:8081/birthday/', {
+                credentials: 'include'
+            });
+
             if (!response.ok) {
                 console.error('Error al obtener los cumpleaños');
                 return;

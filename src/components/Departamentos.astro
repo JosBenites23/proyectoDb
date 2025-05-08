@@ -36,7 +36,9 @@
     });
 
     async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch('http://9.0.1.247:8081/departamento');
+        const response = await fetch('http://9.0.1.247:8081/departamento', {
+                credentials: 'include'
+            });
         if (!response.ok) throw new Error('Error al obtener departamentos');
 
         const departamentos: Departamento[] = await response.json();
@@ -55,7 +57,7 @@
                 <div class="p-4">
                     <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
                     <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
-                    ${token ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 transition cursor-pointer">Eliminar</button>` : ''}
+                    <button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 transition cursor-pointer">Eliminar</button>
                 </div>
             `;
             contenedor.appendChild(card);
@@ -68,19 +70,13 @@
     async function eliminarDep(id: number) {
         const response = await fetch(`http://9.0.1.247:8081/eliminar-dep/${id}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            credentials: 'include'
         });
 
         if (response.ok) {
             alert('Departamento eliminado');
             location.reload(); // recarga todo para evitar problemas con contenido duplicado
-        } else if (response.status === 401) {
-            alert('Sesión expirada. Por favor vuelve a iniciar sesión.');
-            localStorage.removeItem('token');
-            location.reload();
-        } else {
+        }else {
             alert('Error al eliminar departamento');
         }
     }

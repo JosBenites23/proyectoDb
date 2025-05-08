@@ -62,36 +62,24 @@
     const adminBtn = document.querySelector('#adminBtn')
     
     adminBtn?.addEventListener('click', () => {
-    const token = localStorage.getItem('token');
-    console.log(token)
-
-    if (!token) {
-        // No hay token, llevar a login
-        window.location.href = '/Admin';
-        return;
-    }
-
-    // Validar token con backend
-    fetch('http://9.0.1.247:8081/protegida', {
-        method: 'GET',
-        headers: {
-        'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-        // Token válido, llevar al panel
-        window.location.href = '/AdminPanel';
-        } else {
-        // Token inválido, llevar a login
-        localStorage.removeItem('token');
-        window.location.href = '/Admin';
-        }
-    })
-    .catch(err => {
-        console.error('Error al validar token:', err);
-        window.location.href = '/Admin';
-    });
+        // Validar sesión con cookies
+        fetch('http://9.0.1.247:8081/protegida', {
+            method: 'GET',
+            credentials: 'include' // Incluye cookies en la solicitud
+        })
+        .then(response => {
+            if (response.ok) {
+                // Sesión válida, llevar al panel
+                window.location.href = '/AdminPanel';
+            } else {
+                // Sesión inválida, llevar a login
+                window.location.href = '/Admin';
+            }
+        })
+        .catch(err => {
+            console.error('Error al validar sesión:', err);
+            window.location.href = '/Admin';
+        });
     });
 
     const menuToggle = document.querySelector('#menu-btn') as HTMLElement
