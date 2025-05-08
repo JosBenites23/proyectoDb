@@ -9,6 +9,6 @@ async def logout(response: Response):
         key="access_token",
         httponly=True,
         secure=False,  # importante si usas HTTPS
-        samesite="None",  # Permite cookies en solicitudes de origen cruzado
+        samesite="Lax",  # Permite cookies en solicitudes de origen cruzado
     )
     return {"message": "Sesión cerrada correctamente"}
