@@ -18,7 +18,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 def verify_token_from_cookie(request: Request):
     token = request.cookies.get("access_token")
 
-    if not token or not token.startswith("Bearer "):
+    if not token or not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No autorizado")
 
     try:
