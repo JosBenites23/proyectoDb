@@ -118,17 +118,21 @@ import Layout from "../layouts/Layout.astro"
         window.location.href = '/Admin';
     });
 
-    document.querySelector('#logoutButton')!.addEventListener('click', () => {
-        fetch('http://9.0.1.247:8081/logout', {
+    document.querySelector('#logoutButton')!.addEventListener('click', async() => {
+        try {
+        const response = await fetch('http://9.0.1.247:8081/logout', {
             method: 'POST',
-            credentials: 'include' // Incluye cookies en la solicitud
-        })
-        .then(() => {
-            window.location.href = '/Admin';
-        })
-        .catch(error => {
-            console.error('Error al cerrar sesión:', error);
+            credentials: 'include' // Necesario para enviar cookies
         });
+
+        if (response.ok) {
+            window.location.href = '/Admin'; // Redirige después de logout
+        } else {
+            console.error('Error en la respuesta del servidor al cerrar sesión');
+        }
+        } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        }
     });
 
     // Función para subir noticia
