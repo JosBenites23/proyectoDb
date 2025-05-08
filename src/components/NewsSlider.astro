@@ -51,22 +51,23 @@
           let contenidoHTML = ""
 
           if (noticia.tipo_contenido === 'imagen') {
-              contenidoHTML = `
-                <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
-                 `;
+            contenidoHTML = `
+            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
+            `
           } else if (noticia.tipo_contenido === 'video') {
-                    contenidoHTML = `
-                        <video controls class="w-full h-48">
-                            <source src="${noticia.contenido}" type="video/mp4">
-                            Tu navegador no soporta videos.
-                        </video>
-                    `;
+            contenidoHTML = `
+                <video controls class="w-full h-48">
+                    <source src="${noticia.contenido}" type="video/mp4">
+                    Tu navegador no soporta videos.
+                </video>
+            `;
           } else if (noticia.tipo_contenido === 'texto') {
-                    contenidoHTML = `
-                        <div class="w-full h-auto bg-gray-200 flex items-center justify-center text-2xl text-blue-600 font-semibold text-center p-4 bg-[url('/images/LogoBanner.png')] bg-blck/40 object-contain">
-                            <a href="${noticia.contenido}" target="_blank" class="hover:underline">Lea aquí</a>
-                        </div>
-                    `;
+            contenidoHTML = `
+              <div class="w-full h-auto bg-gray-200 flex items-center justify-center
+              text-2xl text-blue-600 font-semibold text-center p-4 bg-black/40 ">
+              <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="http://9.0.1.247:8081/images/LogoBanner.png" class="object-contain w-full h-auto">lea aqui</a>
+              </div>
+              `
               }
     
           card.innerHTML = `
