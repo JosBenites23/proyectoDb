@@ -163,7 +163,7 @@ import Layout from "../layouts/Layout.astro"
                 tipo_contenido = 'video';
                 contenido = videoInput.files[0];
             } else if (documentoInput && documentoInput.files && documentoInput.files.length > 0) {
-                tipo_contenido = 'documento';
+                tipo_contenido = 'texto';
                 contenido = documentoInput.files[0];
             } else {
                 alert('Debes subir al menos un archivo (imagen, video o documento)');
