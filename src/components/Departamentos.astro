@@ -30,6 +30,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
         try {
             await cargarDepartamentos();
+            await verificarToken();
         } catch (error) {
             console.error("Error al cargar departamentos:", error);
         }

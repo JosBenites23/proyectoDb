@@ -30,8 +30,7 @@ import Layout from "../layouts/Layout.astro";
             link: string;
             descripcion: string;
         }
-    
-        const token = localStorage.getItem('token');        
+           
     
         async function cargarLinks() {
             const response = await fetch('http://9.0.1.247:8081/links', {

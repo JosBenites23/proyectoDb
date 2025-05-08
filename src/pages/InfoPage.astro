@@ -86,6 +86,7 @@ import Layout from "../layouts/Layout.astro"
     document.addEventListener('DOMContentLoaded', async () => {
         try {
             const empresas = await cargarEmpresas();
+            await verificarToken();
             if (empresas.length >= 4) {
                 duplicarContenido(); // Para efecto infinito
                 autoScroll();
