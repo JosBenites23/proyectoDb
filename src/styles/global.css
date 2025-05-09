@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@midudev/tailwind-animations";
 
+
 /* Crear un gradiente arcoíris animado */
 .rainbow-text {
     background: linear-gradient(
