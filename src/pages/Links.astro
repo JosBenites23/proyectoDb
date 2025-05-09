@@ -52,7 +52,7 @@ import Layout from "../layouts/Layout.astro";
     
                 card.innerHTML = `
                     <a href="${link.link}" target="_blank">${link.name}</a>
-                    ${tokenValido ? `<button onclick="eliminarNoticia(${link.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                    ${tokenValido ? `<button onclick="eliminarLink(${link.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
                 `;
     
                 contenedorLinks.appendChild(card);
@@ -90,7 +90,10 @@ import Layout from "../layouts/Layout.astro";
         }
 
         window.eliminarLink = eliminarLink;    
-        document.addEventListener('DOMContentLoaded', cargarLinks);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await verificarToken();
+            cargarLinks();
+        });
     </script>
     
 </Layout>
