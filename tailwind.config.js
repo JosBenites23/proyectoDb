@@ -2,7 +2,7 @@ import animations from '@midudev/tailwind-animations';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./dist/**/*.{astro,html,js,jsx,ts,tsx}'],
+  content: ['./src/**/*.{astro,html,js,jsx,ts,tsx}', './public/**/*.html'],
   theme: {
     extend: {},
   },
