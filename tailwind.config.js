@@ -12,6 +12,6 @@ export default {
       keyframes: animations.keyframes
     }
   },
-  plugins: [],
+  plugins: [animations.plugin],
 }
 
