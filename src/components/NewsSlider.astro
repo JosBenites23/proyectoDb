@@ -54,7 +54,7 @@
 
           if (noticia.tipo_contenido === 'imagen') {
             contenidoHTML = `
-            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-auto">
+            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-cover w-full h-auto">
             `
           } else if (noticia.tipo_contenido === 'video') {
             contenidoHTML = `

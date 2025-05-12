@@ -8,10 +8,8 @@ export default {
   ],
   theme: {
     extend: {
-      animation: animations.animation,
-      keyframes: animations.keyframes
     }
   },
-  plugins: [animations.plugin],
+  plugins: [animations],
 }
 
