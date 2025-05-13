@@ -14,6 +14,7 @@ async def crear_departamento(
     titulo: str = Form(..., max_length=500),
     descripcion: str = Form(..., max_length=500),
     imagen: UploadFile = File(...),
+    titulo_link: Optional[str] = Form(None),
     link_file: Optional[UploadFile] = File(None),
     link_url: Optional[str] = Form(None),
     db: Session = Depends(get_db)
@@ -49,7 +50,7 @@ async def crear_departamento(
 
         url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
         nuevo_link = Link(
-            titulo=link_file.filename,
+            titulo_link=titulo_link,
             link=url_file,
             dep_id=nuevo_dep.id
         )
@@ -58,7 +59,7 @@ async def crear_departamento(
     # Agregar link externo si se envió
     if link_url:
         nuevo_link = Link(
-            titulo=link_url,
+            titulo_link=titulo_link,
             link=link_url,
             dep_id=nuevo_dep.id
         )
