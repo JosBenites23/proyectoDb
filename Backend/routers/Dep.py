@@ -51,7 +51,7 @@ async def crear_departamento(
         url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
         nuevo_link = Link(
             titulo_link=titulo_link,
-            link=url_file,
+            url=url_file,
             dep_id=nuevo_dep.id
         )
         db.add(nuevo_link)
@@ -60,7 +60,7 @@ async def crear_departamento(
     if link_url:
         nuevo_link = Link(
             titulo_link=titulo_link,
-            link=link_url,
+            url=link_url,
             dep_id=nuevo_dep.id
         )
         db.add(nuevo_link)
