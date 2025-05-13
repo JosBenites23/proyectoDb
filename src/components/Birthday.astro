@@ -13,9 +13,7 @@
             id: number;
             descripcion: string;
             contenido: string;
-        }
-    
-        const token = localStorage.getItem('token');        
+        }     
     
         async function cargarCumpleanos() {
             const response = await fetch('http://9.0.1.247:8081/birthday/', {
