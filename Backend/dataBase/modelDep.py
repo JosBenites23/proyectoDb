@@ -20,7 +20,7 @@ class Link(Base):
     __tablename__ = 'linkdep'
 
     id = Column(Integer, primary_key=True, index=True)
-    titulo = Column(String(500), index=True)
+    titulo_link = Column(String(500), index=True)
     url = Column(String(500))  # Este es el link de la noticia puede ser pdf o word o link externo
     dep_id=Column(Integer, ForeignKey("dep.id")) #relacion con la tabla departamento (dep)
     fecha_creacion = Column(DateTime, default=func.now())  # Fecha de creación
