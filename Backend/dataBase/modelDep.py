@@ -17,7 +17,7 @@ class Dep(Base):
     links = relationship("Link", back_populates="departamento", cascade="all, delete")  # URL del link relacion con la tabla link
 
 class Link(Base):
-    __tablename__ = 'link'
+    __tablename__ = 'linkdep'
 
     id = Column(Integer, primary_key=True, index=True)
     titulo = Column(String(500), index=True)
