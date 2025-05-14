@@ -69,14 +69,16 @@
             const card = document.createElement('div');
             card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-72 gap-4 hover:scale-105 transition duration-300 ease-in-out flex flex-shink-0 flex-col';
             card.innerHTML = `
+            <figure class="w-full h-64 flex justify-center items-center overflow-hidden">
                 <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
-                <div class="p-4">
-                    <a href="${dep.slug}" target="_blank" class="w-full h-64 flex justify-center items-center overflow-hidden">
-                        <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
-                    </a>
-                    <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
+            </figure>
+            <div class="p-4">
+                 <a href="${dep.slug}" target="_blank">
+                    <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
+                </a>
+                <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
                     ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
-                </div>
+            </div>
             `;
             contenedor.appendChild(card);
         });
