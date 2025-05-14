@@ -28,8 +28,8 @@
         id: number;
         titulo: string;
         descripcion: string;
-        contenido: string;
-        pdf: string;
+        slug: string;
+        imagen: string;
         fecha_creacion: string;
     }
 
@@ -54,7 +54,7 @@
     });
 
     async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch('http://9.0.1.247:8081/departamento', {
+        const response = await fetch('http://9.0.1.247:8081/departamento/cards', {
                 credentials: 'include'
             });
         if (!response.ok) throw new Error('Error al obtener departamentos');
@@ -69,11 +69,11 @@
             const card = document.createElement('div');
             card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-72 gap-4 hover:scale-105 transition duration-300 ease-in-out flex flex-shink-0 flex-col';
             card.innerHTML = `
-                <a href="${dep.pdf}" target="_blank" class="w-full h-64 flex justify-center items-center overflow-hidden">
-                    <img src="${dep.contenido}" alt="Imagen de departamento" class="object-contain w-full h-full">
-                </a>
+                <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
                 <div class="p-4">
-                    <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
+                    <a href="${dep.slug}" target="_blank" class="w-full h-64 flex justify-center items-center overflow-hidden">
+                        <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
+                    </a>
                     <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
                     ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
                 </div>
