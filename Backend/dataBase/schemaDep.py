@@ -3,7 +3,7 @@ from typing import Optional, List
 from datetime import datetime
 
 class LinkBase(BaseModel):
-    titulo: str
+    titulo_link: str
     url: str
 
 class LinkCreate(LinkBase):
