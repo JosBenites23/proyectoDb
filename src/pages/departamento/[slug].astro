@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const { slug } = Astro.params;
+
+// Obtener datos del departamento
+const res = await fetch(`http://9.0.1.247:8081/departamento/page-dep/${slug}`, {
+  credentials: 'include'
+});
+if (!res.ok) {
+  throw new Error('Departamento no encontrado');
+}
+type Link = {
+  id: number;
+  titulo_link: string;
+  url: string;
+  fecha_creacion?: string;
+};
+
+type Departamento = {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  imagen: string;
+  slug: string;
+  links: Link[];
+};
+
+const departamento: Departamento = await res.json();
+
+// Verificar si hay sesión de admin
+let esAdmin = false;
+try {
+  const resAdmin = await fetch('http://9.0.1.247:8081/protegida', {
+    credentials: 'include'
+  });
+  esAdmin = resAdmin.ok;
+} catch {
+  esAdmin = false;
+}
+---
+
+<Layout>
+
+    <section class="max-w-3xl mx-auto py-10 px-4 text-gray-200">
+      <div class="flex flex-col items-center">
+        <img src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+        <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
+        <p class="mb-6">{departamento.descripcion}</p>
+      </div>
+    
+      <h2 class="text-2xl font-semibold mb-4">Links</h2>
+      <ul class="space-y-2 mb-8">
+        {departamento.links && departamento.links.length > 0 ? (
+          departamento.links.map(link => (
+            <li class="bg-blue-900/40 rounded px-4 py-2 flex flex-col md:flex-row md:items-center gap-2">
+              <span class="font-medium">{link.titulo_link}</span>
+              <a href={link.url} target="_blank" class="text-sky-300 underline break-all">{link.url}</a>
+            </li>
+          ))
+        ) : (
+          <li class="text-gray-400">No hay links para este departamento.</li>
+        )}
+      </ul>
+    
+      {esAdmin && (
+        <form id="agregarLinkForm" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" method="post" enctype="multipart/form-data">
+          <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
+          <input name="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+          <input name="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Agregar</button>
+        </form>
+      )}
+    </section>
+    
+    <script type="module">
+      // Enviar el formulario de agregar link usando fetch
+      const form = document.getElementById('agregarLinkForm');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          const res = await fetch(`http://9.0.1.247:8081/departamento/${{slug}}/agregar-link`, {
+            method: 'POST',
+            credentials: 'include',
+            body: data
+          });
+          if (res.ok) {
+            alert('Link agregado correctamente');
+            location.reload();
+          } else {
+            alert('Error al agregar el link');
+          }
+        });
+      }
+    </script>
+</Layout>
