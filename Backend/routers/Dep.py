@@ -19,57 +19,62 @@ async def crear_departamento(
     link_url: Optional[str] = Form(None),
     db: Session = Depends(get_db)
 ):
-    existing_dep = db.query(Dep).filter(Dep.titulo == titulo).first()
-    if existing_dep:
-        raise HTTPException(status_code=400, detail="Ya existe un departamento con esenombre.")
+    try:
+        existing_dep = db.query(Dep).filter(Dep.titulo == titulo).first()
+        if existing_dep:
+            raise HTTPException(status_code=400, detail="Ya existe un departamento con ese nombre.")
 
-    # Guardar imagen principal
-    upload_dir = "uploads"
-    file_location = f"{upload_dir}/{imagen.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(imagen.file.read())
-
-    url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
-
-    # Crear el departamento
-    nuevo_dep = Dep(
-        titulo=titulo,
-        descripcion=descripcion,
-        imagen=url_contenido,
-        slug=slugify(titulo)
-    )
-    db.add(nuevo_dep)
-    db.commit()
-    db.refresh(nuevo_dep)
-
-    # Agregar link de archivo si se envió
-    if link_file:
-        file_location = f"{upload_dir}/{link_file.filename}"
+        # Guardar imagen principal
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{imagen.filename}"
         with open(file_location, "wb+") as file_object:
-            file_object.write(link_file.file.read())
+            file_object.write(imagen.file.read())
 
-        url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
-        nuevo_link = Link(
-            titulo_link=titulo_link,
-            url=url_file,
-            dep_id=nuevo_dep.id
+        url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+
+        # Crear el departamento
+        nuevo_dep = Dep(
+            titulo=titulo,
+            descripcion=descripcion,
+            imagen=url_contenido,
+            slug=slugify(titulo)
         )
-        db.add(nuevo_link)
+        db.add(nuevo_dep)
+        db.commit()
+        db.refresh(nuevo_dep)
 
-    # Agregar link externo si se envió
-    if link_url:
-        nuevo_link = Link(
-            titulo_link=titulo_link,
-            url=link_url,
-            dep_id=nuevo_dep.id
-        )
-        db.add(nuevo_link)
+        # Crear el link solo si hay título y uno de los dos tipos de link
+        if titulo_link and (link_file or link_url):
+            if link_file:
+                file_location = f"{upload_dir}/{link_file.filename}"
+                with open(file_location, "wb+") as file_object:
+                    file_object.write(link_file.file.read())
 
-    db.commit()
+                url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
+                nuevo_link = Link(
+                    titulo_link=titulo_link,
+                    url=url_file,
+                    dep_id=nuevo_dep.id
+                )
+                db.add(nuevo_link)
 
-    # Recargar el departamento con sus links
-    dep_con_links = db.query(Dep).options(selectinload(Dep.links)).filter(Dep.id == nuevo_dep.id).first()
-    return dep_con_links
+            elif link_url:
+                nuevo_link = Link(
+                    titulo_link=titulo_link,
+                    url=link_url,
+                    dep_id=nuevo_dep.id
+                )
+                db.add(nuevo_link)
+
+        db.commit()
+
+        # Recargar el departamento con sus links
+        dep_con_links = db.query(Dep).options(selectinload(Dep.links)).filter(Dep.id == nuevo_dep.id).first()
+        return dep_con_links
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"No se pudo crear el departamento: {str(e)}")
 
 @router.get("/cards", response_model=List[DepartamentoCard])
 def obtener_departamentos_cards(db: Session = Depends(get_db)):
