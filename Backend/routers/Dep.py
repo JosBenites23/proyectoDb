@@ -109,7 +109,7 @@ def obtener_departamento_por_id(id: int, db: Session = Depends(get_db)):
 @router.post("/{dep_id}/agregar-link", response_model=DepartamentoSchema)
 async def agregar_links_a_departamento(
     dep_id: int,
-    titulo_link=str,
+    titulo_link: str=Form(..., max_legnth=500),
     link_file: Optional[UploadFile] = File(None),
     link_url: Optional[str] = Form(None),
     db: Session = Depends(get_db)
