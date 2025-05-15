@@ -1,6 +1,8 @@
 ---
 import Hero from '../components/Hero.astro'
 import '../styles/global.css'
+
+const {showMenu=true}=Astro.props;
 ---
 <!doctype html>
 <html lang="es">
@@ -13,7 +15,7 @@ import '../styles/global.css'
 	</head>
 	<body class="bg-cover bg-[url('/images/background.png')] w-screen h-screen bg-center bg-no-repeat bg-fixed"> <!-- poner opacidad al fondo-->
 		<header class="relative z-70">
-			<Hero />
+			{showMenu && <Hero />}
 		</header>
 		<main class="bg-black/35">
 			<slot />
