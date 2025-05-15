@@ -51,7 +51,7 @@ const departamento: Departamento = await res.json();
         )}
       </ul>
     
-      <form id="agregarLinkForm" style="display:none" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" method="post" enctype="multipart/form-data">
+      <form id="agregarLinkForm" style="display:none" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" enctype="multipart/form-data">
       <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
       <input id="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
       <input id="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
