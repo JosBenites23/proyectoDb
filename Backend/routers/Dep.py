@@ -142,8 +142,8 @@ async def agregar_links_a_departamento(
         db.add(nuevo_link)
 
     db.commit()
-    db.refresh(departamento)
-    return departamento
+    dep_con_links = db.query(Dep).options(selectinload(Dep.links)).filter(Dep.id == dep_id).first()
+    return dep_con_links
 
 @router.delete("/link/{link_id}", response_model=LinkSchema)
 def eliminar_link(link_id: int, db: Session = Depends(get_db)):
