@@ -52,11 +52,13 @@ const departamento: Departamento = await res.json();
       </ul>
     
       <form id="agregarLinkForm" style="display:none" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" method="post" enctype="multipart/form-data">
-  <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
-  <input name="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
-  <input name="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
-  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Agregar</button>
-</form>
+      <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
+      <input name="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+      <input name="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+      <label class="mb-2">Seleccione Manual o Documento</label>
+      <input id="archivoD" type="file" accept=".pdf, .doc, .docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Agregar</button>
+      </form>
 </section>
 
 <script type="module">
@@ -80,47 +82,44 @@ const departamento: Departamento = await res.json();
       if (form) {
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const data = new FormData(form);
-          const res = await fetch(`http://9.0.1.247:8081/departamento/${slug}/agregar-link`, {
+          const data = new FormData();
+
+          // Obtener los valores del formulario
+          const titulo_link = form.querySelector('#titulo_link').value;
+          const link_url = form.querySelector('#url').value;
+          const link_file = form.querySelector('#archivoD').files[0];
+
+          if(titulo_link !==""){
+            data.append('titulo_link', titulo_link)
+
+            if(link_file){
+              data.append('link_file', link_file);
+            }else if(link_url){
+              data.append('link_url', link_url);
+            }else{
+              alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
+              return;
+            }
+          }
+
+          if (titulo_link) data.append('titulo_link', titulo_link);
+          if (url) data.append('link_url', url);
+          if (archivo) data.append('link_file', archivo);
+
+          const res = await fetch(`http://9.0.1.247:8081/departamento/${departamento.id}/agregar-link`, {
             method: 'POST',
             credentials: 'include',
             body: data
           });
-          if (res.ok) {
-            alert('Link agregado correctamente');
+
+          if (!res.ok) {
+            alert('Link no se agregó');
             location.reload();
           } else {
-            alert('Error al agregar el link');
-          }
-        });
-      }
-
-      if (form) {
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const data = new FormData(form);
-          const res = await fetch(`http://9.0.1.247:8081/departamento/${{slug}}/agregar-link`, {
-            method: 'POST',
-            credentials: 'include',
-            body: data
-          });
-          if (res.ok) {
             alert('Link agregado correctamente');
             location.reload();
-          } else {
-            alert('Error al agregar el link');
           }
         });
-      }
-
-      let esAdmin = false;
-      try {
-        const resAdmin = await fetch('http://9.0.1.247:8081/protegida', {
-          credentials: 'include'
-        });
-        esAdmin = resAdmin.ok;
-      } catch {
-        esAdmin = false;
       }
     </script>
 </Layout>
