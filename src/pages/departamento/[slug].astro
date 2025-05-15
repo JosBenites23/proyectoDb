@@ -76,6 +76,19 @@ const departamento: Departamento = await res.json();
         }
       }
       verificarToken();
+      const res = await fetch(`http://9.0.1.247:8081/departamento/${departamento.id}/agregar-link`, {
+            method: 'POST',
+            credentials: 'include',
+            body: data
+          });
+
+          if (!res.ok) {
+            alert('Link no se agregó');
+            location.reload();
+          } else {
+            alert('Link agregado correctamente');
+            location.reload();
+          }
 
       // Enviar el formulario de agregar link usando fetch
       const form = document.getElementById('agregarLinkForm');
@@ -100,24 +113,6 @@ const departamento: Departamento = await res.json();
               alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
               return;
             }
-          }
-
-          if (titulo_link) data.append('titulo_link', titulo_link);
-          if (url) data.append('link_url', url);
-          if (archivo) data.append('link_file', archivo);
-
-          const res = await fetch(`http://9.0.1.247:8081/departamento/${departamento.id}/agregar-link`, {
-            method: 'POST',
-            credentials: 'include',
-            body: data
-          });
-
-          if (!res.ok) {
-            alert('Link no se agregó');
-            location.reload();
-          } else {
-            alert('Link agregado correctamente');
-            location.reload();
           }
         });
       }
