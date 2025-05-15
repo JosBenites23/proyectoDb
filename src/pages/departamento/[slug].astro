@@ -27,17 +27,6 @@ type Departamento = {
 };
 
 const departamento: Departamento = await res.json();
-
-// Verificar si hay sesión de admin
-let esAdmin = false;
-try {
-  const resAdmin = await fetch('http://9.0.1.247:8081/protegida', {
-    credentials: 'include'
-  });
-  esAdmin = resAdmin.ok;
-} catch {
-  esAdmin = false;
-}
 ---
 
 <Layout showMenu={false}>
@@ -49,7 +38,6 @@ try {
         <p class="mb-6">{departamento.descripcion}</p>
       </div>
     
-      <h2 class="text-2xl font-semibold mb-4">Links</h2>
       <ul class="space-y-2 mb-8">
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
@@ -63,19 +51,50 @@ try {
         )}
       </ul>
     
-      {esAdmin && (
-        <form id="agregarLinkForm" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" method="post" enctype="multipart/form-data">
-          <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
-          <input name="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
-          <input name="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
-          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Agregar</button>
-        </form>
-      )}
-    </section>
-    
-    <script type="module">
+      <form id="agregarLinkForm" style="display:none" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" method="post" enctype="multipart/form-data">
+  <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
+  <input name="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+  <input name="url" type="url" placeholder="URL del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
+  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Agregar</button>
+</form>
+</section>
+
+<script type="module">
+  // Validar token y mostrar el panel de agregar link
+      async function verificarToken() {
+        try {
+          const response = await fetch('http://9.0.1.247:8081/protegida', {
+            credentials: 'include'
+          });
+          if (response.ok) {
+            document.getElementById('agregarLinkForm').style.display = '';
+          }
+        } catch (error) {
+          // No mostrar el panel si hay error
+        }
+      }
+      verificarToken();
+
       // Enviar el formulario de agregar link usando fetch
       const form = document.getElementById('agregarLinkForm');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          const res = await fetch(`http://9.0.1.247:8081/departamento/${slug}/agregar-link`, {
+            method: 'POST',
+            credentials: 'include',
+            body: data
+          });
+          if (res.ok) {
+            alert('Link agregado correctamente');
+            location.reload();
+          } else {
+            alert('Error al agregar el link');
+          }
+        });
+      }
+
       if (form) {
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -92,6 +111,16 @@ try {
             alert('Error al agregar el link');
           }
         });
+      }
+
+      let esAdmin = false;
+      try {
+        const resAdmin = await fetch('http://9.0.1.247:8081/protegida', {
+          credentials: 'include'
+        });
+        esAdmin = resAdmin.ok;
+      } catch {
+        esAdmin = false;
       }
     </script>
 </Layout>
