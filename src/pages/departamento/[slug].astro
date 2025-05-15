@@ -61,62 +61,68 @@ const departamento: Departamento = await res.json();
       </form>
 </section>
 
+
 <script type="module">
-  // Validar token y mostrar el panel de agregar link
-      async function verificarToken() {
-        try {
-          const response = await fetch('http://9.0.1.247:8081/protegida', {
-            credentials: 'include'
-          });
-          if (response.ok) {
-            document.getElementById('agregarLinkForm').style.display = '';
-          }
-        } catch (error) {
-          // No mostrar el panel si hay error
-        }
-      }
-      verificarToken();
-
-      // Enviar el formulario de agregar link usando fetch
-      const form = document.getElementById('agregarLinkForm');
-      if (form) {
-        const depId=form.getAttribute('data-id')
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const data = new FormData();
-
-          // Obtener los valores del formulario
-          const titulo_link = form.querySelector('#titulo_link').value;
-          const link_url = form.querySelector('#url').value;
-          const link_file = form.querySelector('#archivoD').files[0];
-
-          if(titulo_link !==""){
-            data.append('titulo_link', titulo_link)
-
-            if(link_file){
-              data.append('link_file', link_file);
-            }else if(link_url){
-              data.append('link_url', link_url);
-            }else{
-              alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
-              return;
-            }
-          }
-
-          const res = await fetch(`http://9.0.1.247:8081/departamento/${depId}/agregar-link`, {
-            method: 'POST',
-            credentials: 'include',
-            body: data
-          });
-
-          if (!res.ok) {
-            alert('Link no se agregó');
-            location.reload();
-          } else {
-            alert('Link agregado correctamente');
-            location.reload();
-          }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Validar token y mostrar el panel de agregar link
+    async function verificarToken() {
+      try {
+        const response = await fetch('http://9.0.1.247:8081/protegida', {
+          credentials: 'include'
         });
+        if (response.ok) {
+          document.getElementById('agregarLinkForm').style.display = '';
+        }
+      } catch (error) {
+        // No mostrar el panel si hay error
       }
-    </script>
+    }
+    verificarToken();
+
+    // Enviar el formulario de agregar link usando fetch
+    const form = document.getElementById('agregarLinkForm');
+    if (form) {
+      const depId = form.getAttribute('data-id');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+
+        // Obtener los valores del formulario
+        const titulo_link = form.querySelector('#titulo_link').value;
+        const link_url = form.querySelector('#url').value;
+        const link_file = form.querySelector('#archivoD').files[0];
+
+        if (titulo_link !== "") {
+          data.append('titulo_link', titulo_link);
+
+          if (link_file && link_url) {
+            alert('Solo puedes agregar un archivo o una URL, no ambos.');
+            return;
+          } else if (link_file) {
+            data.append('link_file', link_file);
+          } else if (link_url) {
+            data.append('link_url', link_url);
+          } else {
+            alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
+            return;
+          }
+        }
+
+        const res = await fetch(`http://9.0.1.247:8081/departamento/${depId}/agregar-link`, {
+          method: 'POST',
+          credentials: 'include',
+          body: data
+        });
+
+        if (!res.ok) {
+          alert('Link no se agregó');
+          location.reload();
+        } else {
+          alert('Link agregado correctamente');
+          location.reload();
+        }
+      });
+    }
+  });
+</script>
 </Layout>
