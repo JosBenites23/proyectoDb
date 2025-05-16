@@ -39,7 +39,7 @@ const departamento: Departamento = await res.json();
         <img src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
       </div>
     
-      <ul class="space-y-2 mb-8">
+      <ul class="flex flex-wrap justify-center space-y-2 mb-8">
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
             <li id="link-item" data-link-id={link.id} class="flex flex-col md:flex-row md:items-center h-auto w-80 justify-center">
