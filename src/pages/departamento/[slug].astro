@@ -32,9 +32,9 @@ const departamento: Departamento = await res.json();
 <Layout showMenu={false}>
 
     <section class="max-w-3xl mx-auto py-10 px-4 text-gray-200">
+      <div class="flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <p class="mb-6">{departamento.descripcion}</p>
-        <div class="flex flex-col items-center">
         <img src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
       </div>
     
@@ -43,6 +43,7 @@ const departamento: Departamento = await res.json();
           departamento.links.map(link => (
             <li class="">
               <a href={link.url} target="_blank" class="text-gray-200 font-medium hover:contrast-200 transition duration-200 cursor-pointer break-all bg-blue-900/40 rounded px-4 py-2 flex flex-col md:flex-row md:items-center gap-2">{link.titulo_link}</a>
+              {}
             </li>
           ))
         ) : (
@@ -61,6 +62,100 @@ const departamento: Departamento = await res.json();
 </section>
 
 
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    let esAdmin = false;
+
+    async function verificarToken() {
+      try {
+        const response = await fetch('http://9.0.1.247:8081/protegida', {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          esAdmin = true;
+          document.getElementById('agregarLinkForm').style.display = '';
+        }
+        mostrarBotonesEliminar();
+      } catch (error) {
+        esAdmin = false;
+      }
+    }
+    verificarToken();
+
+    function mostrarBotonesEliminar() {
+      if (!esAdmin) return;
+      document.querySelectorAll('.link-item').forEach((item) => {
+        const linkId = item.getAttribute('data-link-id');
+        if (!item.querySelector('.btn-eliminar-link')) {
+          const btn = document.createElement('button');
+          btn.textContent = 'Eliminar';
+          btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition mt-2';
+          btn.onclick = async () => {
+            if (confirm('¿Seguro que deseas eliminar este link?')) {
+              const res = await fetch(`http://9.0.1.247:8081/departamento/link/${linkId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+              });
+              if (res.ok) {
+                alert('Link eliminado');
+                location.reload();
+              } else {
+                alert('Error al eliminar el link');
+              }
+            }
+          };
+          item.appendChild(btn);
+        }
+      });
+    }
+
+    // ...tu código de agregar link permanece igual...
+    const form = document.getElementById('agregarLinkForm');
+    if (form) {
+      const depId = form.getAttribute('data-id');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+
+        const titulo_link = form.querySelector('#titulo_link').value;
+        const link_url = form.querySelector('#url').value;
+        const link_file = form.querySelector('#archivoD').files[0];
+
+        if (titulo_link !== "") {
+          data.append('titulo_link', titulo_link);
+
+          if (link_file && link_url) {
+            alert('Solo puedes agregar un archivo o una URL, no ambos.');
+            return;
+          } else if (link_file) {
+            data.append('link_file', link_file);
+          } else if (link_url) {
+            data.append('link_url', link_url);
+          } else {
+            alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
+            return;
+          }
+        }
+
+        const res = await fetch(`http://9.0.1.247:8081/departamento/${depId}/agregar-link`, {
+          method: 'POST',
+          credentials: 'include',
+          body: data
+        });
+
+        if (!res.ok) {
+          alert('Link no se agregó');
+          location.reload();
+        } else {
+          alert('Link agregado correctamente');
+          form.reset();
+          location.reload();
+        }
+      });
+    }
+  });
+</script>
+<!--
 <script type="module">
   document.addEventListener('DOMContentLoaded', () => {
     // Validar token y mostrar el panel de agregar link
@@ -125,4 +220,5 @@ const departamento: Departamento = await res.json();
     }
   });
 </script>
+-->
 </Layout>
