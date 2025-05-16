@@ -89,9 +89,8 @@ const departamento: Departamento = await res.json();
         if (!item.querySelector('.btn-eliminar-link')) {
           const btn = document.createElement('button');
           btn.textContent = 'Eliminar';
-          btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition mt-2';
+          btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition duration-200 cursor-pointer mt-2';
           btn.onclick = async () => {
-            if (confirm('¿Seguro que deseas eliminar este link?')) {
               const res = await fetch(`http://9.0.1.247:8081/departamento/link/${linkId}`, {
                 method: 'DELETE',
                 credentials: 'include'
@@ -102,7 +101,6 @@ const departamento: Departamento = await res.json();
               } else {
                 alert('Error al eliminar el link');
               }
-            }
           };
           item.appendChild(btn);
         }
