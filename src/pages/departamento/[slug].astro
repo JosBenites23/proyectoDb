@@ -41,8 +41,8 @@ const departamento: Departamento = await res.json();
       <ul class="space-y-2 mb-8">
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
-            <li class="bg-blue-900/40 rounded px-4 py-2 flex flex-col md:flex-row md:items-center gap-2">
-              <a href={link.url} target="_blank" class="text-gray-200 font-medium hover:contrast-200 cursor-pointer break-all">{link.titulo_link}</a>
+            <li class="">
+              <a href={link.url} target="_blank" class="text-gray-200 font-medium hover:contrast-200 cursor-pointer break-all bg-blue-900/40 rounded px-4 py-2 flex flex-col md:flex-row md:items-center gap-2">{link.titulo_link}</a>
             </li>
           ))
         ) : (
