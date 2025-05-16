@@ -444,6 +444,10 @@ import Layout from "../layouts/Layout.astro"
 
             if (titulo_link !== "") {
                 nuevoDep.append('titulo_link', titulo_link);
+                if (link_file && link_url) {
+                    alert('Solo puedes agregar un archivo o una URL, no ambos.');
+                    return;
+                }
 
                 if (link_file) {
                     nuevoDep.append('link_file', link_file);
