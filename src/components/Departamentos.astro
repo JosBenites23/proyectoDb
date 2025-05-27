@@ -77,7 +77,15 @@
                     <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
                 </a>
                 <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
-                    ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                ${tokenValido ? `
+                <div class="flex justify-center items-center">
+                    <button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out">
+                        <a href="/departamento/${dep.slug}">Editar</a>
+                    </button>
+                </div>
+                ` : ""}
+
             </div>
             `;
             contenedor.appendChild(card);
