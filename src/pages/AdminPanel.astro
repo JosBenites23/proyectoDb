@@ -102,7 +102,7 @@ import Layout from "../layouts/Layout.astro"
                     <input id="archivoD" type="file" accept=".pdf, .doc, .docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <div class="flex justify-center items-center">
                         <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Departamento</button>
-                        <a id="editarDepartamentosBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/#departamentos">
+                        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="#departamentos">
                             editar
                         </a>
                     </div>
@@ -484,22 +484,6 @@ import Layout from "../layouts/Layout.astro"
                 console.error(error);
                 alert('Error al subir Departamento.');
             }
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const btn = document.getElementById('editarDepartamentosBtn');
-        btn?.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.getElementById('departamentos');
-        if (target) {
-            // Cambia el offset según el alto de tu header fijo (por ejemplo, 100)
-            const offset = 100;
-            const y = target.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-            // Opcional: actualiza la URL
-            history.replaceState(null, '', '/#departamentos');
-        }
         });
     });
 
