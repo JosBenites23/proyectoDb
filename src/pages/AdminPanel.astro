@@ -65,7 +65,12 @@ import Layout from "../layouts/Layout.astro"
                     <input id="urlE" type="text" placeholder="Url" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
                     <label class="mb-2">Imagen</label>
                     <input id="imagenE" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
-                    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Empresa</button>
+                    <div>
+                        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Empresa</button>
+                        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3">
+                            <a href="/InfoPage/#contenedorEmpresas">editar</a>
+                        </button>
+                    </div>
                     
                 </form>
             </div>
