@@ -1,31 +1,14 @@
-import animations from '@midudev/tailwind-animations'
+
+/** @type {import('tailwindcss').Config} */
 
 export default {
   content: [
-    './src/**/*.{astro,html,js,jsx,ts,tsx}',
+    './src/**/*.{astro,html,js,jsx,ts,tsx}', 
     './public/**/*.html'
   ],
   theme: {
-    extend: {},
+    extend: {
+    }
   },
-  plugins: [
-    animations
-  ],
 }
-/*
-import animations from '@midudev/tailwind-animations'
-
-// /** @type {import('tailwindcss').Config} */
-
-// export default {
-//   content: [
-//     './src/**/*.{astro,html,js,jsx,ts,tsx}', 
-//     './public/**/*.html'
-//   ],
-//   theme: {
-//     extend: {
-//     }
-//   },
-//   plugins: [animations],
-// }
 
