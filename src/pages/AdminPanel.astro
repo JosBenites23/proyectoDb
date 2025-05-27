@@ -67,7 +67,7 @@ import Layout from "../layouts/Layout.astro"
                     <input id="imagenE" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <div class="flex justify-center items-center">
                         <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Empresa</button>
-                        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/infoPage/#contenedorEmpresas">
+                        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/InfoPage/#contenedorEmpresas">
                             editar
                         </a>
                     </div>
@@ -102,7 +102,7 @@ import Layout from "../layouts/Layout.astro"
                     <input id="archivoD" type="file" accept=".pdf, .doc, .docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
                     <div class="flex justify-center items-center">
                         <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Departamento</button>
-                        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/#departamentos">
+                        <a id="editarDepartamentosBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/#departamentos">
                             editar
                         </a>
                     </div>
@@ -487,68 +487,20 @@ import Layout from "../layouts/Layout.astro"
         });
     });
 
-
-    /*
-    async function subirDep(nuevoDep: FormData) {
-        const response = await fetch('http://9.0.1.247:8081/departamento', {
-            method: 'POST',
-            credentials: 'include', // Incluye cookies en la solicitud
-            body: nuevoDep
-        });
-
-        if (!response.ok) {
-            throw new Error('Error al subir departamento')
-        }
-
-        const departamentoCreado = await response.json()
-        console.log('departamento subido exitosamente:', departamentoCreado)
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-        const formulario = document.querySelector('#depForm') as HTMLFormElement
-
-        formulario.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevenir que recargue la página
-
-            const titulo = (document.querySelector('#tituloD') as HTMLInputElement).value
-            const descripcion = (document.querySelector('#descripcionD') as HTMLTextAreaElement).value;
-
-            const imagenInput = document.querySelector('#imagenD') as HTMLInputElement
-            const pdfInput = document.querySelector('#pdf') as HTMLInputElement
-
-            // Revisamos qué archivo subieron
-            const contenido = imagenInput.files?.[0]
-            const Pdf = pdfInput.files?.[0]
-
-            const nuevoDep = new FormData() 
-
-            nuevoDep.append('titulo', titulo)
-            nuevoDep.append('descripcion', descripcion)
-            if (contenido) {
-                nuevoDep.append('contenido', contenido)
-            } else {
-                alert('Debes subir una imagen')
-                return;
-            }
-
-            if (Pdf) {
-                nuevoDep.append('pdf', Pdf)
-            } else {
-                alert('Debes subir un PDF')
-                return;
-            }
-            
-
-            try {
-                await subirDep(nuevoDep);
-                alert('Departamento subido correctamente.')
-                formulario.reset(); // Limpiar formulario
-            } catch (error) {
-                console.error(error);
-                alert('Error al subir Departamento.')
-            }
+        const btn = document.getElementById('editarDepartamentosBtn');
+        btn?.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.getElementById('departamentos');
+        if (target) {
+            // Cambia el offset según el alto de tu header fijo (por ejemplo, 100)
+            const offset = 100;
+            const y = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+            // Opcional: actualiza la URL
+            history.replaceState(null, '', '/#departamentos');
+        }
         });
     });
-*/
 
 </script>
