@@ -155,3 +155,29 @@ def eliminar_link(link_id: int, db: Session = Depends(get_db)):
     db.commit()
     return link
 
+@router.put("/editar-dep/{id}", response_model=DepartamentoSchema)
+def editar_departamento(
+    id: int,
+    descripcion: Optional[str] = Form(None, max_length=500),
+    imagen: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    departamento = db.query(Dep).filter(Dep.id == id).first()
+    if not departamento:
+        raise HTTPException(status_code=404, detail="Departamento no encontrado")
+
+    # Solo actualiza si se recibe un nuevo valor
+    if descripcion is not None:
+        departamento.descripcion = descripcion
+
+    if imagen is not None:
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{imagen.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(imagen.file.read())
+        url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+        departamento.imagen = url_contenido
+
+    db.commit()
+    db.refresh(departamento)
+    return departamento

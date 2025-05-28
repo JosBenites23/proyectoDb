@@ -33,7 +33,7 @@ const departamento: Departamento = await res.json();
 
   <section class="w-full">
     <section class="max-w-3xl mx-auto py-10 px-4 text-gray-200">
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col items-center" id="depInfo" data-id={departamento.id}>
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <div class=" flex">
           <p id="depDesc"class="mb-6">{departamento.descripcion}</p>
@@ -183,14 +183,28 @@ const departamento: Departamento = await res.json();
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200 cursor-pointer';
         descBtn.parentNode.appendChild(saveBtn);
     
         saveBtn.addEventListener('click', async () => {
           const newDesc = document.getElementById('editDescArea').value;
-          // Aquí va el fetch PUT para actualizar la descripción
-          alert('Descripción actualizada (simulado): ' + newDesc);
-          location.reload();
+          const data = new FormData();
+          data.append('descripcion', newDesc);
+
+          const depId = document.getElementById('depInfo').getAttribute('data-id')
+
+          const res = await fetch(`http://9.0.1.247:8081/editar-dep/${depId}`, {
+            method: 'PUT',
+            credentials: 'include',
+            body: data
+          });
+
+          if (res.ok) {
+            alert('Descripción actualizada');
+            location.reload();
+          } else {
+            alert('Error al actualizar la descripción');
+          }
         });
       });
     
@@ -218,7 +232,7 @@ const departamento: Departamento = await res.json();
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 h-10 w-20 hover:bg-green-600 transition duration-200';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 h-10 w-20 hover:bg-green-600 transition duration-200 cursor-pointer';
 
         // Reemplaza la imagen por el contenedor
         imgEl.parentNode.replaceChild(container, imgEl);
@@ -241,78 +255,31 @@ const departamento: Departamento = await res.json();
 
         saveBtn.addEventListener('click', async () => {
           const file = fileInput.files[0];
-          // Aquí va el fetch PUT para actualizar la imagen
-          alert('Imagen actualizada (simulado)');
-          location.reload();
-        });
-      });
-    }
-  });
-</script>
-<!--
-<script type="module">
-  document.addEventListener('DOMContentLoaded', () => {
-    // Validar token y mostrar el panel de agregar link
-    async function verificarToken() {
-      try {
-        const response = await fetch('http://9.0.1.247:8081/protegida', {
-          credentials: 'include'
-        });
-        if (response.ok) {
-          document.getElementById('agregarLinkForm').style.display = '';
-        }
-      } catch (error) {
-        // No mostrar el panel si hay error
-      }
-    }
-    verificarToken();
-
-    // Enviar el formulario de agregar link usando fetch
-    const form = document.getElementById('agregarLinkForm');
-    if (form) {
-      const depId = form.getAttribute('data-id');
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData();
-
-        // Obtener los valores del formulario
-        const titulo_link = form.querySelector('#titulo_link').value;
-        const link_url = form.querySelector('#url').value;
-        const link_file = form.querySelector('#archivoD').files[0];
-
-        if (titulo_link !== "") {
-          data.append('titulo_link', titulo_link);
-
-          if (link_file && link_url) {
-            alert('Solo puedes agregar un archivo o una URL, no ambos.');
-            return;
-          } else if (link_file) {
-            data.append('link_file', link_file);
-          } else if (link_url) {
-            data.append('link_url', link_url);
-          } else {
-            alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
+          if (!file) {
+            alert('Selecciona una imagen');
             return;
           }
-        }
+          const data = new FormData();
+          data.append('imagen', file);
 
-        const res = await fetch(`http://9.0.1.247:8081/departamento/${depId}/agregar-link`, {
-          method: 'POST',
-          credentials: 'include',
-          body: data
+          const depId = document.getElementById('depInfo').getAttribute('data-id')
+          
+          const res = await fetch(`http://9.0.1.247:8081/editar-dep/${depId}`, {
+            method: 'PUT',
+            credentials: 'include',
+            body: data
+          });
+
+          if (res.ok) {
+            alert('Imagen actualizada');
+            location.reload();
+          } else {
+            alert('Error al actualizar la imagen');
+          }
         });
-
-        if (!res.ok) {
-          alert('Link no se agregó');
-          location.reload();
-        } else {
-          alert('Link agregado correctamente');
-          form.reset()
-          location.reload();
-        }
       });
     }
   });
 </script>
--->
+
 </Layout>
