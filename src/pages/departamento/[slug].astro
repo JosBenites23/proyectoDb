@@ -199,6 +199,9 @@ const departamento: Departamento = await res.json();
       const imgEl = document.getElementById('depImg');
       imgBtn.addEventListener('click', () => {
         const currentImgSrc = imgEl.src
+        const container = document.createElement('div')
+        container.className = 'flex flex-col items-center';
+
         imgEl.outerHTML = `
           <input type="file" id="editImgInput" accept="image/*" class="mb-6 file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer h-10 file:hover:bg-blue-600 transition duration-200" />
           <img id="previewImg" src="${currentImgSrc}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
