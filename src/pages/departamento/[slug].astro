@@ -199,37 +199,48 @@ const departamento: Departamento = await res.json();
       const imgEl = document.getElementById('depImg');
       imgBtn.addEventListener('click', () => {
         const currentImgSrc = imgEl.src
-        const container = document.createElement('div')
-        container.className = 'flex flex-col items-center';
+        const container = document.createElement('div');
+        container.className = "flex flex-col items-center w-full";
 
-        imgEl.outerHTML = `
-          <input type="file" id="editImgInput" accept="image/*" class="mb-6 file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer h-10 file:hover:bg-blue-600 transition duration-200" />
-          <img id="previewImg" src="${currentImgSrc}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
-        `;
-        imgBtn.style.display = 'none';
-    
+        // Input de archivo
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'editImgInput';
+        fileInput.accept = 'image/*';
+        fileInput.className = 'mb-4 file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 file:cursor-pointer h-10 file:hover:bg-blue-600 transition duration-200';
+
+        // Imagen de preview
+        const previewImg = document.createElement('img');
+        previewImg.id = 'previewImg';
+        previewImg.src = currentImgSrc;
+        previewImg.className = 'w-full max-w-md rounded-lg shadow-lg mb-4';
+
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200';
-        imgBtn.parentNode.appendChild(saveBtn);
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 h-10 w-20 hover:bg-green-600 transition duration-200';
 
-        imgEl.parentNode.appendChild(container);
-        container.appendChild(imgEl);
+        // Reemplaza la imagen por el contenedor
+        imgEl.parentNode.replaceChild(container, imgEl);
+        container.appendChild(fileInput);
+        container.appendChild(previewImg);
+        container.appendChild(saveBtn);
 
-        document.getElementById('editImgInput').addEventListener('change', (e) => {
+        imgBtn.style.display = 'none';
+
+        fileInput.addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-              document.getElementById('previewImg').src = ev.target.result;
+              previewImg.src = ev.target.result;
             };
             reader.readAsDataURL(file);
           }
         });
-    
+
         saveBtn.addEventListener('click', async () => {
-          const file = document.getElementById('editImgInput').files[0];
+          const file = fileInput.files[0];
           // Aquí va el fetch PUT para actualizar la imagen
           alert('Imagen actualizada (simulado)');
           location.reload();
