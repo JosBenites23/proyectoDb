@@ -177,13 +177,13 @@ const departamento: Departamento = await res.json();
       const descP = document.getElementById('depDesc');
       descBtn.addEventListener('click', () => {
         const currentDesc = descP.textContent;
-        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full min-h-32 min-w-32 p-2 rounded">${currentDesc}</textarea>`;
+        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full min-h-32 min-w-64 p-2 rounded">${currentDesc}</textarea>`;
         descBtn.style.display = 'none';
     
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200';
         descBtn.parentNode.appendChild(saveBtn);
     
         saveBtn.addEventListener('click', async () => {
@@ -208,7 +208,7 @@ const departamento: Departamento = await res.json();
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200';
         imgBtn.parentNode.appendChild(saveBtn);
     
         document.getElementById('editImgInput').addEventListener('change', (e) => {
