@@ -37,13 +37,13 @@ const departamento: Departamento = await res.json();
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <div class=" flex">
           <p id="depDesc"class="mb-6">{departamento.descripcion}</p>
-          <button id="editDescBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20">
+          <button id="editDescBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20 hover:bg-yellow-600 transition duration-200">
             ✏️ Editar
           </button>
         </div>
         <div class="flex">
           <img id="depImg" src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
-          <button id="editImgBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20">
+          <button id="editImgBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20 hover:bg-yellow-600 transition duration-200">
             ✏️ Editar
           </button>
         </div>
@@ -177,13 +177,13 @@ const departamento: Departamento = await res.json();
       const descP = document.getElementById('depDesc');
       descBtn.addEventListener('click', () => {
         const currentDesc = descP.textContent;
-        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full p-2 rounded">${currentDesc}</textarea>`;
+        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full min-h-32 min-w-32 p-2 rounded">${currentDesc}</textarea>`;
         descBtn.style.display = 'none';
     
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20';
         descBtn.parentNode.appendChild(saveBtn);
     
         saveBtn.addEventListener('click', async () => {
@@ -200,7 +200,7 @@ const departamento: Departamento = await res.json();
       imgBtn.addEventListener('click', () => {
         const currentImgSrc = imgEl.src
         imgEl.outerHTML = `
-          <input type="file" id="editImgInput" accept="image/*" class="mb-6" />
+          <input type="file" id="editImgInput" accept="image/*" class="mb-6 file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
           <img id="previewImg" src="${currentImgSrc}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
         `;
         imgBtn.style.display = 'none';
@@ -208,7 +208,7 @@ const departamento: Departamento = await res.json();
         // Botón guardar
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20';
         imgBtn.parentNode.appendChild(saveBtn);
     
         document.getElementById('editImgInput').addEventListener('change', (e) => {
