@@ -192,6 +192,7 @@ const departamento: Departamento = await res.json();
           data.append('descripcion', newDesc);
 
           const depId = document.getElementById('depInfo').getAttribute('data-id')
+          console.log(depId)
 
           const res = await fetch(`http://9.0.1.247:8081/departamento/editar-dep/${depId}`, {
             method: 'PUT',
