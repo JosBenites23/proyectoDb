@@ -36,13 +36,13 @@ const departamento: Departamento = await res.json();
       <div class="flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <div class=" flex">
-          <p class="mb-6">{departamento.descripcion}</p>
+          <p id="depDesc"class="mb-6">{departamento.descripcion}</p>
           <button id="editDescBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20">
             ✏️ Editar
           </button>
         </div>
         <div class="flex">
-          <img src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+          <img id="depImg" src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
           <button id="editImgBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20">
             ✏️ Editar
           </button>
