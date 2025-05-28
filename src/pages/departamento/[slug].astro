@@ -36,7 +36,13 @@ const departamento: Departamento = await res.json();
       <div class="flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <p class="mb-6">{departamento.descripcion}</p>
+        <button id="editDescBtn" style="display:none" class="absolute top-0 right-0 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm">
+          ✏️ Editar
+        </button>
         <img src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+        <button id="editImgBtn" style="display:none" class="absolute top-2 right-2 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm">
+          ✏️ Editar
+        </button>
       </div>
     
       <ul class="flex items-center flex-col gap-4 mb-8">
@@ -78,6 +84,7 @@ const departamento: Departamento = await res.json();
           document.getElementById('agregarLinkForm').style.display = '';
         }
         mostrarBotonesEliminar();
+        mostrarBotonesEditar();
       } catch (error) {
         esAdmin = false;
       }
@@ -151,6 +158,71 @@ const departamento: Departamento = await res.json();
           form.reset();
           location.reload();
         }
+      });
+    }    // ...tu código anterior...
+    
+    function mostrarBotonesEditar() {
+      if (!esAdmin) return;
+    
+      // Mostrar botones de editar
+      document.getElementById('editDescBtn').style.display = '';
+      document.getElementById('editImgBtn').style.display = '';
+    
+      // Editar descripción
+      const descBtn = document.getElementById('editDescBtn');
+      const descP = document.getElementById('depDesc');
+      descBtn.addEventListener('click', () => {
+        const currentDesc = descP.textContent;
+        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full p-2 rounded">${currentDesc}</textarea>`;
+        descBtn.style.display = 'none';
+    
+        // Botón guardar
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Guardar';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2';
+        descBtn.parentNode.appendChild(saveBtn);
+    
+        saveBtn.addEventListener('click', async () => {
+          const newDesc = document.getElementById('editDescArea').value;
+          // Aquí va el fetch PUT para actualizar la descripción
+          alert('Descripción actualizada (simulado): ' + newDesc);
+          location.reload();
+        });
+      });
+    
+      // Editar imagen
+      const imgBtn = document.getElementById('editImgBtn');
+      const imgEl = document.getElementById('depImg');
+      imgBtn.addEventListener('click', () => {
+        imgEl.outerHTML = `
+          <input type="file" id="editImgInput" accept="image/*" class="mb-6" />
+          <img id="previewImg" src="${imgEl.src}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+        `;
+        imgBtn.style.display = 'none';
+    
+        // Botón guardar
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Guardar';
+        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2';
+        imgBtn.parentNode.appendChild(saveBtn);
+    
+        document.getElementById('editImgInput').addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              document.getElementById('previewImg').src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+    
+        saveBtn.addEventListener('click', async () => {
+          const file = document.getElementById('editImgInput').files[0];
+          // Aquí va el fetch PUT para actualizar la imagen
+          alert('Imagen actualizada (simulado)');
+          location.reload();
+        });
       });
     }
   });
