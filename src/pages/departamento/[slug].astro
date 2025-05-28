@@ -193,7 +193,7 @@ const departamento: Departamento = await res.json();
 
           const depId = document.getElementById('depInfo').getAttribute('data-id')
 
-          const res = await fetch(`http://9.0.1.247:8081/editar-dep/${depId}`, {
+          const res = await fetch(`http://9.0.1.247:8081/departamento/editar-dep/${depId}`, {
             method: 'PUT',
             credentials: 'include',
             body: data
@@ -263,8 +263,8 @@ const departamento: Departamento = await res.json();
           data.append('imagen', file);
 
           const depId = document.getElementById('depInfo').getAttribute('data-id')
-          
-          const res = await fetch(`http://9.0.1.247:8081/editar-dep/${depId}`, {
+
+          const res = await fetch(`http://9.0.1.247:8081/departamento/editar-dep/${depId}`, {
             method: 'PUT',
             credentials: 'include',
             body: data
