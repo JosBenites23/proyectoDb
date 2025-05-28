@@ -163,7 +163,7 @@ const departamento: Departamento = await res.json();
           location.reload();
         }
       });
-    }    // ...tu código anterior...
+    }
     
     function mostrarBotonesEditar() {
       if (!esAdmin) return;
@@ -198,9 +198,10 @@ const departamento: Departamento = await res.json();
       const imgBtn = document.getElementById('editImgBtn');
       const imgEl = document.getElementById('depImg');
       imgBtn.addEventListener('click', () => {
+        const currentImgSrc = imgEl.src
         imgEl.outerHTML = `
           <input type="file" id="editImgInput" accept="image/*" class="mb-6" />
-          <img id="previewImg" src="${imgEl.src}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+          <img id="previewImg" src="${currentImgSrc}" class="w-full max-w-md rounded-lg shadow-lg mb-6" />
         `;
         imgBtn.style.display = 'none';
     
