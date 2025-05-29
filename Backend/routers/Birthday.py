@@ -23,7 +23,6 @@ async def crear_cumpleanos(
         file_location = f"{upload_dir}/{contenido.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(contenido.file.read())
-
         url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
     elif ultimo:
         url_contenido = ultimo.contenido

@@ -4,24 +4,33 @@ from dataBase.modelTeam import TeamModel
 from dataBase.schemaTeam import TeamSchema
 from client import get_db
 from fastapi import UploadFile, File, Form
+from typing import Optional
 
 router = APIRouter()
 
 @router.post("/team/", response_model=TeamSchema)
 async def crear_Team(
-    descripcion: str = Form(..., max_length=10000),
-    contenido: UploadFile = File(...),
+    descripcion: Optional[str] = Form(None, max_length=10000),
+    contenido: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)):
 
-    upload_dir = "uploads"
-    file_location = f"{upload_dir}/{contenido.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(contenido.file.read())
+    ultimo = db.query(TeamModel).order_by(TeamModel.id.desc()).first()
 
-    url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
+    url_contenido = None
+
+    if contenido is not None:
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{contenido.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(contenido.file.read())
+        url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
+    elif ultimo:
+        url_contenido = ultimo.contenido
+
+    if descripcion is None and ultimo:
+        descripcion = ultimo.descripcion
 
     nuevo_Team = TeamModel(
-        #id=noticia.id,
         descripcion=descripcion,
         contenido=url_contenido
     )

@@ -343,14 +343,14 @@ import Layout from "../layouts/Layout.astro"
 
             const archivo = imagenInput.files?.[0]
 
-            if (!archivo) {
-                alert('Por favor selecciona una imagen');
+            if (!archivo && !descripcion) {
+                alert('Por favor selecciona una imagen o agrega una descripción');
                 return;
             }
 
             const formData = new FormData();
-            formData.append('descripcion', descripcion);
-            formData.append('contenido', archivo);
+            if (descripcion) formData.append('descripcion', descripcion);
+            if (archivo) formData.append('contenido', archivo);
 
             try {
                 await subirColaboradores(formData);
