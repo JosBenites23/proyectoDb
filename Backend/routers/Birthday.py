@@ -4,13 +4,14 @@ from dataBase.modelBirthday import birthdayModel
 from dataBase.schemaBirthday import BirthdaySchema
 from client import get_db
 from fastapi import UploadFile, File, Form
+from typing import Optional
 
 router = APIRouter()
 
 @router.post("/birthday/", response_model=BirthdaySchema)
 async def crear_cumpleanos(
-    descripcion: str = Form(..., max_length=10000),
-    contenido: UploadFile = File(...),
+    descripcion: Optional[str] = Form(None, max_length=500),
+    contenido: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)):
 
     upload_dir = "uploads"
