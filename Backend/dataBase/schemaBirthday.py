@@ -3,8 +3,8 @@ from typing import Optional
 
 class BirthdaySchema(BaseModel):
     id: Optional[int] = None 
-    descripcion: str 
-    contenido: str # Puede ser texto, URL de imagen o URL de video
+    descripcion: str | None = None
+    contenido: str | None = None
 
     class Config:
         orm_mode = True
