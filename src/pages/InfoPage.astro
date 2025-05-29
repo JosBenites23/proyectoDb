@@ -120,7 +120,7 @@ import Layout from "../layouts/Layout.astro"
             if (imgDiv) {
                 imgDiv.innerHTML = `
                     <div class="flex flex-col items-center w-full">
-                        <input type="file" id="aboutImgInput" accept="image/*" class="mb-2" />
+                        <input type="file" id="aboutImgInput" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
                         <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
                     </div>
                 `;
