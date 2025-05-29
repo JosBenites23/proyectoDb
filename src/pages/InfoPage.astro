@@ -12,8 +12,9 @@ import Layout from "../layouts/Layout.astro"
             <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
 
                 <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
-                    <h3 class="text-center font-medium text-2xl">Historia</h3>
-                    <p id="historiaText" class="text-gray-200"></p>
+                <!-- Historia -->
+                <h3 class="text-center font-medium text-2xl">Historia</h3>
+                <p id="historiaText" class="text-gray-200"></p>
                 </div>
                 <!-- Imagen -->
                 <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out" id="aboutImgDiv">
@@ -281,139 +282,5 @@ import Layout from "../layouts/Layout.astro"
         
         (window as any).eliminarCo = eliminarCo;
     </script>
-
-    <!-- 
-    
-    <script>
-        declare global {
-            interface Window {
-                eliminarCo: (id: number) => Promise<void>;
-            }
-        }
-        interface Empresa {
-            id: number;
-            contenido: string;
-            imagen: string;
-        }
-
-        const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement;
-        let scrollAmount = 0;
-        let scrollSpeed = 1;
-        let isDragging = false;
-        let startX = 0;
-        let scrollLeft = 0;
-        let autoScrollId: number;
-        let resumeTimeout: number;
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                await verificarToken();
-                const empresas = await cargarEmpresas();
-                if (empresas.length >= 4) {
-                    duplicarContenido(); // Para efecto infinito
-                    autoScroll();
-                    setupDrag();
-                }
-            } catch (error) {
-                console.error("Error al cargar empresas:", error);
-            }
-        });
-
-        async function cargarEmpresas(): Promise<Empresa[]> {
-            const response = await fetch('http://9.0.1.247:8081/company/', {
-                credentials: 'include'
-            });
-            if (!response.ok) throw new Error('Error al obtener las empresas');
-
-            const empresas: Empresa[] = await response.json();
-            if (!contenedor) return [];
-
-            contenedor.innerHTML = '';
-            empresas.forEach(empresa => {
-                const card = document.createElement('div');
-                card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
-                card.innerHTML = `
-                    <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
-                        <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
-                    </a>
-                    ${tokenValido ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
-                `;
-                contenedor.appendChild(card);
-            });
-
-            return empresas;
-        }
-
-        function duplicarContenido() {
-            contenedor.innerHTML += contenedor.innerHTML; // Duplicamos el contenido para loop
-        }
-
-        function autoScroll() {
-            scrollAmount += scrollSpeed;
-            if (scrollAmount >= contenedor.scrollWidth / 2) {
-                scrollAmount = 0; // Reinicia al llegar a la mitad (ya que está duplicado)
-            }
-            contenedor.scrollLeft = scrollAmount;
-            autoScrollId = requestAnimationFrame(autoScroll);
-        }
-
-        function setupDrag() {
-            contenedor.addEventListener('pointerdown', e => {
-                isDragging = true;
-                startX = e.pageX;
-                scrollLeft = contenedor.scrollLeft;
-                cancelAnimationFrame(autoScrollId);
-                clearTimeout(resumeTimeout);
-            });
-
-            contenedor.addEventListener('pointermove', e => {
-                if (!isDragging) return;
-                const x = e.pageX;
-                const walk = (startX - x); // Qué tanto se mueve
-                contenedor.scrollLeft = scrollLeft + walk;
-            });
-
-            const stopDrag = () => {
-                if (!isDragging) return;
-                isDragging = false;
-                resumeTimeout = setTimeout(() => autoScroll(), 5000);
-            };
-
-            contenedor.addEventListener('pointerup', stopDrag);
-            contenedor.addEventListener('mouseleave', stopDrag);
-        }
-
-        async function eliminarCo(id: number) {
-            const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
-                method: 'DELETE',
-                credentials: 'include' // Incluye cookies en la solicitud
-            });
-
-            if (response.ok) {
-                alert('Empresa eliminada');
-                location.reload(); // Recarga todo para evitar problemas con contenido duplicado
-            } else {
-                alert('Error al eliminar empresa');
-            }
-        }
-
-        let tokenValido = false; // Variable para almacenar el estado del token
-
-            async function verificarToken() {
-                try {
-                    const response = await fetch('http://9.0.1.247:8081/protegida', {
-                        credentials: 'include' // Incluye cookies en la solicitud
-                    });
-
-                    tokenValido = response.ok;
-                } catch (error) {
-                    tokenValido = false;
-                    console.error('Error al verificar el token:', error);
-                }
-            }
-
-        window.eliminarCo = eliminarCo;
-    </script>
-    -->
 
 </Layout>
