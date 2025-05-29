@@ -43,7 +43,8 @@ import Layout from "../layouts/Layout.astro"
                     <textarea id="descripcionC"
                     placeholder="Descripción" 
                     class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32"></textarea>
-                    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">💾 Actualizar descripcion</button>                   
+                    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">💾 Actualizar descripcion</button>
+                    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">Agregar cumpleaños</button>
                 </form>
             </div>
             <div class="bg-gray-500/20 p-4 w-full rounded-lg ">
@@ -274,8 +275,6 @@ import Layout from "../layouts/Layout.astro"
             body: nuevoCumpleanos
         });
 
-        //console.log(response)
-
         if (!response.ok) {
             throw new Error('Error al subir el cumpleaños');
         }
@@ -295,14 +294,14 @@ import Layout from "../layouts/Layout.astro"
 
             const archivo = imagenInput.files?.[0]
 
-            if (!archivo) {
-                alert('Por favor selecciona una imagen');
+            if (!archivo && !descripcion) {
+                alert('Por favor selecciona una imagen o agrega una descripción');
                 return;
             }
 
             const formData = new FormData();
-            formData.append('descripcion', descripcion);
-            formData.append('contenido', archivo);
+            if (descripcion) formData.append('descripcion', descripcion);
+            if (archivo) formData.append('contenido', archivo);
 
             try {
                 await subirCumpleanos(formData);
