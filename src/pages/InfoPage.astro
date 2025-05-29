@@ -36,6 +36,7 @@ import Layout from "../layouts/Layout.astro"
                 </div>
                 <!-- Botón editar solo para admin -->
                 <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition">✏️ Editar</button>
+                <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition">Guardar</button>
             </div>
 
             <footer class="flex flex-col items-center justify-center mt-10">
@@ -104,28 +105,28 @@ import Layout from "../layouts/Layout.astro"
         }
         
         function activarEdicionSobreNosotros() {
+
             const historiaText = document.getElementById('historiaText');
             const misionText = document.getElementById('misionText');
             const visionText = document.getElementById('visionText');
             const valoresText = document.getElementById('valoresText');
-            if (historiaText) historiaText.outerHTML = `<textarea id="historiaEdit" class="w-full p-2 rounded mb-2">${aboutData.historia || ''}</textarea>`;
-            if (misionText) misionText.outerHTML = `<textarea id="misionEdit" class="w-full p-2 rounded mb-2">${aboutData.mision || ''}</textarea>`;
-            if (visionText) visionText.outerHTML = `<textarea id="visionEdit" class="w-full p-2 rounded mb-2">${aboutData.vision || ''}</textarea>`;
-            if (valoresText) valoresText.outerHTML = `<textarea id="valoresEdit" class="w-full p-2 rounded mb-2">${aboutData.valores || ''}</textarea>`;
-        
+            if (historiaText) historiaText.outerHTML = `<textarea id="historiaEdit" class="w-full p-2 rounded mb-2 min-h-60">${aboutData.historia || ''}</textarea>`;
+            if (misionText) misionText.outerHTML = `<textarea id="misionEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.mision || ''}</textarea>`;
+            if (visionText) visionText.outerHTML = `<textarea id="visionEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.vision || ''}</textarea>`;
+            if (valoresText) valoresText.outerHTML = `<textarea id="valoresEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.valores || ''}</textarea>`;
+
+            // Imagen: input file + preview (sin botón guardar aquí)
             const imgDiv = document.getElementById('aboutImgDiv');
             if (imgDiv) {
                 imgDiv.innerHTML = `
-                    <input type="file" id="aboutImgInput" accept="image/*" class="mb-2" />
+                    <input type="file" id="aboutImgInput" accept="image/*" class="mb-2 flex flex-col" />
                     <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
-                    <button id="guardarSobreBtn" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition">Guardar</button>
                 `;
-        
-                const aboutImgInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
+
+                const aboutImgInput = document.getElementById('aboutImgInput');
                 if (aboutImgInput) {
                     aboutImgInput.addEventListener('change', (e) => {
-                        const target = e.target as HTMLInputElement | null;
-                        const file = target?.files?.[0];
+                        const file = (e.target as HTMLInputElement).files?.[0];
                         if (file) {
                             const reader = new FileReader();
                             reader.onload = ev => {
@@ -136,40 +137,43 @@ import Layout from "../layouts/Layout.astro"
                         }
                     });
                 }
-        
-                const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
-                if (editarBtn) editarBtn.style.display = 'none';
-        
-                const guardarBtn = document.getElementById('guardarSobreBtn') as HTMLButtonElement | null;
-                if (guardarBtn) {
-                    guardarBtn.addEventListener('click', async () => {
-                        const historiaEdit = document.getElementById('historiaEdit') as HTMLTextAreaElement | null;
-                        const misionEdit = document.getElementById('misionEdit') as HTMLTextAreaElement | null;
-                        const visionEdit = document.getElementById('visionEdit') as HTMLTextAreaElement | null;
-                        const valoresEdit = document.getElementById('valoresEdit') as HTMLTextAreaElement | null;
-                        const fileInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
-        
-                        const formData = new FormData();
-                        if (historiaEdit) formData.append('historia', historiaEdit.value);
-                        if (misionEdit) formData.append('mision', misionEdit.value);
-                        if (visionEdit) formData.append('vision', visionEdit.value);
-                        if (valoresEdit) formData.append('valores', valoresEdit.value);
-                        if (fileInput && fileInput.files && fileInput.files[0]) {
-                            formData.append('imagen', fileInput.files[0]);
-                        }
-                        const res = await fetch('http://9.0.1.247:8081/about/', {
-                            method: 'PUT',
-                            credentials: 'include',
-                            body: formData
-                        });
-                        if (res.ok) {
-                            alert('Información actualizada');
-                            location.reload();
-                        } else {
-                            alert('Error al actualizar');
-                        }
+            }
+
+            // Oculta el botón editar y muestra el de guardar
+            const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
+            const guardarBtn = document.getElementById('guardarSobreBtn') as HTMLButtonElement | null;
+            if (editarBtn) editarBtn.style.display = 'none';
+            if (guardarBtn) guardarBtn.style.display = '';
+
+            // Evento guardar (solo se agrega una vez)
+            if (guardarBtn && !guardarBtn.onclick) {
+                guardarBtn.onclick = async () => {
+                    const historiaEdit = document.getElementById('historiaEdit') as HTMLTextAreaElement | null;
+                    const misionEdit = document.getElementById('misionEdit') as HTMLTextAreaElement | null;
+                    const visionEdit = document.getElementById('visionEdit') as HTMLTextAreaElement | null;
+                    const valoresEdit = document.getElementById('valoresEdit') as HTMLTextAreaElement | null;
+                    const fileInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
+
+                    const formData = new FormData();
+                    if (historiaEdit) formData.append('historia', historiaEdit.value);
+                    if (misionEdit) formData.append('mision', misionEdit.value);
+                    if (visionEdit) formData.append('vision', visionEdit.value);
+                    if (valoresEdit) formData.append('valores', valoresEdit.value);
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        formData.append('imagen', fileInput.files[0]);
+                    }
+                    const res = await fetch('http://9.0.1.247:8081/about/', {
+                        method: 'PUT',
+                        credentials: 'include',
+                        body: formData
                     });
-                }
+                    if (res.ok) {
+                        alert('Información actualizada');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar');
+                    }
+                };
             }
         }
         
