@@ -14,15 +14,17 @@ async def crear_cumpleanos(
     contenido: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)):
 
-    upload_dir = "uploads"
-    file_location = f"{upload_dir}/{contenido.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(contenido.file.read())
+    url_contenido = None
 
-    url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
+    if contenido is not None:
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{contenido.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(contenido.file.read())
+
+        url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
 
     nuevo_cumpleanos = birthdayModel(
-        #id=noticia.id,
         descripcion=descripcion,
         contenido=url_contenido
     )
