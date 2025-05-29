@@ -35,8 +35,8 @@ import Layout from "../layouts/Layout.astro"
                     <p id="valoresText" class="text-center"></p>
                 </div>
                 <!-- Botón editar solo para admin -->
-                <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition">✏️ Editar</button>
-                <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition">Guardar</button>
+                <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition cursor-pointer">✏️ Editar</button>
+                <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition cursor-pointer">Guardar</button>
             </div>
 
             <footer class="flex flex-col items-center justify-center mt-10">
@@ -119,8 +119,10 @@ import Layout from "../layouts/Layout.astro"
             const imgDiv = document.getElementById('aboutImgDiv');
             if (imgDiv) {
                 imgDiv.innerHTML = `
-                    <input type="file" id="aboutImgInput" accept="image/*" class="mb-2 flex flex-col" />
-                    <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
+                    <div class="flex flex-col items-center w-full">
+                        <input type="file" id="aboutImgInput" accept="image/*" class="mb-2" />
+                        <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
+                    </div>
                 `;
 
                 const aboutImgInput = document.getElementById('aboutImgInput');
