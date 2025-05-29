@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from config import DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
-from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_news, create_link, vanish_link, Birthday, Team, company, Dep, logout
+from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_news, create_link, vanish_link, Birthday, Team, company, Dep, logout, About
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from client import engine, Base
@@ -36,6 +36,7 @@ app.include_router(Team.router)
 app.include_router(company.router)
 app.include_router(Dep.router)
 app.include_router(logout.router)
+app.include_router(About.router)
 
 Base.metadata.create_all(bind=engine)
 

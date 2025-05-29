@@ -9,45 +9,33 @@ import Layout from "../layouts/Layout.astro"
                 Sobre Nosotros
             </h1>
             
-            <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1 ">
-                <!-- Caja de texto grande -->
+            <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
+
                 <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
                     <h3 class="text-center font-medium text-2xl">Historia</h3>
-                    <p class="text-gray-200">Almacenes La Ganga empezó sus operaciones en 1983, abriendo su primer local en el sector de “La Bahía” en Guayaquil. Desde sus inicios, el local se especializó en la comercialización y venta de electrodomésticos de las mejores marcas a nivel mundial, ofreciendo como ventaja lo que ningún otro local daba: garantía en sus productos. Desde esta época, se popularizó su slogan <strong>“Precios de Bahía con Garantía”.</strong>
-                    </br>
-                    Con el pasar de los años, el crecimiento de la cadena fue intenso, llegando a estar en la mayoría de provincias del Ecuador. Hoy, Almacenes La Ganga cuenta con más de 130 locales en todo el país y busca continuar expandiéndose hasta abarcar cada rincón de nuestra patria. Con esfuerzo y tenacidad, la empresa ha alcanzado el liderazgo en un ambiente competitivo, destacando por sus productos y las mejores ofertas del mercado.</p>
+                    <p id="historiaText" class="text-gray-200"></p>
                 </div>
-            
-                <!-- Caja de imagen grande -->
-                <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out">
-                    <img src="/images/local.webp" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
+                <!-- Imagen -->
+                <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out" id="aboutImgDiv">
+                    <img id="aboutImg" src="" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
                 </div>
-            
-                <!-- 3 cajas pequeñas debajo -->
+                <!-- Misión -->
                 <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium">Mision</h3>
-                    <p >Somos una empresa líder que comercializa electrodomésticos, confiando en nuestros clientes y colaboradores, otorgando bienestar, comodidad y entretenimiento a los precios más bajos y con garantía.</p>
+                    <h3 class="font-medium">Misión</h3>
+                    <p id="misionText"></p>
                 </div>
-            
+                <!-- Visión -->
                 <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
                     <h3 class="font-medium">Visión</h3>
-                    <p >Ser la primera opción de compra de nuestros clientes y lograr que en cada hogar ecuatoriano haya un electrodoméstico de La Ganga.
-
-                    </p>
+                    <p id="visionText"></p>
                 </div>
-
+                <!-- Valores -->
                 <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
                     <h3 class="font-medium mb-3">Valores</h3>
-                    <ul class="text-center">
-                        <li></li>
-                        <li>Lealtad</li>
-                        <li>Eficiencia</li>
-                        <li>Honradez</li>
-                        <li>Trabajo en Equipo</li>
-                        <li>Respeto</li>
-                        <li>Responsabilidad</li>
-                    </ul>
+                    <p id="valoresText" class="text-center"></p>
                 </div>
+                <!-- Botón editar solo para admin -->
+                <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition">✏️ Editar</button>
             </div>
 
             <footer class="flex flex-col items-center justify-center mt-10">
@@ -61,138 +49,365 @@ import Layout from "../layouts/Layout.astro"
         </section>
     </section>
 
-<script>
-    declare global {
-        interface Window {
-            eliminarCo: (id: number) => Promise<void>;
-        }
-    }
-    interface Empresa {
-        id: number;
-        contenido: string;
-        imagen: string;
-    }
-
-    const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement;
-    let scrollAmount = 0;
-    let scrollSpeed = 1;
-    let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    let autoScrollId: number;
-    let resumeTimeout: number;
-    const token = localStorage.getItem('token');
-
-    document.addEventListener('DOMContentLoaded', async () => {
-        try {
+    <script>
+        type AboutData = {
+            historia?: string;
+            mision?: string;
+            vision?: string;
+            valores?: string;
+            imagen?: string;
+        };
+        
+        let aboutData: AboutData = {};
+        let tokenValido = false;
+        
+        document.addEventListener('DOMContentLoaded', async () => {
             await verificarToken();
+            await cargarSobreNosotros();
+            const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
+            if (tokenValido && editarBtn) {
+                editarBtn.style.display = '';
+                editarBtn.addEventListener('click', activarEdicionSobreNosotros);
+            }
             const empresas = await cargarEmpresas();
             if (empresas.length >= 4) {
-                duplicarContenido(); // Para efecto infinito
+                duplicarContenido();
                 autoScroll();
                 setupDrag();
             }
-        } catch (error) {
-            console.error("Error al cargar empresas:", error);
-        }
-    });
-
-    async function cargarEmpresas(): Promise<Empresa[]> {
-        const response = await fetch('http://9.0.1.247:8081/company/', {
-            credentials: 'include'
         });
-        if (!response.ok) throw new Error('Error al obtener las empresas');
-
-        const empresas: Empresa[] = await response.json();
-        if (!contenedor) return [];
-
-        contenedor.innerHTML = '';
-        empresas.forEach(empresa => {
-            const card = document.createElement('div');
-            card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
-            card.innerHTML = `
-                <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
-                    <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
-                </a>
-                ${tokenValido ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
-            `;
-            contenedor.appendChild(card);
-        });
-
-        return empresas;
-    }
-
-    function duplicarContenido() {
-        contenedor.innerHTML += contenedor.innerHTML; // Duplicamos el contenido para loop
-    }
-
-    function autoScroll() {
-        scrollAmount += scrollSpeed;
-        if (scrollAmount >= contenedor.scrollWidth / 2) {
-            scrollAmount = 0; // Reinicia al llegar a la mitad (ya que está duplicado)
-        }
-        contenedor.scrollLeft = scrollAmount;
-        autoScrollId = requestAnimationFrame(autoScroll);
-    }
-
-    function setupDrag() {
-        contenedor.addEventListener('pointerdown', e => {
-            isDragging = true;
-            startX = e.pageX;
-            scrollLeft = contenedor.scrollLeft;
-            cancelAnimationFrame(autoScrollId);
-            clearTimeout(resumeTimeout);
-        });
-
-        contenedor.addEventListener('pointermove', e => {
-            if (!isDragging) return;
-            const x = e.pageX;
-            const walk = (startX - x); // Qué tanto se mueve
-            contenedor.scrollLeft = scrollLeft + walk;
-        });
-
-        const stopDrag = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            resumeTimeout = setTimeout(() => autoScroll(), 5000);
-        };
-
-        contenedor.addEventListener('pointerup', stopDrag);
-        contenedor.addEventListener('mouseleave', stopDrag);
-    }
-
-    async function eliminarCo(id: number) {
-        const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
-            method: 'DELETE',
-            credentials: 'include' // Incluye cookies en la solicitud
-        });
-
-        if (response.ok) {
-            alert('Empresa eliminada');
-            location.reload(); // Recarga todo para evitar problemas con contenido duplicado
-        } else {
-            alert('Error al eliminar empresa');
-        }
-    }
-
-    let tokenValido = false; // Variable para almacenar el estado del token
-
+        
+        // ----------- SOBRE NOSOTROS DINÁMICO -----------
+        
         async function verificarToken() {
             try {
-                const response = await fetch('http://9.0.1.247:8081/protegida', {
-                    credentials: 'include' // Incluye cookies en la solicitud
-                });
-
+                const response = await fetch('http://9.0.1.247:8081/protegida', { credentials: 'include' });
                 tokenValido = response.ok;
-            } catch (error) {
+            } catch {
                 tokenValido = false;
-                console.error('Error al verificar el token:', error);
+            }
+        }
+        
+        async function cargarSobreNosotros() {
+            const res = await fetch('http://9.0.1.247:8081/about/', { credentials: 'include' });
+            aboutData = await res.json();
+            const historiaText = document.getElementById('historiaText') as HTMLElement | null;
+            const misionText = document.getElementById('misionText') as HTMLElement | null;
+            const visionText = document.getElementById('visionText') as HTMLElement | null;
+            const valoresText = document.getElementById('valoresText') as HTMLElement | null;
+            const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
+            if (historiaText) historiaText.textContent = aboutData.historia || '';
+            if (misionText) misionText.textContent = aboutData.mision || '';
+            if (visionText) visionText.textContent = aboutData.vision || '';
+            if (valoresText) valoresText.textContent = aboutData.valores || '';
+            if (aboutImg) aboutImg.src = aboutData.imagen || '';
+        }
+        
+        function activarEdicionSobreNosotros() {
+            const historiaText = document.getElementById('historiaText');
+            const misionText = document.getElementById('misionText');
+            const visionText = document.getElementById('visionText');
+            const valoresText = document.getElementById('valoresText');
+            if (historiaText) historiaText.outerHTML = `<textarea id="historiaEdit" class="w-full p-2 rounded mb-2">${aboutData.historia || ''}</textarea>`;
+            if (misionText) misionText.outerHTML = `<textarea id="misionEdit" class="w-full p-2 rounded mb-2">${aboutData.mision || ''}</textarea>`;
+            if (visionText) visionText.outerHTML = `<textarea id="visionEdit" class="w-full p-2 rounded mb-2">${aboutData.vision || ''}</textarea>`;
+            if (valoresText) valoresText.outerHTML = `<textarea id="valoresEdit" class="w-full p-2 rounded mb-2">${aboutData.valores || ''}</textarea>`;
+        
+            const imgDiv = document.getElementById('aboutImgDiv');
+            if (imgDiv) {
+                imgDiv.innerHTML = `
+                    <input type="file" id="aboutImgInput" accept="image/*" class="mb-2" />
+                    <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
+                    <button id="guardarSobreBtn" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition">Guardar</button>
+                `;
+        
+                const aboutImgInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
+                if (aboutImgInput) {
+                    aboutImgInput.addEventListener('change', (e) => {
+                        const target = e.target as HTMLInputElement | null;
+                        const file = target?.files?.[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = ev => {
+                                const preview = document.getElementById('aboutImgPreview') as HTMLImageElement | null;
+                                if (preview && ev.target) preview.src = ev.target.result as string;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+        
+                const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
+                if (editarBtn) editarBtn.style.display = 'none';
+        
+                const guardarBtn = document.getElementById('guardarSobreBtn') as HTMLButtonElement | null;
+                if (guardarBtn) {
+                    guardarBtn.addEventListener('click', async () => {
+                        const historiaEdit = document.getElementById('historiaEdit') as HTMLTextAreaElement | null;
+                        const misionEdit = document.getElementById('misionEdit') as HTMLTextAreaElement | null;
+                        const visionEdit = document.getElementById('visionEdit') as HTMLTextAreaElement | null;
+                        const valoresEdit = document.getElementById('valoresEdit') as HTMLTextAreaElement | null;
+                        const fileInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
+        
+                        const formData = new FormData();
+                        if (historiaEdit) formData.append('historia', historiaEdit.value);
+                        if (misionEdit) formData.append('mision', misionEdit.value);
+                        if (visionEdit) formData.append('vision', visionEdit.value);
+                        if (valoresEdit) formData.append('valores', valoresEdit.value);
+                        if (fileInput && fileInput.files && fileInput.files[0]) {
+                            formData.append('imagen', fileInput.files[0]);
+                        }
+                        const res = await fetch('http://9.0.1.247:8081/about/', {
+                            method: 'PUT',
+                            credentials: 'include',
+                            body: formData
+                        });
+                        if (res.ok) {
+                            alert('Información actualizada');
+                            location.reload();
+                        } else {
+                            alert('Error al actualizar');
+                        }
+                    });
+                }
+            }
+        }
+        
+        // ----------- EMPRESAS (CARRUSEL) -----------
+        
+        type Empresa = {
+            id: number;
+            contenido: string;
+            imagen: string;
+        };
+        
+        let scrollAmount = 0;
+        let scrollSpeed = 1;
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
+        let autoScrollId: number;
+        let resumeTimeout: number;
+        
+        async function cargarEmpresas(): Promise<Empresa[]> {
+            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
+            const response = await fetch('http://9.0.1.247:8081/company/', {
+                credentials: 'include'
+            });
+            if (!response.ok) throw new Error('Error al obtener las empresas');
+        
+            const empresas: Empresa[] = await response.json();
+            if (!contenedor) return [];
+        
+            contenedor.innerHTML = '';
+            empresas.forEach(empresa => {
+                const card = document.createElement('div');
+                card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
+                card.innerHTML = `
+                    <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
+                        <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
+                    </a>
+                    ${tokenValido ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                `;
+                contenedor.appendChild(card);
+            });
+        
+            return empresas;
+        }
+        
+        function duplicarContenido() {
+            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
+            if (contenedor) contenedor.innerHTML += contenedor.innerHTML;
+        }
+        
+        function autoScroll() {
+            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
+            if (!contenedor) return;
+            scrollAmount += scrollSpeed;
+            if (scrollAmount >= contenedor.scrollWidth / 2) {
+                scrollAmount = 0;
+            }
+            contenedor.scrollLeft = scrollAmount;
+            autoScrollId = requestAnimationFrame(autoScroll);
+        }
+        
+        function setupDrag() {
+            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
+            if (!contenedor) return;
+            contenedor.addEventListener('pointerdown', e => {
+                isDragging = true;
+                startX = e.pageX;
+                scrollLeft = contenedor.scrollLeft;
+                cancelAnimationFrame(autoScrollId);
+                clearTimeout(resumeTimeout);
+            });
+        
+            contenedor.addEventListener('pointermove', e => {
+                if (!isDragging) return;
+                const x = e.pageX;
+                const walk = (startX - x);
+                contenedor.scrollLeft = scrollLeft + walk;
+            });
+        
+            const stopDrag = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                resumeTimeout = setTimeout(() => autoScroll(), 5000);
+            };
+        
+            contenedor.addEventListener('pointerup', stopDrag);
+            contenedor.addEventListener('mouseleave', stopDrag);
+        }
+        
+        async function eliminarCo(id: number) {
+            const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+        
+            if (response.ok) {
+                alert('Empresa eliminada');
+                location.reload();
+            } else {
+                alert('Error al eliminar empresa');
+            }
+        }
+        
+        (window as any).eliminarCo = eliminarCo;
+    </script>
+
+    <!-- 
+    
+    <script>
+        declare global {
+            interface Window {
+                eliminarCo: (id: number) => Promise<void>;
+            }
+        }
+        interface Empresa {
+            id: number;
+            contenido: string;
+            imagen: string;
+        }
+
+        const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement;
+        let scrollAmount = 0;
+        let scrollSpeed = 1;
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
+        let autoScrollId: number;
+        let resumeTimeout: number;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await verificarToken();
+                const empresas = await cargarEmpresas();
+                if (empresas.length >= 4) {
+                    duplicarContenido(); // Para efecto infinito
+                    autoScroll();
+                    setupDrag();
+                }
+            } catch (error) {
+                console.error("Error al cargar empresas:", error);
+            }
+        });
+
+        async function cargarEmpresas(): Promise<Empresa[]> {
+            const response = await fetch('http://9.0.1.247:8081/company/', {
+                credentials: 'include'
+            });
+            if (!response.ok) throw new Error('Error al obtener las empresas');
+
+            const empresas: Empresa[] = await response.json();
+            if (!contenedor) return [];
+
+            contenedor.innerHTML = '';
+            empresas.forEach(empresa => {
+                const card = document.createElement('div');
+                card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
+                card.innerHTML = `
+                    <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
+                        <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
+                    </a>
+                    ${tokenValido ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                `;
+                contenedor.appendChild(card);
+            });
+
+            return empresas;
+        }
+
+        function duplicarContenido() {
+            contenedor.innerHTML += contenedor.innerHTML; // Duplicamos el contenido para loop
+        }
+
+        function autoScroll() {
+            scrollAmount += scrollSpeed;
+            if (scrollAmount >= contenedor.scrollWidth / 2) {
+                scrollAmount = 0; // Reinicia al llegar a la mitad (ya que está duplicado)
+            }
+            contenedor.scrollLeft = scrollAmount;
+            autoScrollId = requestAnimationFrame(autoScroll);
+        }
+
+        function setupDrag() {
+            contenedor.addEventListener('pointerdown', e => {
+                isDragging = true;
+                startX = e.pageX;
+                scrollLeft = contenedor.scrollLeft;
+                cancelAnimationFrame(autoScrollId);
+                clearTimeout(resumeTimeout);
+            });
+
+            contenedor.addEventListener('pointermove', e => {
+                if (!isDragging) return;
+                const x = e.pageX;
+                const walk = (startX - x); // Qué tanto se mueve
+                contenedor.scrollLeft = scrollLeft + walk;
+            });
+
+            const stopDrag = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                resumeTimeout = setTimeout(() => autoScroll(), 5000);
+            };
+
+            contenedor.addEventListener('pointerup', stopDrag);
+            contenedor.addEventListener('mouseleave', stopDrag);
+        }
+
+        async function eliminarCo(id: number) {
+            const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
+                method: 'DELETE',
+                credentials: 'include' // Incluye cookies en la solicitud
+            });
+
+            if (response.ok) {
+                alert('Empresa eliminada');
+                location.reload(); // Recarga todo para evitar problemas con contenido duplicado
+            } else {
+                alert('Error al eliminar empresa');
             }
         }
 
-    window.eliminarCo = eliminarCo;
-</script>
+        let tokenValido = false; // Variable para almacenar el estado del token
 
+            async function verificarToken() {
+                try {
+                    const response = await fetch('http://9.0.1.247:8081/protegida', {
+                        credentials: 'include' // Incluye cookies en la solicitud
+                    });
 
-        
+                    tokenValido = response.ok;
+                } catch (error) {
+                    tokenValido = false;
+                    console.error('Error al verificar el token:', error);
+                }
+            }
+
+        window.eliminarCo = eliminarCo;
+    </script>
+    -->
+
 </Layout>
