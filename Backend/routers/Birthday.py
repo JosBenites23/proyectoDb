@@ -14,6 +14,8 @@ async def crear_cumpleanos(
     contenido: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)):
 
+    ultimo = db.query(birthdayModel).order_by(birthdayModel.id.desc()).first()
+
     url_contenido = None
 
     if contenido is not None:
@@ -23,6 +25,11 @@ async def crear_cumpleanos(
             file_object.write(contenido.file.read())
 
         url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
+    elif ultimo:
+        url_contenido = ultimo.contenido
+
+    if descripcion is None and ultimo:
+        descripcion = ultimo.descripcion
 
     nuevo_cumpleanos = birthdayModel(
         descripcion=descripcion,
