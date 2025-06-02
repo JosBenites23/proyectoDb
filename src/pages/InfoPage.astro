@@ -77,6 +77,16 @@ import Layout from "../layouts/Layout.astro"
                 autoScroll();
                 setupDrag();
             }
+            if (window.location.hash === '#contenedorEmpresas') {
+			// Espera un poco para que todo el contenido cargue antes de hacer scroll
+			setTimeout(() => {
+				const emp = document.getElementById('contenedorEmpresas');
+				if (emp) {
+					const y = emp.getBoundingClientRect().top + window.scrollY - 40; // Ajusta el offset si quieres
+					window.scrollTo({ top: y, behavior: 'smooth' });
+				}
+			}, 200);
+		}
         });
         
         // ----------- SOBRE NOSOTROS DINÁMICO -----------
