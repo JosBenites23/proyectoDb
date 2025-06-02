@@ -14,4 +14,19 @@ import Departamentos from '../components/Departamentos.astro';
 	<div id="departamentos">
 		<Departamentos />
 	</div>
-</Layout>
+</Layout> 
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		if (window.location.hash === '#departamentos') {
+			// Espera un poco para que todo el contenido cargue antes de hacer scroll
+			setTimeout(() => {
+				const dep = document.getElementById('departamentos');
+				if (dep) {
+					const y = dep.getBoundingClientRect().top + window.scrollY - 40; // Ajusta el offset si quieres
+					window.scrollTo({ top: y, behavior: 'smooth' });
+				}
+			}, 200);
+		}
+	});
+</script>
