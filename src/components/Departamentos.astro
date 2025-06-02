@@ -73,8 +73,8 @@
                 <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
             </figure>
             <div class="p-4">
-                 <a class="hover:scale-105 transition duration-150" href="/departamento/${dep.slug}">
-                    <h2 class="text-xl font-medium mb-2 text-gray-200">${dep.titulo}</h2>
+                 <a href="/departamento/${dep.slug}">
+                    <h2 class="text-xl font-medium mb-2 text-gray-200 hover:scale-105 transition duration-150">${dep.titulo}</h2>
                 </a>
                 <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
                 ${tokenValido ? `
