@@ -16,10 +16,10 @@ app.add_middleware(
     allow_origins=[
         "http://9.0.1.247", 
         "http://9.0.1.247:80",
-        "http://9.0.1.247:3000",],  # origen de tu frontend
+        "http://9.0.1.247:3000",],  # origen del frontend exactamente el puerto 80
     allow_credentials=True,
-    allow_methods=["*"],  # puedes restringir si quieres
-    allow_headers=["*"],  # puedes restringir si quieres
+    allow_methods=["*"],  
+    allow_headers=["*"],   
 )
 
 

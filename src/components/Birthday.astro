@@ -25,9 +25,9 @@
                 return;
             }
             
-            const cumpleanos: cumpleanos[] = await response.json();
+            const cumpleanos: cumpleanos[] = await response.json(); //crea lista de cumpleaños
 
-            const ultimoCumple = cumpleanos[0]
+            const ultimoCumple = cumpleanos[0] //devuelve el primero
     
             const contenedorCumpleanos = document.getElementById('contenedorCumpleanos') as HTMLElement;
 

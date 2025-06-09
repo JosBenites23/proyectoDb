@@ -24,10 +24,12 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
         key="access_token",
         value=acces_token,
         httponly=True,
-        secure=False,  # importante si usas HTTPS
-        samesite="Lax",  # o "lax" dependiendo de tu caso
+        secure=False,  # importante si se usa HTTPS
+        samesite="Lax",  # dependiendo lo que se necesite
     )
     return {"message": "Login exitoso"}
+
+#autentificacion anteriror con token
 
 '''
 @router.post("/login")

@@ -141,7 +141,7 @@ import Layout from "../layouts/Layout.astro"
         try {
         const response = await fetch('http://9.0.1.247:8081/logout', {
             method: 'POST',
-            credentials: 'include' // Necesario para enviar cookies
+            credentials: 'include' // Incluye cookies en la solicitud
         });
 
         if (response.ok) {
@@ -226,6 +226,7 @@ import Layout from "../layouts/Layout.astro"
         name: string
         link: string
     }
+
     // Función para subir link 
     async function subirLinkInterno(nuevoLink:Link) {
         const response = await fetch('http://9.0.1.247:8081/links/', {
@@ -269,6 +270,7 @@ import Layout from "../layouts/Layout.astro"
         });
     });
 
+    //función para subir cumpleaños
     async function subirCumpleanos(nuevoCumpleanos: FormData) {
         const response = await fetch('http://9.0.1.247:8081/birthday/', {
             method: 'POST',
@@ -316,6 +318,7 @@ import Layout from "../layouts/Layout.astro"
         })
     })
 
+    // Función para subir colaboradores
     async function subirColaboradores(nuevoTeam: FormData) {
         const response = await fetch('http://9.0.1.247:8081/team/', {
             method: 'POST',
@@ -365,6 +368,7 @@ import Layout from "../layouts/Layout.astro"
         })
     })
 
+    // Función para subir empresa
     async function subirCo(nuevaCo: FormData) {
         const response = await fetch('http://9.0.1.247:8081/company/', {
             method: 'POST',
@@ -415,6 +419,7 @@ import Layout from "../layouts/Layout.astro"
     })
 
 
+    // Función para subir departamento
     async function subirDep(nuevoDep: FormData) {
     const response = await fetch('http://9.0.1.247:8081/departamento/', {
         method: 'POST',
