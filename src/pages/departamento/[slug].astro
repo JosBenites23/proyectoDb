@@ -1,12 +1,12 @@
 ---
-export const prerender = false;
-import Layout from '../../layouts/Layout.astro';
-const { slug } = Astro.params;
+export const prerender = false
+import Layout from '../../layouts/Layout.astro'
+const { slug } = Astro.params
 
 // Obtener datos del departamento
 const res = await fetch(`http://9.0.1.247:8081/departamento/page-dep/${slug}`, {
   credentials: 'include'
-});
+})
 if (!res.ok) {
   throw new Error('Departamento no encontrado');
 }
