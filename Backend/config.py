@@ -13,3 +13,6 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 URLBACK = os.getenv("URLBACK", "http://localhost")
 URLFRONT = os.getenv("URLFRONT", "http://localhost")
+
+print(URLBACK)
+print(URLFRONT)
