@@ -4,6 +4,7 @@ from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from client import engine, Base
+from config import URLFRONT
 
 app = FastAPI() 
 
@@ -14,9 +15,9 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://9.0.1.247", 
-        "http://9.0.1.247:80",
-        "http://9.0.1.247:3000",],  # origen del frontend exactamente el puerto 80
+        URLFRONT,
+        f"{URLFRONT}:80",
+        f"{URLFRONT}:3000",],  # origen del frontend exactamente el puerto 80
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],   

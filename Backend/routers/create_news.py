@@ -4,6 +4,7 @@ from client import get_db
 from dataBase.modelNews import Noticia
 from dataBase.schemaNews import NewsSchema
 from fastapi import UploadFile, File, Form
+from config import URLBACK
 
 router = APIRouter()
 
@@ -21,8 +22,8 @@ async def crear_noticia(
     with open(file_location, "wb+") as file_object:
         file_object.write(contenido.file.read())
 
-    url_contenido = f"http://9.0.1.247:8081/uploads/{contenido.filename}"
- 
+    url_contenido = f"{URLBACK}/uploads/{contenido.filename}"
+
     db_noticia = Noticia(
         #id=noticia.id,
         titulo=titulo,

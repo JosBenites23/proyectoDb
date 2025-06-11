@@ -6,6 +6,7 @@ from dataBase.schemaDep import DepartamentoSchema, DepartamentoCard, LinkSchema
 from fastapi import UploadFile, File, Form
 from typing import Optional, List
 from slugify import slugify
+from config import URLBACK
 
 router = APIRouter(prefix="/departamento", tags=["Departamentos"])
 
@@ -30,7 +31,7 @@ async def crear_departamento(
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
 
-        url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+        url_contenido = f"{URLBACK}/uploads/{imagen.filename}"
 
         # Crear el departamento
         nuevo_dep = Dep(
@@ -50,7 +51,7 @@ async def crear_departamento(
                 with open(file_location, "wb+") as file_object:
                     file_object.write(link_file.file.read())
 
-                url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
+                url_file = f"{URLBACK}/uploads/{link_file.filename}"
                 nuevo_link = Link(
                     titulo_link=titulo_link,
                     url=url_file,
@@ -125,7 +126,7 @@ async def agregar_links_a_departamento(
         with open(file_location, "wb+") as file_object:
             file_object.write(link_file.file.read())
 
-        url_file = f"http://9.0.1.247:8081/uploads/{link_file.filename}"
+        url_file = f"{URLBACK}/uploads/{link_file.filename}"
         nuevo_link = Link(
             titulo_link=titulo_link,
             url=url_file,
@@ -175,7 +176,7 @@ def editar_departamento(
         file_location = f"{upload_dir}/{imagen.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
-        url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+        url_contenido = f"{URLBACK}/uploads/{imagen.filename}"
         departamento.imagen = url_contenido
 
     db.commit()

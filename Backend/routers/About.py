@@ -5,6 +5,7 @@ from dataBase.schemaAbout import AboutSchema
 from client import get_db
 from fastapi import UploadFile, File, Form
 from typing import Optional
+from config import URLBACK
 
 router = APIRouter()
 
@@ -34,7 +35,7 @@ async def update_about(
         file_location = f"{upload_dir}/{imagen.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
-        about.imagen = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+        about.imagen = f"{URLBACK}/uploads/{imagen.filename}"
 
     db.commit()
     db.refresh(about)

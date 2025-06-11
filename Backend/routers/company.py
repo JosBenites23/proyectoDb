@@ -4,6 +4,7 @@ from dataBase.modelCompany import CoModel
 from dataBase.schemaCompany import CoSchema
 from client import get_db
 from fastapi import UploadFile, File, Form
+from config import URLBACK
 
 router = APIRouter()
 
@@ -18,7 +19,7 @@ async def crear_Empresa(
     with open(file_location, "wb+") as file_object:
         file_object.write(imagen.file.read())
 
-    url_contenido = f"http://9.0.1.247:8081/uploads/{imagen.filename}"
+    url_contenido = f"{URLBACK}/uploads/{imagen.filename}"
 
     nueva_Empresa = CoModel(
         #id=noticia.id,
