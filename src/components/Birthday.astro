@@ -16,7 +16,7 @@
         }     
     
         async function cargarCumpleanos() {
-            const response = await fetch('http://9.0.1.247:8081/birthday/', {
+            const response = await fetch('${process.env.BACKEND_URL}/birthday/', {
                 credentials: 'include'
             });
 
