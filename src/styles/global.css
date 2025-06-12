@@ -42,3 +42,42 @@
 .animate-rainbow {
     animation: rainbow 6s ease infinite;
 }
+
+@font-face {
+    font-family: "Laro";
+    src: url("/fonts/Laro-Light.otf") format("otf");
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Laro";
+    src: url("/fonts/Laro-Regular.otf") format("otf");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Laro";
+    src: url("/fonts/Laro-Medium.otf") format("otf");
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Laro";
+    src: url("/fonts/Laro-Bold.otf") format("otf");
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Laro";
+    src: url("/fonts/Laro-Black.otf") format("otf");
+    font-weight: 900;
+    font-display: swap;
+}
+
+html{
+    font-family: 'Laro', sans-serif;
+}

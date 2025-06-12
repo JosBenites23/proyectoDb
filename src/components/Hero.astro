@@ -1,15 +1,10 @@
-<section class="text-center flex-col flex justify-center h-36 w-full items-center fixed top-0 rounded-lg">
+<section class="text-center flex-col flex justify-center h-36 w-full items-center fixed top-0">
     <div class="bg-white h-24 w-full flex">
         <figure class="flex px-5 py-5">
             <img class="h-16 w-auto" src="/images/LogoBanner.png" alt="logo laGanga" />
         </figure>
 
-        <div class="absolute left-1/2 transform -translate-x-1/2 mt-8">
-            <h1 class="text-4xl font-bold text-gray-900">La Ganga Intranet</h1>
-        </div>
-    </div>
-
-    <section id="landing-header" class="flex justify-center h-12 w-full bg-blue-950">
+        <section id="landing-header" class="flex justify-center h-12 w-full bg-blue-950">
         <button id="menu-btn" class="left-1 mt-2 bg-blue-500/30 backdrop-blur-lg rounded-full w-10 h-10 flex items-center justify-center text-white hover:bg-blue-400 transition-colors duration-300 md:hidden lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16m-7 6h7"></path></svg>
         </button>
@@ -22,16 +17,10 @@
                 <li><a id="adminBtn" href="/Admin">Admin</a></li>
             </ul>
         </nav>
-    
-        <div id="menu-backdrop" class={`
-        
-            absolute bg-blue-500/30 backdrop-blur-lg 
-            rounded left-[var(--left)] top-[var(--top)] 
-            w-[var(--width)] h-[var(--height)] 
-            transition-all duration-400 
-            ease-in-out opacity-0 z-10
-        `}/>
     </section>
+    </div>
+
+    
 </section>
 
 
@@ -39,26 +28,6 @@
 
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
-    const listItem = document.querySelectorAll("#landing-header li")
-    const menuBackDrop = document.querySelector('#menu-backdrop') as HTMLElement
-
-    listItem.forEach((item) => {
-        item.addEventListener("mouseenter", () => {
-            const {left, top, width, height} = item.getBoundingClientRect()
-
-            menuBackDrop.style.setProperty("--left", `${left}px`)
-            menuBackDrop.style.setProperty("--top", `${top}px`)
-            menuBackDrop.style.setProperty("--width", `${width}px`)
-            menuBackDrop.style.setProperty("--height", `${height}px`)
-            menuBackDrop.style.opacity = "1"
-            menuBackDrop.style.visibility = "visible"
-
-        })
-        item.addEventListener("mouseleave", () => {
-            menuBackDrop.style.opacity = "0"
-            menuBackDrop.style.visibility = "hidden"
-        })
-    })
 
     const adminBtn = document.querySelector('#adminBtn')
     
