@@ -14,10 +14,10 @@ const {showMenu=true}=Astro.props;
 		<title>Intranet La Ganga</title>
 	</head>
 	<body class="bg-cover bg-[url('/images/background.png')] w-screen h-screen bg-center bg-no-repeat bg-fixed"> <!-- poner opacidad al fondo-->
-		<main class="bg-black/35 min-h-full w-full">
-			<header class="relative z-70">
-				{showMenu && <Hero />}
-			</header>
+		<header class="relative z-70">
+			{showMenu && <Hero />}
+		</header>
+		<main class="bg-black/35 min-h-screen w-full">
 			<slot />
 		</main>
 		<footer>
@@ -29,5 +29,8 @@ const {showMenu=true}=Astro.props;
 <style is:global>
 	body {
 		overflow-x: hidden;
+	}
+	html, body{
+		height: 100%;
 	}
 </style>
