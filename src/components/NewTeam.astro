@@ -7,6 +7,7 @@
     </section>
 
     <script>
+        const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         interface Team {
             id: number;
             descripcion: string;
@@ -14,7 +15,7 @@
         }        
     
         async function cargarColaboradores() {
-            const response = await fetch('http://9.0.1.247:8081/team/', {
+            const response = await fetch(`${URLBACK}/team/`, {
                 credentials: 'include'
             });
             if (!response.ok) {

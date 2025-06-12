@@ -1,10 +1,11 @@
 ---
+const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 export const prerender = false
 import Layout from '../../layouts/Layout.astro'
 const { slug } = Astro.params
 
 // Obtener datos del departamento
-const res = await fetch(`http://9.0.1.247:8081/departamento/page-dep/${slug}`, {
+const res = await fetch(`${URLBACK}/departamento/page-dep/${slug}`, {
   credentials: 'include'
 })
 if (!res.ok) {
@@ -75,12 +76,13 @@ const departamento: Departamento = await res.json();
 
 
 <script type="module">
+  const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
   document.addEventListener('DOMContentLoaded', () => {
     let esAdmin = false;
 
     async function verificarToken() {
       try {
-        const response = await fetch('http://9.0.1.247:8081/protegida', {
+        const response = await fetch(`${URLBACK}/protegida`, {
           credentials: 'include'
         });
         if (response.ok) {
@@ -104,7 +106,7 @@ const departamento: Departamento = await res.json();
           btn.textContent = 'Eliminar';
           btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition duration-200 cursor-pointer mt-2';
           btn.onclick = async () => {
-              const res = await fetch(`http://9.0.1.247:8081/departamento/link/${linkId}`, {
+              const res = await fetch(`${URLBACK}/departamento/link/${linkId}`, {
                 method: 'DELETE',
                 credentials: 'include'
               });
@@ -147,7 +149,7 @@ const departamento: Departamento = await res.json();
           }
         }
 
-        const res = await fetch(`http://9.0.1.247:8081/departamento/${depId}/agregar-link`, {
+        const res = await fetch(`${URLBACK}/departamento/${depId}/agregar-link`, {
           method: 'POST',
           credentials: 'include',
           body: data
@@ -193,7 +195,7 @@ const departamento: Departamento = await res.json();
           const depId = document.getElementById('depInfo').getAttribute('data-id')
           console.log(depId)
 
-          const res = await fetch(`http://9.0.1.247:8081/departamento/editar-dep/${depId}`, {
+          const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
             method: 'PUT',
             credentials: 'include',
             body: data
@@ -264,7 +266,7 @@ const departamento: Departamento = await res.json();
 
           const depId = document.getElementById('depInfo').getAttribute('data-id')
 
-          const res = await fetch(`http://9.0.1.247:8081/departamento/editar-dep/${depId}`, {
+          const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
             method: 'PUT',
             credentials: 'include',
             body: data

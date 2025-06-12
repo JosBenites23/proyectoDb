@@ -18,6 +18,7 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <script>
+        const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         declare global {
             interface Window {
                 eliminarLink: (id: number) => Promise<void>;
@@ -33,7 +34,7 @@ import Layout from "../layouts/Layout.astro";
            
     
         async function cargarLinks() {
-            const response = await fetch('http://9.0.1.247:8081/links', {
+            const response = await fetch(`${URLBACK}/links`, {
                 credentials: 'include'
             });
             if (!response.ok) {
@@ -61,7 +62,7 @@ import Layout from "../layouts/Layout.astro";
     
         // Función para eliminar un link
         async function eliminarLink(id: number) {
-            const response = await fetch(`http://9.0.1.247:8081/eliminar-link/${id}`, {
+            const response = await fetch(`${URLBACK}/eliminar-link/${id}`, {
                 method: 'DELETE',
                 credentials: 'include' // Incluye cookies en la solicitud
             });
@@ -78,7 +79,7 @@ import Layout from "../layouts/Layout.astro";
 
         async function verificarToken() {
             try {
-                const response = await fetch('http://9.0.1.247:8081/protegida', {
+                const response = await fetch(`${URLBACK}/protegida`, {
                     credentials: 'include' // Incluye cookies en la solicitud
                 });
 

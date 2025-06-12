@@ -52,6 +52,7 @@ import Layout from "../layouts/Layout.astro"
     </section>
 
     <script>
+        const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         type AboutData = {
             historia?: string;
             mision?: string;
@@ -93,7 +94,7 @@ import Layout from "../layouts/Layout.astro"
         
         async function verificarToken() {
             try {
-                const response = await fetch('http://9.0.1.247:8081/protegida', { credentials: 'include' });
+                const response = await fetch(`${URLBACK}/protegida`, { credentials: 'include' });
                 tokenValido = response.ok;
             } catch {
                 tokenValido = false;
@@ -101,7 +102,7 @@ import Layout from "../layouts/Layout.astro"
         }
         
         async function cargarSobreNosotros() {
-            const res = await fetch('http://9.0.1.247:8081/about/', { credentials: 'include' });
+            const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' });
             aboutData = await res.json();
             const historiaText = document.getElementById('historiaText') as HTMLElement | null;
             const misionText = document.getElementById('misionText') as HTMLElement | null;
@@ -175,7 +176,7 @@ import Layout from "../layouts/Layout.astro"
                     if (fileInput && fileInput.files && fileInput.files[0]) {
                         formData.append('imagen', fileInput.files[0]);
                     }
-                    const res = await fetch('http://9.0.1.247:8081/about/', {
+                    const res = await fetch(`${URLBACK}/about/`, {
                         method: 'PUT',
                         credentials: 'include',
                         body: formData
@@ -208,7 +209,7 @@ import Layout from "../layouts/Layout.astro"
         
         async function cargarEmpresas(): Promise<Empresa[]> {
             const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
-            const response = await fetch('http://9.0.1.247:8081/company/', {
+            const response = await fetch(`${URLBACK}/company/`, {
                 credentials: 'include'
             });
             if (!response.ok) throw new Error('Error al obtener las empresas');
@@ -277,7 +278,7 @@ import Layout from "../layouts/Layout.astro"
         }
         
         async function eliminarCo(id: number) {
-            const response = await fetch(`http://9.0.1.247:8081/eliminar-empresa/${id}`, {
+            const response = await fetch(`${URLBACK}/eliminar-empresa/${id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

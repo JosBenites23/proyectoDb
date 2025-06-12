@@ -9,6 +9,7 @@
 </section>
 
 <script>
+    const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         interface cumpleanos {
             id: number;
             descripcion: string;
@@ -16,7 +17,7 @@
         }     
     
         async function cargarCumpleanos() {
-            const response = await fetch('${process.env.BACKEND_URL}/birthday/', {
+            const response = await fetch(`${URLBACK}/birthday`, {
                 credentials: 'include'
             });
 

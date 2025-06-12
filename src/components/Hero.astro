@@ -38,6 +38,7 @@
     
 
 <script>
+    const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
     const listItem = document.querySelectorAll("#landing-header li")
     const menuBackDrop = document.querySelector('#menu-backdrop') as HTMLElement
 
@@ -63,7 +64,7 @@
     
     adminBtn?.addEventListener('click', () => {
         // Validar sesión con cookies
-        fetch('http://9.0.1.247:8081/protegida', {
+        fetch(`${URLBACK}/protegida`, {
             method: 'GET',
             credentials: 'include' // Incluye cookies en la solicitud
         })

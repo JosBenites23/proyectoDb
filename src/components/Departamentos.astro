@@ -19,6 +19,7 @@
 </section>
 
 <script>
+    const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
     declare global {
         interface Window {
             eliminarDep: (id: number) => Promise<void>;
@@ -54,7 +55,7 @@
     });
 
     async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch('http://9.0.1.247:8081/departamento/cards', {
+        const response = await fetch(`${URLBACK}/departamento/cards`, {
                 credentials: 'include'
             });
         if (!response.ok) throw new Error('Error al obtener departamentos');
@@ -94,7 +95,7 @@
 
 
     async function eliminarDep(id: number) {
-        const response = await fetch(`http://9.0.1.247:8081/departamento/eliminar-dep/${id}`, {
+        const response = await fetch(`${URLBACK}/departamento/eliminar-dep/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -111,7 +112,7 @@
 
         async function verificarToken() {
             try {
-                const response = await fetch('http://9.0.1.247:8081/protegida', {
+                const response = await fetch(`${URLBACK}/protegida`, {
                     credentials: 'include' // Incluye cookies en la solicitud
                 });
 

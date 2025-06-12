@@ -116,8 +116,9 @@ import Layout from "../layouts/Layout.astro"
 
 
 <script>
+    const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 
-    fetch('http://9.0.1.247:8081/protegida', {
+    fetch(`${URLBACK}/protegida`, {
         method: 'GET',
         credentials: 'include'
     })
@@ -139,7 +140,7 @@ import Layout from "../layouts/Layout.astro"
 
     document.querySelector('#logoutButton')!.addEventListener('click', async() => {
         try {
-        const response = await fetch('http://9.0.1.247:8081/logout', {
+        const response = await fetch(`${URLBACK}/logout`, {
             method: 'POST',
             credentials: 'include' // Incluye cookies en la solicitud
         });
@@ -156,7 +157,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir noticia
     async function subirNoticia(nuevaNoticia: FormData) {
-        const response = await fetch('http://9.0.1.247:8081/subir-noticia', {
+        const response = await fetch(`${URLBACK}/subir-noticia`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             body: nuevaNoticia
@@ -229,7 +230,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir link 
     async function subirLinkInterno(nuevoLink:Link) {
-        const response = await fetch('http://9.0.1.247:8081/links/', {
+        const response = await fetch(`${URLBACK}/links/`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             headers: {
@@ -272,7 +273,7 @@ import Layout from "../layouts/Layout.astro"
 
     //función para subir cumpleaños
     async function subirCumpleanos(nuevoCumpleanos: FormData) {
-        const response = await fetch('http://9.0.1.247:8081/birthday/', {
+        const response = await fetch(`${URLBACK}/birthday/`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             body: nuevoCumpleanos
@@ -320,7 +321,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir colaboradores
     async function subirColaboradores(nuevoTeam: FormData) {
-        const response = await fetch('http://9.0.1.247:8081/team/', {
+        const response = await fetch(`${URLBACK}$/team/`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             body: nuevoTeam
@@ -370,7 +371,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir empresa
     async function subirCo(nuevaCo: FormData) {
-        const response = await fetch('http://9.0.1.247:8081/company/', {
+        const response = await fetch(`${URLBACK}/company/`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             body: nuevaCo
@@ -421,7 +422,7 @@ import Layout from "../layouts/Layout.astro"
 
     // Función para subir departamento
     async function subirDep(nuevoDep: FormData) {
-    const response = await fetch('http://9.0.1.247:8081/departamento/', {
+    const response = await fetch(`${URLBACK}/departamento/`, {
         method: 'POST',
         credentials: 'include',
         body: nuevoDep
