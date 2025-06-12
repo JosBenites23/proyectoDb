@@ -13,15 +13,16 @@ const {showMenu=true}=Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>Intranet La Ganga</title>
 	</head>
-	<body class="relative bg-cover bg-[url('/images/background.png')] w-screen h-screen bg-center bg-no-repeat bg-fixed">
-		<div class="absolute inset-0 bg-black/35 z-0"></div>
-		<header class="relative z-10">
+	<body class="bg-cover bg-[url('/images/background.png')] w-screen h-screen bg-center bg-no-repeat bg-fixed"> <!-- poner opacidad al fondo-->
+		<header>
 			{showMenu && <Hero />}
 		</header>
-		<main class="relative z-10 min-h-screen w-full">
+		<main class="bg-black/35 min-h-screen w-full">
 			<slot />
 		</main>
-		<footer class="relative z-10"></footer>
+		<footer>
+
+		</footer>
 	</body>
 </html>
 
