@@ -49,7 +49,7 @@
     
         ultimasNueve.forEach((noticia) => {
           const card = document.createElement('div');
-          card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
+          card.className = 'bg-black/35 rounded-lg shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
           
           let contenidoHTML = ""
 
@@ -74,12 +74,11 @@
               }
     
           card.innerHTML = `
-            <div class="w-full bg-gray-200/70 overflow-hidden">
+            <div class="w-full overflow-hidden">
               ${contenidoHTML}
             </div>
             <div class="p-4">
-              <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
-              <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
+              <h2 class="text-xl font-bold mb-2 text-gray-200">${noticia.titulo}</h2>
               <p class="text-gray-400 text-sm mt-2">${new Date(noticia.fecha_creacion).toLocaleDateString()}</p>
             </div>
           `;
