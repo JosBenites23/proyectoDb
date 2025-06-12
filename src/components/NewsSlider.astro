@@ -49,7 +49,7 @@
     
         ultimasNueve.forEach((noticia) => {
           const card = document.createElement('div');
-          card.className = 'bg-black/35 rounded-lg shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
+          card.className = 'shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
           
           let contenidoHTML = ""
 
@@ -66,7 +66,7 @@
             `;
           } else if (noticia.tipo_contenido === 'texto') {
             contenidoHTML = `
-              <div class="w-full h-64 bg-gray-200/70 flex items-center justify-center
+              <div class="w-full h-64 flex items-center justify-center
               text-2xl text-blue-600 font-semibold text-center p-4 bg-black/40 ">
               <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="/images/LogoBanner.png" class="object-contain w-full h-auto">Lea aquí</a>
               </div>
@@ -77,7 +77,7 @@
             <div class="w-full overflow-hidden">
               ${contenidoHTML}
             </div>
-            <div class="p-4">
+            <div class="p-4 bg-black/35 rounded-lg">
               <h2 class="text-xl font-bold mb-2 text-gray-200">${noticia.titulo}</h2>
               <p class="text-gray-400 text-sm mt-2">${new Date(noticia.fecha_creacion).toLocaleDateString()}</p>
             </div>
