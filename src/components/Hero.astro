@@ -10,10 +10,18 @@
                 <li><a href="/" >Inicio</a></li>
                 <li><a href="/NewsPage">Novedades</a></li>
                 <li><a href="/InfoPage">Quiénes somos</a></li>
-                <li><a href="/">Departamentos</a></li>
+                <li>
+                    <a href="/">Departamentos</a>
+                    <ul id="subLiDep" class="hidden group-hover:flex flex-col absolute bg-white shadow-lg rounded-lg mt-2">
+                        <li><a href="/Electrodomesticos" class="px-4 py-2 hover:bg-gray-100">Electrodomésticos</a></li>
+                        <li><a href="/Tecnologia" class="px-4 py-2 hover:bg-gray-100">Tecnología</a></li>
+                        <li><a href="/Hogar" class="px-4 py-2 hover:bg-gray-100">Hogar</a></li>
+                        <li><a href="/Ropa" class="px-4 py-2 hover:bg-gray-100">Ropa</a></li>
+                    </ul>
+                </li>
                 <li><a href="/Links">Links</a></li>
                 <!-----
-                <li><a id="adminBtn" href="/Admin">Admin</a></li>
+                <li><a id="adminBtn" href="/Admin">Admin</a></li> descomentar si se quiere mostrar el botón de admin en la barra de navegación -->
                 --- -->
             </ul>
         </nav>
