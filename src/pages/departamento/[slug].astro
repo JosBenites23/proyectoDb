@@ -3,9 +3,9 @@ export const prerender = false
 import Layout from '../../layouts/Layout.astro'
 const { slug } = Astro.params
 
-const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
+const URLBACKEND=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 // Obtener datos del departamento
-const res = await fetch(`${URLBACK}/departamento/page-dep/${slug}`, {
+const res = await fetch(`${URLBACKEND}/departamento/page-dep/${slug}`, {
   credentials: 'include'
 })
 if (!res.ok) {
