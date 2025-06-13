@@ -76,9 +76,7 @@ const departamento: Departamento = await res.json();
 
 
 <script type="module">
-  console.log('Archivo [slug].astro cargado')
-  console.log(import.meta.env.PUBLIC_BACKEND_URL)
-  const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
+  const URLBACK=Astro.props.URLBACK ||
   console.log(URLBACK)
   document.addEventListener('DOMContentLoaded', () => {
     console.log("dom loaded")
