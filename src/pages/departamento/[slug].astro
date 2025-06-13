@@ -79,15 +79,19 @@ const departamento: Departamento = await res.json();
   const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
   console.log(URLBACK)
   document.addEventListener('DOMContentLoaded', () => {
+    console.log("dom loaded")
     let esAdmin = false;
 
     async function verificarToken() {
       try {
+        console.log("verificando token")
         const response = await fetch(`${URLBACK}/protegida`, {
           credentials: 'include'
         });
+        console.log("verificacion de token", response)
         if (response.ok) {
           esAdmin = true;
+          console.log("token valido")
           document.getElementById('agregarLinkForm').style.display = '';
         }
         mostrarBotonesEliminar();
