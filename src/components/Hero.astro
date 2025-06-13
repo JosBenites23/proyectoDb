@@ -68,12 +68,14 @@
         menu.classList.toggle('hidden');
     });
 
+    const subLiDep = document.getElementById('subLiDep') as HTMLElement
+        cargarDepartamentos()
+
     document.addEventListener('DOMContentLoaded', async () => {
         cargarDepartamentos()
     });
-        const subLiDep = document.getElementById('subLiDep') as HTMLElement
     
-        interface Departamento {
+    interface Departamento {
         id: number;
         titulo: string;
         descripcion: string;
