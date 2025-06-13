@@ -76,7 +76,9 @@ const departamento: Departamento = await res.json();
 
 
 <script type="module">
-  const URLBACK=this.dataset.URLBACK
+  //const URLBACK=this.dataset.URLBACK
+  window.urlback="{URLBACK}"
+  const URLBACK = window.urlback
   console.log(URLBACK)
   document.addEventListener('DOMContentLoaded', () => {
     console.log("dom loaded")
