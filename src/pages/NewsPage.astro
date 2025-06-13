@@ -49,7 +49,7 @@ import Birthday from "../components/Birthday.astro"
     
             noticias.forEach((noticia) => {
                 const card = document.createElement('div');
-                card.className = 'bg-black/35 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
+                card.className = 'rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
     
                 let contenidoHTML = ""
 
@@ -76,7 +76,7 @@ import Birthday from "../components/Birthday.astro"
                     <div class="w-full overflow-hidden">
                         ${contenidoHTML}
                     </div>
-                    <div class="p-4">
+                    <div class="p-4 bg-black/35">
                         <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
                         <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
                         ${tokenValido ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
