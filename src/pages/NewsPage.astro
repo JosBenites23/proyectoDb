@@ -9,7 +9,7 @@ import Birthday from "../components/Birthday.astro"
         <Birthday />
     </section>
     <section class="w-full justify-center justify-items-center">
-        <section id="contenedorNoticias" class="min-h-screen max-w-[1920px] mt-5 py-5 px-10 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1  gap-4 text-sky-300 justify-items-center">
+        <section id="contenedorNoticias" class="min-h-screen max-w-[1920px] mt-5 py-5 px-10 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1  gap-4 text-sky-300 justify-items-center">
 
         </section>
     </section>
@@ -49,7 +49,7 @@ import Birthday from "../components/Birthday.astro"
     
             noticias.forEach((noticia) => {
                 const card = document.createElement('div');
-                card.className = 'bg-blue-600/10 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
+                card.className = 'bg-black/35 rounded-lg shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
     
                 let contenidoHTML = ""
 
@@ -66,14 +66,14 @@ import Birthday from "../components/Birthday.astro"
                     `;
                 } else if (noticia.tipo_contenido === 'texto') {
                     contenidoHTML = `
-                        <div class="w-full h-64 bg-gray-200/70 flex items-center justify-center text-2xl text-blue-600 font-semibold text-center p-4 bg-black/40 ">
+                        <div class="w-full h-64 flex items-center justify-center text-2xl text-blue-600 font-semibold text-center p-4">
                         <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="/images/LogoBanner.png" class="object-contain w-full h-auto">Lea aquí</a>
                         </div>
                     `;
                 }
     
                 card.innerHTML = `
-                    <div class="w-full bg-gray-200/70 overflow-hidden">
+                    <div class="w-full overflow-hidden">
                         ${contenidoHTML}
                     </div>
                     <div class="p-4">
