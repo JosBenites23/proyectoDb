@@ -93,9 +93,11 @@
 
             if (!response.ok) throw new Error('Error al obtener departamentos');
 
+            
             const departamentos: Departamento[] = await response.json();
             if (!subLiDep) return [];
 
+            console.log('Departamentos obtenidos:', departamentos);
             // Limpia el contenido previo del submenú
             subLiDep.innerHTML = '';
 
@@ -112,6 +114,7 @@
                 `;
                 subLiDep.appendChild(card);
             });
+            console.log('Departamentos cargados:', subLiDep.innerHTML);
         } catch (error) {
             console.error('Error al cargar departamentos:', error);
         }
