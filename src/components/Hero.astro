@@ -12,7 +12,7 @@
                 <li><a href="/InfoPage">Quiénes somos</a></li>
                 <li class="relative group border-white border-2 rounded-2xl items-center">
                     <a href="/">Departamentos</a>
-                    <ul id="subLiDep" class="h-auto w-auto hidden group-hover:flex flex-col absolute top-full items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li>a]:mb-5 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm">
+                    <ul id="subLiDep" class="h-auto w-auto group-hover:flex flex-col absolute top-full items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li>a]:mb-5 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm">
                         <!-----
                         <li><a href="/Electrodomesticos" class="px-4 py-2 hover:bg-gray-100">Electrodomésticos</a></li>
                         <li><a href="/Tecnologia" class="px-4 py-2 hover:bg-gray-100">Tecnología</a></li>
@@ -68,43 +68,52 @@
         menu.classList.toggle('hidden');
     });
 
-    const subLiDep = document.getElementById('subLiDep') as HTMLElement
-        cargarDepartamentos()
+    
 
     document.addEventListener('DOMContentLoaded', async () => {
-        cargarDepartamentos()
-    });
-    
-    interface Departamento {
-        id: number;
-        titulo: string;
-        descripcion: string;
-        slug: string;
-        imagen: string;
-        fecha_creacion: string;
-    }
-    async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch(`${URLBACK}/departamento/cards`, {
+        const subLiDep = document.getElementById('subLiDep') as HTMLElement
+        if(!subLiDep) {
+            console.error('Elemento subLiDep no encontrado');
+            return;
+        }
+
+        interface Departamento {
+            id: number;
+            titulo: string;
+            descripcion: string;
+            slug: string;
+            imagen: string;
+            fecha_creacion: string;
+        }
+        try {
+            const response = await fetch(`${URLBACK}/departamento/cards`, {
                 credentials: 'include'
             });
-        if (!response.ok) throw new Error('Error al obtener departamentos');
-    
-        const departamentos: Departamento[] = await response.json();
-        if (!subLiDep) return [];
-    
-        subLiDep.innerHTML = '';
-        departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
-    
-        departamentos.forEach(dep => {
-            const card = document.createElement('li');
-            card.innerHTML = `
-                <a href="/departamento/${dep.slug}">
-                    <h2 class="text-xl font-medium mb-2 text-gray-200 hover:scale-105 transition duration-150">${dep.titulo}</h2>
-                </a>
-            `;
-            subLiDep.appendChild(card);
-        });
-        return departamentos;
 
-    }
+            if (!response.ok) throw new Error('Error al obtener departamentos');
+
+            const departamentos: Departamento[] = await response.json();
+            if (!subLiDep) return [];
+
+            // Limpia el contenido previo del submenú
+            subLiDep.innerHTML = '';
+
+            // Ordena los departamentos por fecha de creación (más recientes primero)
+            departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+
+            // Agrega cada departamento al submenú
+            departamentos.forEach(dep => {
+                const card = document.createElement('li');
+                card.innerHTML = `
+                    <a href="/departamento/${dep.slug}" class="px-4 py-2 hover:bg-gray-100 text-white">
+                        ${dep.titulo}
+                    </a>
+                `;
+                subLiDep.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error al cargar departamentos:', error);
+        }
+    });
+    
 </script>
