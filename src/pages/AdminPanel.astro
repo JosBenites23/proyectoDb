@@ -2,13 +2,13 @@
 import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout>
+<Layout showMenu={false}>
     <div class=" flex py-6 px-5 justify-end">
         <button id="logoutButton" class="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer fixed z-70">Cerrar Sesión</button>
             Crrar sesión
         </button>
     </div>
-    <aside class="bg-[#0d122e] h-screen w-52 fixed left-0 z-50 ">
+    <aside class="bg-[#0d122e] h-screen w-52 fixed left-0 z-50 mt-20 [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li>a]:mb-5 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-lg">
         <nav>
             <ul>
                 <li>
