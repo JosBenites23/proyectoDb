@@ -13,7 +13,19 @@ import Layout from "../layouts/Layout.astro"
                     somos?
                 </h1>
             </div>
-            
+            <section id="sobreNosotros" class="flex flex-col items-center justify-center mt-5">
+                <div class="flex justify-center items-center">
+                    <figure class="h-auto w-full">
+                        <img id="primeraImagen" src="" alt="Imagen antigua" class="object-contain max-w-md h-auto rounded-2xl">
+                    </figure>
+                    <figure>
+                        <img src="" alt="flecha">
+                    </figure>
+                    <figure class="h-auto w-full">
+                        <img id="segundaImagen" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
+                    </figure>
+                </div>
+            </section>
             <!-- 
                 <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
     
@@ -67,8 +79,12 @@ import Layout from "../layouts/Layout.astro"
             historia?: string;
             mision?: string;
             vision?: string;
-            valores?: string;
+            presencia?: string;
             imagen?: string;
+            imagen2?: string
+            imagen3?: string
+            anio?: string
+            anio2?:string
         };
         
         let aboutData: AboutData = {};
@@ -77,11 +93,12 @@ import Layout from "../layouts/Layout.astro"
         document.addEventListener('DOMContentLoaded', async () => {
             await verificarToken();
             await cargarSobreNosotros();
-            const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
+            //const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
+            /*
             if (tokenValido && editarBtn) {
                 editarBtn.style.display = '';
                 editarBtn.addEventListener('click', activarEdicionSobreNosotros);
-            }
+            }*/
             const empresas = await cargarEmpresas();
             if (empresas.length >= 4) {
                 duplicarContenido();
@@ -117,15 +134,16 @@ import Layout from "../layouts/Layout.astro"
             const historiaText = document.getElementById('historiaText') as HTMLElement | null;
             const misionText = document.getElementById('misionText') as HTMLElement | null;
             const visionText = document.getElementById('visionText') as HTMLElement | null;
-            const valoresText = document.getElementById('valoresText') as HTMLElement | null;
+            const presenciaText = document.getElementById('presenciaText') as HTMLElement | null;
             const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
             if (historiaText) historiaText.textContent = aboutData.historia || '';
             if (misionText) misionText.textContent = aboutData.mision || '';
             if (visionText) visionText.textContent = aboutData.vision || '';
-            if (valoresText) valoresText.textContent = aboutData.valores || '';
+            if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
             if (aboutImg) aboutImg.src = aboutData.imagen || '';
         }
         
+        /*
         function activarEdicionSobreNosotros() {
 
             const historiaText = document.getElementById('historiaText');
@@ -200,7 +218,7 @@ import Layout from "../layouts/Layout.astro"
                 };
             }
         }
-        
+        */
         // ----------- EMPRESAS (CARRUSEL) -----------
         
         type Empresa = {

@@ -14,8 +14,12 @@ async def update_about(
     historia: Optional[str] = Form(None),
     mision: Optional[str] = Form(None),
     vision: Optional[str] = Form(None),
-    valores: Optional[str] = Form(None),
+    presencia: Optional[str] = Form(None),
     imagen: Optional[UploadFile] = File(None),
+    imagen2: Optional[UploadFile] = File(None),
+    imagen3: Optional[UploadFile] = File(None),
+    anio: Optional[int] = Form(None),
+    anio2: Optional[int] = Form(None),
     db: Session = Depends(get_db)
 ):
     about = db.query(About).first()
@@ -28,14 +32,30 @@ async def update_about(
         about.mision = mision
     if vision is not None:
         about.vision = vision
-    if valores is not None:
-        about.valores = valores
+    if presencia is not None:
+        about.presencia = presencia
     if imagen is not None:
         upload_dir = "uploads"
         file_location = f"{upload_dir}/{imagen.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
         about.imagen = f"{URLBACK}/uploads/{imagen.filename}"
+    if imagen2 is not None:
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{imagen2.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(imagen2.file.read())
+        about.imagen2 = f"{URLBACK}/uploads/{imagen2.filename}"
+    if imagen3 is not None:
+        upload_dir = "uploads"
+        file_location = f"{upload_dir}/{imagen3.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(imagen3.file.read())
+        about.imagen3 = f"{URLBACK}/uploads/{imagen3.filename}"
+    if anio is not None:
+        about.anio = anio
+    if anio2 is not None:
+        about.anio2 = anio2
 
     db.commit()
     db.refresh(about)
