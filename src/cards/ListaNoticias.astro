@@ -1,0 +1,43 @@
+---
+const url = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+---
+
+<div>
+    <h1 class="text-2xl font-black mb-4 text-center">Lista de Noticias</h1>
+    <div id="contenedor-noticias"></div>
+</div>
+
+<script>
+    const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+    interface Noticia {
+        id: number;
+        titulo: string;
+        descripcion: string;
+        tipo_contenido: string;
+        contenido: string;
+        fecha_creacion: string;
+    } 
+    
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch(`${URL}/noticias`);
+            const contenedor = document.querySelector('#contenedor-noticias') as HTMLElement;
+            const noticias:Noticia[] = await response.json();
+
+            noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+
+            noticias.forEach((noticia) => {
+                const card = document.createElement('div');
+                card.className = 'p-4 border rounded-lg shadow-md mb-4 bg-white';
+                card.innerHTML = `
+                    <h2 class="font-bold text-lg">${noticia.titulo}</h2>
+                    <p class="text-gray-700">${noticia.descripcion}</p>
+                    ${noticia.contenido ? `<img src="${URL}/uploads/${noticia.contenido}" class="mt-2 max-w-xs rounded" />` : ''}
+                `;
+                contenedor.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error al cargar noticias:', error);
+        }
+    });
+</script>
