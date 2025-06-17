@@ -3,52 +3,40 @@ import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout>
-    <section class="w-full lg:justify-center justify-items-center">
-        <section class="min-h-screen w-full lg:max-w-[1920px] mt-24 py-5 px-10 justify-items-center text-gray-200">
-            <div class="flex items-center justify-center">
-                <h1 class="text-5xl font-black mr-3 text-white">
-                    ¿Quiénes
-                </h1>
-                <h1 class="text-5xl font-black text-[#00d0fe]">
-                    somos?
-                </h1>
+    <section class="space-y-12 px-4 py-10 max-w-6xl mx-auto text-gray-800">
+        <!-- Línea superior: año1, imagen1, flecha, imagen2, año2 -->
+        <div class="flex items-center justify-center space-x-4 flex-wrap">
+            <span id="anio" class="text-lg font-semibold text-center"></span>
+            <img id="aboutImg" src="" alt="Imagen 1" class="w-32 h-32 object-cover rounded-lg" />
+            <span class="text-2xl">→</span>
+            <img id="aboutImg2" src="" alt="Imagen 2" class="w-32 h-32 object-cover rounded-lg" />
+            <span id="anio2" class="text-lg font-semibold text-center"></span>
+        </div>
+
+        <!-- Historia -->
+        <div id="historiaText" class="text-justify text-lg leading-relaxed"></div>
+
+        <!-- Misión y Visión -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+            <h3 class="text-xl font-bold mb-2">Misión</h3>
+            <p id="misionText" class="text-justify"></p>
             </div>
-            <section id="sobreNosotros" class="flex flex-col items-center justify-center mt-5">
-                <div class="flex justify-center items-center">
-                    <figure class="h-auto w-full">
-                        <img id="aboutImg" src="" alt="Imagen antigua" class="object-contain max-w-md h-auto rounded-2xl">
-                    </figure>
-                    <figure>
-                        <img src="" alt="flecha">
-                    </figure>
-                    <figure class="h-auto w-full">
-                        <img id="aboutImg2" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
-                    </figure>
-                </div>
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium">Misión</h3>
-                    <p id="misionText"></p>
-                </div>
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium">Visión</h3>
-                    <p id="visionText"></p>
-                </div>
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium mb-3">presencia</h3>
-                    <p id="presenciaText" class="text-center"></p>
-                </div>
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium mb-3">anio</h3>
-                    <p id="anio" class="text-center"></p>
-                </div>
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium mb-3">anio2</h3>
-                    <p id="anio2" class="text-center"></p>
-                </div>
-                <figure class="h-auto w-full">
-                    <img id="aboutImg3" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
-                </figure>
-            </section>
+            <div>
+            <h3 class="text-xl font-bold mb-2">Visión</h3>
+            <p id="visionText" class="text-justify"></p>
+            </div>
+        </div>
+
+        <!-- Presencia e Imagen3 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+            <h3 class="text-xl font-bold mb-2">Presencia</h3>
+            <p id="presenciaText" class="text-justify"></p>
+            </div>
+            <img id="aboutImg3" src="" alt="Imagen 3" class="w-full h-auto max-h-80 object-cover rounded-lg" />
+        </div>
+    </section>
             <!-- 
                 <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
     
@@ -97,83 +85,56 @@ import Layout from "../layouts/Layout.astro"
     </section>
 
     <script>
-        const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
+        const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost';
+
         type AboutData = {
-            historia?: string;
-            mision?: string;
-            vision?: string;
-            presencia?: string;
-            imagen?: string;
-            imagen2?: string
-            imagen3?: string
-            anio?: string
-            anio2?:string
+        historia?: string;
+        mision?: string;
+        vision?: string;
+        presencia?: string;
+        imagen?: string;
+        imagen2?: string;
+        imagen3?: string;
+        anio?: string;
+        anio2?: string;
         };
-        
+
         let aboutData: AboutData = {};
-        let tokenValido = false;
-        
+
         document.addEventListener('DOMContentLoaded', async () => {
-            await verificarToken();
-            await cargarSobreNosotros();
-            //const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
-            /*
-            if (tokenValido && editarBtn) {
-                editarBtn.style.display = '';
-                editarBtn.addEventListener('click', activarEdicionSobreNosotros);
-            }*/
-            const empresas = await cargarEmpresas();
-            if (empresas.length >= 4) {
-                duplicarContenido();
-                autoScroll();
-                setupDrag();
-            }
-            if (window.location.hash === '#contenedorEmpresas') {
-			// Espera un poco para que todo el contenido cargue antes de hacer scroll
-			setTimeout(() => {
-				const emp = document.getElementById('contenedorEmpresas');
-				if (emp) {
-					const y = emp.getBoundingClientRect().top + window.scrollY - 40; // Ajusta el offset si quieres
-					window.scrollTo({ top: y, behavior: 'smooth' });
-				}
-			}, 200);
-		}
+        await cargarSobreNosotros();
         });
-        
-        // ----------- SOBRE NOSOTROS DINÁMICO -----------
-        
-        async function verificarToken() {
-            try {
-                const response = await fetch(`${URLBACK}/protegida`, { credentials: 'include' });
-                tokenValido = response.ok;
-            } catch {
-                tokenValido = false;
-            }
-        }
-        
+
         async function cargarSobreNosotros() {
+        try {
             const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' });
             aboutData = await res.json();
-            const historiaText = document.getElementById('historiaText') as HTMLElement | null;
-            const misionText = document.getElementById('misionText') as HTMLElement | null;
-            const visionText = document.getElementById('visionText') as HTMLElement | null;
-            const presenciaText = document.getElementById('presenciaText') as HTMLElement | null;
+
+            // Elementos del DOM
+            const historiaText = document.getElementById('historiaText');
+            const misionText = document.getElementById('misionText');
+            const visionText = document.getElementById('visionText');
+            const presenciaText = document.getElementById('presenciaText');
             const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
-            const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null
-            const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null
-            const anio = document.getElementById('anio') as HTMLElement | null
-            const anio2 = document.getElementById('anio2') as HTMLElement | null
+            const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null;
+            const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null;
+            const anio = document.getElementById('anio');
+            const anio2 = document.getElementById('anio2');
+
             if (historiaText) historiaText.textContent = aboutData.historia || '';
             if (misionText) misionText.textContent = aboutData.mision || '';
             if (visionText) visionText.textContent = aboutData.vision || '';
             if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
             if (aboutImg) aboutImg.src = aboutData.imagen || '';
-            if (aboutImg2) aboutImg2.src = aboutData.imagen || ''
-            if (aboutImg3) aboutImg3.src = aboutData.imagen || ''
-            if (anio) anio.textContent = aboutData.anio || ''
-            if (anio2) anio2.textContent = aboutData.anio || ''
+            if (aboutImg2) aboutImg2.src = aboutData.imagen2 || '';
+            if (aboutImg3) aboutImg3.src = aboutData.imagen3 || '';
+            if (anio) anio.textContent = aboutData.anio || '';
+            if (anio2) anio2.textContent = aboutData.anio2 || '';
+
+        } catch (err) {
+            console.error("Error al cargar sección 'Sobre Nosotros':", err);
         }
-        
+        }
         /*
         function activarEdicionSobreNosotros() {
 
@@ -249,7 +210,7 @@ import Layout from "../layouts/Layout.astro"
                 };
             }
         }
-        */
+        
         // ----------- EMPRESAS (CARRUSEL) -----------
         
         type Empresa = {
@@ -351,6 +312,7 @@ import Layout from "../layouts/Layout.astro"
         }
         
         (window as any).eliminarCo = eliminarCo;
+        */
     </script>
 
 </Layout>
