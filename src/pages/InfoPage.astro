@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout>
-    <section class="space-y-12 px-4 py-10 max-w-6xl mx-auto mt-20 text-white">
+    <section class="space-y-12 px-10 py-10 max-w-6xl mx-auto mt-20 text-white">
         <!-- Línea superior: año1, imagen1, flecha, imagen2, año2 -->
         <div class="flex items-center justify-center space-x-4 flex-wrap">
             <span id="anio" class="text-lg font-semibold text-center"></span>
@@ -14,17 +14,18 @@ import Layout from "../layouts/Layout.astro"
         </div>
 
         <!-- Historia -->
-        <div id="historiaText" class="text-justify text-lg leading-relaxed"></div>
+        <h3 class="text-xl font-bold">Historia</h3>
+        <div id="historiaText" class="text-justify font-regular leading-relaxed"></div>
 
         <!-- Misión y Visión -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
             <h3 class="text-xl font-bold mb-2">Misión</h3>
-            <p id="misionText" class="text-justify"></p>
+            <p id="misionText" class="text-justify font-regular"></p>
             </div>
             <div>
             <h3 class="text-xl font-bold mb-2">Visión</h3>
-            <p id="visionText" class="text-justify"></p>
+            <p id="visionText" class="text-justify font-regular"></p>
             </div>
         </div>
 
@@ -32,7 +33,7 @@ import Layout from "../layouts/Layout.astro"
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
             <h3 class="text-xl font-bold mb-2">Presencia</h3>
-            <p id="presenciaText" class="text-justify"></p>
+            <p id="presenciaText" class="text-justify font-regular"></p>
             </div>
             <img id="aboutImg3" src="" alt="Imagen 3" class="w-full h-auto max-h-80 object-cover rounded-lg" />
         </div>
