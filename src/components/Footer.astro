@@ -1,14 +1,82 @@
 <section class="bg-white text-gray-700 py-8 rounded-tr-[45px]">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="flex flex-col items-center">
-      <h2 class="text-2xl font-bold mb-4">Contáctanos</h2>
-      <p class="mb-4">Para más información, visita nuestras redes sociales o envíanos un correo electrónico.</p>
-      <div class="flex space-x-4 mb-4">
-        <a href="https://www.facebook.com" target="_blank" class="text-blue-600 hover:underline">Facebook</a>
-        <a href="https://www.twitter.com" target="_blank" class="text-blue-400 hover:underline">Twitter</a>
-        <a href="https://www.instagram.com" target="_blank" class="text-pink-600 hover:underline">Instagram</a>
-      </div>
-      <p>&copy; 2023 La Ganga. Todos los derechos reservados.</p>
-    </div>
-  </div>
+  <section id="contenedorEmpresas" class="flex flex-col gap-6 p-4 overflow-visible no-scrollbar relative w-full bg-white rounded-tr-[45px]">
+    div id="fila1" class="flex gap-4 justify-center pl-5"></div>
+    <div id="fila2" class="flex gap-4 justify-center pl-[15%]"></div>
+  </section>
 </section>
+
+<script>
+  const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
+
+      type Empresa = {
+      id: number;
+      contenido: string;
+      imagen: string;
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarEmpresas();
+    });
+
+    function orderCentered(arr: Empresa[]): Empresa[] {
+      const result: Empresa[] = [];
+      const mid = Math.floor(arr.length / 2);
+      if (arr.length === 0) return result;
+      result.push(arr[mid]);
+      let step = 1;
+      while (result.length < arr.length) {
+        if (mid + step < arr.length) result.push(arr[mid + step]);
+        if (mid - step >= 0) result.push(arr[mid - step]);
+        step++;
+      }
+      return result;
+    }
+
+    async function cargarEmpresas(): Promise<Empresa[]> {
+      const fila1 = document.getElementById('fila1');
+      const fila2 = document.getElementById('fila2');
+      if (!fila1 || !fila2) return [];
+
+      const response = await fetch(`${URLBACK}/company/`, {
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Error al obtener las empresas');
+
+      const empresas: Empresa[] = await response.json();
+
+      fila1.innerHTML = '';
+      fila2.innerHTML = '';
+
+      const primerGrupo = empresas.slice(0, 10);
+      const segundoGrupo = empresas.slice(10, 20);
+
+      const orden1 = orderCentered(primerGrupo);
+      const orden2 = orderCentered(segundoGrupo);
+
+      orden1.forEach(empresa => {
+        fila1.appendChild(crearCardEmpresa(empresa));
+      });
+
+      orden2.forEach(empresa => {
+        fila2.appendChild(crearCardEmpresa(empresa));
+      });
+
+      return empresas;
+    }
+
+    function crearCardEmpresa(empresa: Empresa): HTMLElement {
+      const a = document.createElement('a');
+      a.href = empresa.contenido;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.className = 'w-32 h-20 flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
+
+      const img = document.createElement('img');
+      img.src = empresa.imagen;
+      img.alt = 'imagen de empresa';
+      img.className = 'w-full h-full object-contain rounded-lg';
+
+      a.appendChild(img);
+      return a;
+    }
+</script>
