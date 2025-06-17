@@ -16,11 +16,6 @@ import Birthday from "../components/Birthday.astro"
 
     <script>
         const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
-        declare global {
-            interface Window {
-                eliminarNoticia: (id: number) => Promise<void>;
-            }
-        }
         interface Noticia {
             id: number;
             titulo: string;
@@ -79,7 +74,6 @@ import Birthday from "../components/Birthday.astro"
                     <div class="p-4 bg-black/35 rounded-lg">
                         <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
                         <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
-                        ${tokenValido ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
                     </div>
                 `;
     
@@ -87,7 +81,17 @@ import Birthday from "../components/Birthday.astro"
             });
         }
 
-        // Función para eliminar la noticia
+        document.addEventListener('DOMContentLoaded', async () => {
+            cargarNoticias();
+        });
+
+        /*
+         Función para eliminar la noticia
+         declare global {
+            interface Window {
+                eliminarNoticia: (id: number) => Promise<void>;
+            }
+        }
         async function eliminarNoticia(id: number) {
             console.log("Eliminando noticia con ID:", id);
             const response = await fetch(`${URLBACK}/eliminar-noticia/${id}`, {
@@ -105,10 +109,7 @@ import Birthday from "../components/Birthday.astro"
 
         window.eliminarNoticia = eliminarNoticia;
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await verificarToken();
-            cargarNoticias();
-        });
+        
 
         let tokenValido = false; // Variable para almacenar el estado del token
 
@@ -123,7 +124,7 @@ import Birthday from "../components/Birthday.astro"
                 tokenValido = false;
                 console.error('Error al verificar el token:', error);
             }
-        }
+        }*/
     </script>
     
     
