@@ -6,54 +6,53 @@ import Layout from "../layouts/Layout.astro"
     <section class="w-full lg:justify-center justify-items-center">
         <section class="min-h-screen w-full lg:max-w-[1920px] mt-16 py-5 px-10 justify-items-center text-gray-200">
             <div class="flex items-center justify-center">
-                <h1 class="text-5xl font-black py-5 px-10 text-white">
+                <h1 class="text-5xl font-black mr-3 text-white">
                     ¿Quiénes
                 </h1>
-                <h1 class="text-5xl font-black py-5 px-10 text-[#00d0fe]">
+                <h1 class="text-5xl font-black text-[#00d0fe]">
                     somos?
                 </h1>
             </div>
             
             <!-- 
-            
+                <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
+    
+                    <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
+                     Historia 
+                    <h3 class="text-center font-medium text-2xl">Historia</h3>
+                    <p id="historiaText" class="text-gray-200"></p>
+                    </div>
+                    Imagen
+                    <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out" id="aboutImgDiv">
+                        <img id="aboutImg" src="" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
+                    </div>
+                     Misión 
+                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                        <h3 class="font-medium">Misión</h3>
+                        <p id="misionText"></p>
+                    </div>
+                     Visión 
+                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                        <h3 class="font-medium">Visión</h3>
+                        <p id="visionText"></p>
+                    </div>
+                     Valores
+                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                        <h3 class="font-medium mb-3">Valores</h3>
+                        <p id="valoresText" class="text-center"></p>
+                    </div>
+                     Botón editar solo para admin 
+                    <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition cursor-pointer">✏️ Editar</button>
+                    <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition cursor-pointer">Guardar</button>
+                </div>
             -->
-            <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
-
-                <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
-                <!-- Historia -->
-                <h3 class="text-center font-medium text-2xl">Historia</h3>
-                <p id="historiaText" class="text-gray-200"></p>
-                </div>
-                <!-- Imagen -->
-                <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out" id="aboutImgDiv">
-                    <img id="aboutImg" src="" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
-                </div>
-                <!-- Misión -->
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium">Misión</h3>
-                    <p id="misionText"></p>
-                </div>
-                <!-- Visión -->
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium">Visión</h3>
-                    <p id="visionText"></p>
-                </div>
-                <!-- Valores -->
-                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                    <h3 class="font-medium mb-3">Valores</h3>
-                    <p id="valoresText" class="text-center"></p>
-                </div>
-                <!-- Botón editar solo para admin -->
-                <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition cursor-pointer">✏️ Editar</button>
-                <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition cursor-pointer">Guardar</button>
-            </div>
 
             <footer class="flex flex-col items-center justify-center mt-10">
                 <div class="flex items-center justify-center">
-                    <h2 class="text-5xl font-black text-white">Nuestras</h2>
+                    <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
                     <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
                 </div>
-                <section id="contenedorEmpresas" class="flex items-center gap-4 p-4 overflow-hidden no-scrollbar relative w-1/2 h-60 bg-white rounded-tr-[45px]">
+                <section id="contenedorEmpresas" class="flex items-center gap-4 p-4 overflow-hidden no-scrollbar relative w-full h-60 bg-white rounded-tr-[45px]">
                     <!-- Aquí se cargarán las empresas --> 
                 </section>
             </footer>
