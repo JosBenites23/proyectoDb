@@ -3,31 +3,41 @@ import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout showMenu={false}>
-    <div class=" flex py-6 px-5 bg-white justify-between items-center rounded-bl-[45px] z-60">
-        <h1 class="text-2xl font-black text-center items-center w-full text-[#0d122e]">Panel de Administrador</h1>
-        <button id="logoutButton" class="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer right-5 z-70">Cerrar Sesión</button>
-    </div>
-    <aside class="bg-[#0d122e] pt-24 h-screen w-52 fixed left-0 z-30 items-center border-white border-2 rounded-2xl top-0 bottom-0">
+    <div class="flex flex-col min-h-screen">
+
+  <!-- Encabezado superior -->
+    <header class="flex justify-between items-center py-6 px-5 bg-white rounded-bl-[45px] z-50 shadow-md">
+        <h1 class="text-2xl font-black text-[#0d122e] text-center w-full">Panel de Administrador</h1>
+        <button id="logoutButton"
+        class="absolute right-5 bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer z-70">
+        Cerrar Sesión
+        </button>
+    </header>
+
+    <!-- Contenedor con sidebar y contenido principal -->
+    <div class="flex flex-1">
+        
+        <!-- Sidebar -->
+        <aside class="bg-[#0d122e] w-52 pt-12 h-[calc(100vh-96px)] sticky top-[96px] left-0 z-40 border-white border-2 rounded-r-2xl">
         <nav>
-            <ul class="[&>li]:bg-white [&>li]:text-[#0d122e] [&>li]:hover:bg-[#00d0fe] [&>li]:hover:text-[#0d122e] [&>li]:mb-4 [&>li]:px-4 [&>li]:py-2 [&>li]:rounded-4xl [&>li]:font-black [&>li]:text-lg">
-                <li>
-                    noticias
-                </li>
-                <li>
-                    quienes somos
-                </li>
-                <li>
-                    departamentos
-                </li>
-                <li>
-                    links
-                </li>
-                <li>
-                    otros
-                </li>
+            <ul
+            class="[&>li]:bg-white [&>li]:text-[#0d122e] [&>li]:hover:bg-[#00d0fe] [&>li]:hover:text-[#0d122e] [&>li]:mb-5 [&>li]:mx-4 [&>li]:py-2 [&>li]:rounded-4xl [&>li]:font-black [&>li]:text-lg text-center">
+            <li>Noticias</li>
+            <li>Quiénes somos</li>
+            <li>Departamentos</li>
+            <li>Links</li>
+            <li>Otros</li>
             </ul>
         </nav>
-    </aside>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 p-10">
+        <!-- Aquí se mostrará el contenido dinámico según el ítem seleccionado -->
+        </main>
+
+  </div>
+</div>
 </Layout>
 
 
