@@ -12,3 +12,73 @@
     <input id="documento" type="file" accept=".doc,.docx,.pdf" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
     <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Noticia</button>            
 </form>
+
+<script>
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    async function subirNoticia(nuevaNoticia: FormData) {
+        const response = await fetch(`${URLBACK}/subir-noticia`, {
+            method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
+            body: nuevaNoticia
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al subir noticia');
+        }
+
+        const noticiaCreada = await response.json();
+        console.log('Noticia subida exitosamente:', noticiaCreada);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#noticiaForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const titulo = (document.querySelector('#titulo') as HTMLInputElement).value;
+            const descripcion = (document.querySelector('#descripcion') as HTMLTextAreaElement).value;
+
+            const imagenInput = document.querySelector('#imagen') as HTMLInputElement;
+            const videoInput = document.querySelector('#video') as HTMLInputElement;
+            const documentoInput = document.querySelector('#documento') as HTMLInputElement;
+
+            let tipo_contenido = '';
+            let contenido: File | null = null;
+
+            // Revisamos qué archivo subieron
+            if (imagenInput &&  imagenInput.files && imagenInput.files.length > 0) {
+                tipo_contenido = 'imagen';
+                contenido = imagenInput.files[0];
+            } else if (videoInput && videoInput.files && videoInput.files.length > 0) {
+                tipo_contenido = 'video';
+                contenido = videoInput.files[0];
+            } else if (documentoInput && documentoInput.files && documentoInput.files.length > 0) {
+                tipo_contenido = 'texto';
+                contenido = documentoInput.files[0];
+            } else {
+                alert('Debes subir al menos un archivo (imagen, video o documento)');
+                return;
+            }
+
+            const nuevaNoticia = new FormData() 
+
+            nuevaNoticia.append('titulo', titulo)
+            nuevaNoticia.append('descripcion', descripcion)
+            nuevaNoticia.append('tipo_contenido', tipo_contenido)
+            if (contenido) {
+                nuevaNoticia.append('contenido', contenido)
+            }
+
+            try {
+                await subirNoticia(nuevaNoticia);
+                alert('Noticia subida correctamente.');
+                formulario.reset(); // Limpiar formulario
+            } catch (error) {
+                console.error(error);
+                alert('Error al subir noticia.');
+            }
+        });
+    });
+
+</script>
