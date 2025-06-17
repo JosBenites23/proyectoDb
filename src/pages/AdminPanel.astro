@@ -22,7 +22,13 @@ import Layout from "../layouts/Layout.astro"
         <nav>
             <ul
             class="[&>li]:bg-white [&>li]:text-[#0d122e] [&>li]:hover:bg-[#00d0fe] [&>li]:hover:text-[#0d122e] [&>li]:mb-5 [&>li]:mx-4 [&>li]:py-2 [&>li]:rounded-4xl [&>li]:font-black [&>li]:text-lg text-center">
-            <li>Noticias</li>
+            <li class="relative group flex items-center justify-center">
+                Noticias
+                <ul class="h-auto w-auto hidden group-hover:flex flex-col absolute top-full items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li>a]:mb-5 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none">
+                    <li><a href="/AdminPanel/Noticias" class="block">Subir Noticia</a></li>
+                    <li><a href="/AdminPanel/NoticiasList" class="block">Lista de Noticias</a></li>
+                </ul>
+            </li>
             <li>Quiénes somos</li>
             <li>Departamentos</li>
             <li>Links</li>
