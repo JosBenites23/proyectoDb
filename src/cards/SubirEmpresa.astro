@@ -1,0 +1,64 @@
+
+<form id="EmpresaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+    <input id="urlE" type="text" placeholder="Url" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
+    <label class="mb-2 text-white font-black">Imagen</label>
+    <input id="imagenE" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+    <div class="flex justify-center items-center">
+        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Empresa</button>
+        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/InfoPage">
+            ver
+        </a>
+    </div>
+</form>
+
+<script>
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    async function subirCo(nuevaCo: FormData) {
+        const response = await fetch(`${URLBACK}/company/`, {
+            method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
+            body: nuevaCo
+        });
+
+        //console.log(response)
+
+        if (!response.ok) {
+            throw new Error('Error al subir la empresa');
+        }
+
+        const CoCreada = await response.json();
+        console.log('empresa subida exitosamente:', CoCreada);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#EmpresaForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const contenido = (document.querySelector('#urlE') as HTMLTextAreaElement).value;
+            const imagenInput = document.querySelector('#imagenE') as HTMLInputElement;
+
+            const archivo = imagenInput.files?.[0]
+
+            if (!archivo) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('contenido', contenido);
+            formData.append('imagen', archivo);
+
+            try {
+                await subirCo(formData);
+                alert('empresa subida correctamente.');
+                formulario.reset(); // Limpiar el formulario
+            } catch (error) {
+                console.error('Error al subir la empresa:', error);
+                alert('Error al subir la empresa.');
+            }
+
+        })
+    })
+    </script>
