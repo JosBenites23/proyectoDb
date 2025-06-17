@@ -18,8 +18,8 @@ async def update_about(
     imagen: Optional[UploadFile] = File(None),
     imagen2: Optional[UploadFile] = File(None),
     imagen3: Optional[UploadFile] = File(None),
-    anio: Optional[int] = Form(None),
-    anio2: Optional[int] = Form(None),
+    anio: Optional[str] = Form(None),
+    anio2: Optional[str] = Form(None),
     db: Session = Depends(get_db)
 ):
     about = db.query(About).first()

@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro"
 
 <Layout>
     <section class="w-full lg:justify-center justify-items-center">
-        <section class="min-h-screen w-full lg:max-w-[1920px] mt-16 py-5 px-10 justify-items-center text-gray-200">
+        <section class="min-h-screen w-full lg:max-w-[1920px] mt-24 py-5 px-10 justify-items-center text-gray-200">
             <div class="flex items-center justify-center">
                 <h1 class="text-5xl font-black mr-3 text-white">
                     ¿Quiénes
@@ -16,15 +16,38 @@ import Layout from "../layouts/Layout.astro"
             <section id="sobreNosotros" class="flex flex-col items-center justify-center mt-5">
                 <div class="flex justify-center items-center">
                     <figure class="h-auto w-full">
-                        <img id="primeraImagen" src="" alt="Imagen antigua" class="object-contain max-w-md h-auto rounded-2xl">
+                        <img id="aboutImg" src="" alt="Imagen antigua" class="object-contain max-w-md h-auto rounded-2xl">
                     </figure>
                     <figure>
                         <img src="" alt="flecha">
                     </figure>
                     <figure class="h-auto w-full">
-                        <img id="segundaImagen" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
+                        <img id="aboutImg2" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
                     </figure>
                 </div>
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium">Misión</h3>
+                    <p id="misionText"></p>
+                </div>
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium">Visión</h3>
+                    <p id="visionText"></p>
+                </div>
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium mb-3">presencia</h3>
+                    <p id="presenciaText" class="text-center"></p>
+                </div>
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium mb-3">anio</h3>
+                    <p id="anio" class="text-center"></p>
+                </div>
+                <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
+                    <h3 class="font-medium mb-3">anio2</h3>
+                    <p id="anio2" class="text-center"></p>
+                </div>
+                <figure class="h-auto w-full">
+                    <img id="aboutImg3" src="" alt="Imagen actual" class="object-contain max-w-md h-auto rounded-2xl">
+                </figure>
             </section>
             <!-- 
                 <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
@@ -136,11 +159,19 @@ import Layout from "../layouts/Layout.astro"
             const visionText = document.getElementById('visionText') as HTMLElement | null;
             const presenciaText = document.getElementById('presenciaText') as HTMLElement | null;
             const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
+            const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null
+            const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null
+            const anio = document.getElementById('anio') as HTMLElement | null
+            const anio2 = document.getElementById('anio2') as HTMLElement | null
             if (historiaText) historiaText.textContent = aboutData.historia || '';
             if (misionText) misionText.textContent = aboutData.mision || '';
             if (visionText) visionText.textContent = aboutData.vision || '';
             if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
             if (aboutImg) aboutImg.src = aboutData.imagen || '';
+            if (aboutImg2) aboutImg2.src = aboutData.imagen || ''
+            if (aboutImg3) aboutImg3.src = aboutData.imagen || ''
+            if (anio) anio.textContent = aboutData.anio || ''
+            if (anio2) anio2.textContent = aboutData.anio || ''
         }
         
         /*

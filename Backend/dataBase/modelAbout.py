@@ -11,5 +11,5 @@ class About(Base):
     imagen = Column(String, nullable=True)
     imagen2 = Column(String, nullable=True)
     imagen3 = Column(String, nullable=True)
-    anio = Column(Integer, nullable=True)
-    anio2 = Column(Integer, nullable=True)
+    anio = Column(String, nullable=True)
+    anio2 = Column(String, nullable=True)
