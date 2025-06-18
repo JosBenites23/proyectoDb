@@ -5,9 +5,7 @@ const { slug } = Astro.params
 
 const URLBACKEND=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 // Obtener datos del departamento
-const res = await fetch(`${URLBACKEND}/departamento/page-dep/${slug}`, {
-  credentials: 'include'
-})
+const res = await fetch(`${URLBACKEND}/departamento/page-dep/${slug}`)
 if (!res.ok) {
   throw new Error('Departamento no encontrado');
 }
