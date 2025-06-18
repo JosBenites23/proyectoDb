@@ -1,5 +1,6 @@
 ---
 const { id } = Astro.props;
+
 const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081";
 
 const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' });
@@ -13,7 +14,7 @@ const dep = await res.json();
   window.BACKEND_URL = `${URL_BACKEND}`;
 </script>
 
-<section class="p-6 bg-white shadow-md rounded">
+<section id="editar-dep" class="p-6 bg-white shadow-md rounded" data-url-backend={URL_BACKEND}>
   <!-- Formulario para editar departamento -->
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
@@ -38,7 +39,7 @@ const dep = await res.json();
 <script type="module">
   // Esperamos a que el DOM esté completamente cargado para acceder a window.BACKEND_URL
   window.addEventListener('DOMContentLoaded', () => {
-    const URL_BACKEND = window.BACKEND_URL;
+    const URL_BACKEND = document.getElementById("editar-dep").dataset.urlBackend;
     const depId = document.getElementById("depId").value;
 
     const formEditar = document.getElementById("formEditarDep");
