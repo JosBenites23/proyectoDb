@@ -1,7 +1,7 @@
 ---
 // cards/EditarDep.astro
 const { id } = Astro.props;
-const URL = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081";
+const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081";
 
 const res = await fetch(`${URL}/departamento/id/${id}`, { credentials: 'include' });
 if (!res.ok) throw new Error("Error al obtener el departamento");
@@ -10,7 +10,7 @@ const dep = await res.json();
 ---
 
 <script is:inline>
-  window.BACKEND_URL = `${URL}`;
+  window.BACKEND_URL = `${URL_BACKEND}`;
 </script>
 
 <section class="p-6 bg-white shadow-md rounded">
@@ -35,7 +35,7 @@ const dep = await res.json();
 </section>
 
 <script type="module">
-  const URL = window.BACKEND_URL;
+  const URL_BACKEND = window.BACKEND_URL;
   const depId = document.getElementById("depId").value;
 
   const formEditar = document.getElementById("formEditarDep");
@@ -51,7 +51,7 @@ const dep = await res.json();
     form.append("descripcion", descripcion);
     if (imagen) form.append("imagen", imagen);
 
-    const res = await fetch(`${URL}/departamento/editar-dep/${depId}`, {
+    const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
       method: "PUT",
       credentials: "include",
       body: form,
@@ -83,7 +83,7 @@ const dep = await res.json();
     if (urlLink) form.append("link_url", urlLink);
     if (archivo) form.append("link_file", archivo);
 
-    const res = await fetch(`${URL}/departamento/${depId}/agregar-link`, {
+    const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
       method: "POST",
       credentials: "include",
       body: form,
