@@ -65,7 +65,7 @@ const dep = await res.json();
 
         if (res.ok) {
           alert("Departamento actualizado");
-          window.location.href = "/AdminPanel";
+          formEditar.reset();
         } else {
           const errorText = await res.text();
           console.error("Error en respuesta:", errorText);
