@@ -1,7 +1,7 @@
 <section class="bg-white text-gray-700 py-5 rounded-tr-[45px]">
   <section id="contenedorEmpresas" class="flex flex-col gap-6 p-4 overflow-visible no-scrollbar relative max-w-6-xl bg-white rounded-tr-[45px]">
-    <div id="fila1" class="flex gap-4 justify-center pl-5"></div>
-    <div id="fila2" class="flex gap-4 justify-center pl-[15%]"></div>
+    <div id="fila1" class="flex flex-wrap gap-4 justify-center pl-3"></div>
+    <div id="fila2" class="flex flex-wrap gap-4 justify-center pl-[15%]"></div>
   </section>
 </section>
 
@@ -69,7 +69,7 @@
       a.href = empresa.contenido;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
-      a.className = 'w-20 h-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
+      a.className = 'w-20 h-auto flex-shrink-0 rounded-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
 
       const img = document.createElement('img');
       img.src = empresa.imagen;
