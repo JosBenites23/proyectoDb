@@ -18,7 +18,6 @@ const dep = await res.json();
   <!-- Formulario para editar departamento -->
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
-    <input type="text" id="titulo" value={dep.titulo} class="w-full p-2 border rounded mb-2" placeholder="Título" />
     <textarea id="descripcion" class="w-full p-2 border rounded mb-2">{dep.descripcion}</textarea>
     <input type="file" id="imagen" accept="image/*" class="mb-4" />
     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Guardar Cambios</button>
@@ -47,12 +46,10 @@ const dep = await res.json();
       e.preventDefault();
       console.log("Enviando cambios para depId", depId, "a", URL_BACKEND);
 
-      const titulo = document.getElementById("titulo").value;
       const descripcion = document.getElementById("descripcion").value;
       const imagen = document.getElementById("imagen").files[0];
 
       const form = new FormData();
-      form.append("titulo", titulo);
       form.append("descripcion", descripcion);
       if (imagen) form.append("imagen", imagen);
 
