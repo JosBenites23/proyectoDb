@@ -31,7 +31,7 @@ const dep = await res.json();
 </section>
 
 <script type="module">
-  const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+  const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
   const depId = document.getElementById("depId").value;
 
   const formEditar = document.getElementById("formEditarDep");
@@ -47,7 +47,7 @@ const dep = await res.json();
     form.append("descripcion", descripcion);
     if (imagen) form.append("imagen", imagen);
 
-    const res = await fetch(`${URL}/departamento/editar-dep/${depId}`, {
+    const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
       method: "PUT",
       credentials: "include",
       body: form,
@@ -79,7 +79,7 @@ const dep = await res.json();
     if (urlLink) form.append("link_url", urlLink);
     if (archivo) form.append("link_file", archivo);
 
-    const res = await fetch(`${URL}/departamento/${depId}/agregar-link`, {
+    const res = await fetch(`${URLBACK}/departamento/${depId}/agregar-link`, {
       method: "POST",
       credentials: "include",
       body: form,
