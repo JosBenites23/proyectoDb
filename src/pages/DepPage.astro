@@ -47,7 +47,7 @@ import Layout from "../layouts/Layout.astro";
 
         departamentos.forEach(dep => {
             const card = document.createElement('div');
-            card.className = 'bg-black/35 rounded-lg shadow-md w-72 gap-4 transition duration-300 ease-in-out flex flex-shrink-0 flex-col';
+            card.className = 'bg-black/25 rounded-lg shadow-md w-72 gap-4 transition duration-300 ease-in-out flex flex-shrink-0 flex-col';
             card.innerHTML = `
             <figure class="w-full h-64 flex justify-center items-center overflow-hidden">
                 <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
