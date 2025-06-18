@@ -12,7 +12,7 @@ const dep = await res.json();
 <section class="p-6 bg-white shadow-md rounded">
   <h2 class="text-xl font-bold mb-4">Editar Departamento</h2>
 
-  <form method="POST" enctype="multipart/form-data" onsubmit="return enviarFormulario(event)">
+  <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
     <input type="text" id="titulo" value={dep.titulo} class="w-full p-2 border rounded mb-2" placeholder="Título" />
     <textarea id="descripcion" class="w-full p-2 border rounded mb-2">{dep.descripcion}</textarea>
@@ -22,7 +22,7 @@ const dep = await res.json();
 
   <hr class="my-6" />
   <h3 class="text-lg font-semibold mb-2">Agregar Link</h3>
-  <form id="formLink" onsubmit="return enviarLink(event)">
+  <form id="formLink">
     <input type="text" id="titulo_link" placeholder="Título del link" class="w-full p-2 border rounded mb-2" />
     <input type="url" id="url" placeholder="URL" class="w-full p-2 border rounded mb-2" />
     <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="mb-4" />
@@ -34,7 +34,8 @@ const dep = await res.json();
   const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
   const depId = document.getElementById("depId").value;
 
-  window.enviarFormulario = async (e) => {
+  const formEditar = document.getElementById("formEditarDep");
+  formEditar.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const titulo = document.getElementById("titulo").value;
@@ -54,20 +55,24 @@ const dep = await res.json();
 
     if (res.ok) {
       alert("Departamento actualizado");
-      window.location.href = "/AdminPanel"; // o como desees
+      window.location.href = "/AdminPanel";
     } else {
       alert("Error al guardar cambios");
     }
-  };
+  });
 
-  window.enviarLink = async (e) => {
+  const formLink = document.getElementById("formLink");
+  formLink.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const titulo = document.getElementById("titulo_link").value;
     const urlLink = document.getElementById("url").value;
     const archivo = document.getElementById("archivo").files[0];
 
-    if (urlLink && archivo) return alert("Solo uno: archivo o URL");
+    if (urlLink && archivo) {
+      alert("Solo uno: archivo o URL");
+      return;
+    }
 
     const form = new FormData();
     form.append("titulo_link", titulo);
@@ -82,10 +87,11 @@ const dep = await res.json();
 
     if (res.ok) {
       alert("Link agregado");
-      e.target.reset();
+      formLink.reset();
     } else {
       alert("Error al agregar link");
     }
-  };
+  });
 </script>
+
 
