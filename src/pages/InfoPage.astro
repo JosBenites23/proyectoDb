@@ -80,7 +80,7 @@ import Layout from "../layouts/Layout.astro"
                     <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
                     <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
                 </div>
-                <section id="contenedorEmpresas" class="flex items-center gap-4 p-4 overflow-hidden no-scrollbar relative w-full h-60 bg-white rounded-tr-[45px]">
+                <section id="contenedorEmpresas" class="flex flex-col items-center gap-4 p-4 overflow-hidden no-scrollbar relative w-full h-60 bg-white rounded-tr-[45px]">
                     <!-- Aquí se cargarán las empresas --> 
                 </section>
             </footer>
@@ -108,38 +108,120 @@ import Layout from "../layouts/Layout.astro"
 
         document.addEventListener('DOMContentLoaded', async () => {
         await cargarSobreNosotros();
+        await cargarEmpresas();
         });
 
         async function cargarSobreNosotros() {
-        try {
-            const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' });
-            aboutData = await res.json();
+            try {
+                const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' });
+                aboutData = await res.json();
 
-            // Elementos del DOM
-            const historiaText = document.getElementById('historiaText');
-            const misionText = document.getElementById('misionText');
-            const visionText = document.getElementById('visionText');
-            const presenciaText = document.getElementById('presenciaText');
-            const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
-            const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null;
-            const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null;
-            const anio = document.getElementById('anio');
-            const anio2 = document.getElementById('anio2');
+                // Elementos del DOM
+                const historiaText = document.getElementById('historiaText');
+                const misionText = document.getElementById('misionText');
+                const visionText = document.getElementById('visionText');
+                const presenciaText = document.getElementById('presenciaText');
+                const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
+                const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null;
+                const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null;
+                const anio = document.getElementById('anio');
+                const anio2 = document.getElementById('anio2');
 
-            if (historiaText) historiaText.textContent = aboutData.historia || '';
-            if (misionText) misionText.textContent = aboutData.mision || '';
-            if (visionText) visionText.textContent = aboutData.vision || '';
-            if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
-            if (aboutImg) aboutImg.src = aboutData.imagen || '';
-            if (aboutImg2) aboutImg2.src = aboutData.imagen2 || '';
-            if (aboutImg3) aboutImg3.src = aboutData.imagen3 || '';
-            if (anio) anio.textContent = aboutData.anio || '';
-            if (anio2) anio2.textContent = aboutData.anio2 || '';
+                if (historiaText) historiaText.textContent = aboutData.historia || '';
+                if (misionText) misionText.textContent = aboutData.mision || '';
+                if (visionText) visionText.textContent = aboutData.vision || '';
+                if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
+                if (aboutImg) aboutImg.src = aboutData.imagen || '';
+                if (aboutImg2) aboutImg2.src = aboutData.imagen2 || '';
+                if (aboutImg3) aboutImg3.src = aboutData.imagen3 || '';
+                if (anio) anio.textContent = aboutData.anio || '';
+                if (anio2) anio2.textContent = aboutData.anio2 || '';
 
-        } catch (err) {
-            console.error("Error al cargar sección 'Sobre Nosotros':", err);
+            } catch (err) {
+                console.error("Error al cargar sección 'Sobre Nosotros':", err);
+            }
         }
+
+        type Empresa = {
+            id: number;
+            contenido: string;
+            imagen: string;
+        };
+
+        function orderCentered(arr: Empresa[]): Empresa[] {
+            const result: Empresa[] = [];
+            const mid = Math.floor(arr.length / 2);
+            if (arr.length === 0) return result;
+            result.push(arr[mid]);
+            let step = 1;
+            while (result.length < arr.length) {
+                if (mid + step < arr.length) result.push(arr[mid + step]);
+                if (mid - step >= 0) result.push(arr[mid - step]);
+                step++;
+            }
+            return result;
         }
+
+        function dividirEnGruposAlternos<T>(array: T[]): T[][] {
+            const result: T[][] = [];
+            const pattern = [7, 6]; // Alternancia 7,6,7,6...
+            let i = 0;
+            let current = 0;
+
+            while (i < array.length) {
+                const size = pattern[current % pattern.length];
+                result.push(array.slice(i, i + size));
+                i += size;
+                current++;
+            }
+
+            return result;
+        }
+
+        async function cargarEmpresas(): Promise<Empresa[]> {
+            const contenedor = document.getElementById('contenedorEmpresas');
+            if (!contenedor) return [];
+
+            const response = await fetch(`${URLBACK}/company/`, {
+                credentials: 'include'
+            });
+            if (!response.ok) throw new Error('Error al obtener las empresas');
+
+            const empresas: Empresa[] = await response.json();
+            contenedor.innerHTML = '';
+
+            const grupos = dividirEnGruposAlternos(empresas);
+
+            grupos.forEach((grupo, index) => {
+                const fila = document.createElement('div');
+                fila.className = `flex gap-4 justify-center flex-wrap w-full ${
+                    index % 2 === 0 ? 'pl-0' : 'pl-[8%]'
+                }`;
+                const ordenado = orderCentered(grupo);
+                ordenado.forEach(emp => fila.appendChild(crearCardEmpresa(emp)));
+                contenedor.appendChild(fila);
+            });
+
+            return empresas;
+        }
+
+        function crearCardEmpresa(empresa: Empresa): HTMLElement {
+            const a = document.createElement('a');
+            a.href = empresa.contenido;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'w-20 h-auto flex-shrink-0 rounded-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
+
+            const img = document.createElement('img');
+            img.src = empresa.imagen;
+            img.alt = 'imagen de empresa';
+            img.className = 'w-full h-full object-contain rounded-lg';
+
+            a.appendChild(img);
+            return a;
+        }
+
+
         /*
         function activarEdicionSobreNosotros() {
 
