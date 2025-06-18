@@ -58,6 +58,7 @@
             method: 'DELETE',
             credentials: 'include' // Incluye cookies en la solicitud
         });
+        console.log("Respuesta del servidor:", id);
 
         if (response.ok) {
             alert('Departamento eliminado');
