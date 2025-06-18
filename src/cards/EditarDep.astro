@@ -9,11 +9,12 @@ const dep = await res.json();
 ---
 
 <script is:inline>
+  // Definimos la variable global con la URL del backend
   window.BACKEND_URL = `${URL_BACKEND}`;
 </script>
 
 <section class="p-6 bg-white shadow-md rounded">
-  <!-- Formulario aquí -->
+  <!-- Formulario para editar departamento -->
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
     <input type="text" id="titulo" value={dep.titulo} class="w-full p-2 border rounded mb-2" placeholder="Título" />
@@ -24,6 +25,7 @@ const dep = await res.json();
 
   <hr class="my-6" />
 
+  <!-- Formulario para agregar link -->
   <h3 class="text-lg font-semibold mb-2">Agregar Link</h3>
   <form id="formLink">
     <input type="text" id="titulo_link" placeholder="Título del link" class="w-full p-2 border rounded mb-2" />
@@ -34,6 +36,7 @@ const dep = await res.json();
 </section>
 
 <script type="module">
+  // Esperamos a que el DOM esté completamente cargado para acceder a window.BACKEND_URL
   window.addEventListener('DOMContentLoaded', () => {
     const URL_BACKEND = window.BACKEND_URL;
     const depId = document.getElementById("depId").value;
@@ -52,19 +55,24 @@ const dep = await res.json();
       form.append("descripcion", descripcion);
       if (imagen) form.append("imagen", imagen);
 
-      const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
-        method: "PUT",
-        credentials: "include",
-        body: form,
-      });
+      try {
+        const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
+          method: "PUT",
+          credentials: "include",
+          body: form,
+        });
 
-      if (res.ok) {
-        alert("Departamento actualizado");
-        window.location.href = "/AdminPanel";
-      } else {
-        const errorText = await res.text();
-        console.error("Error en respuesta:", errorText);
-        alert(`Error al guardar cambios: ${res.status}`);
+        if (res.ok) {
+          alert("Departamento actualizado");
+          window.location.href = "/AdminPanel";
+        } else {
+          const errorText = await res.text();
+          console.error("Error en respuesta:", errorText);
+          alert(`Error al guardar cambios: ${res.status}`);
+        }
+      } catch (error) {
+        console.error("Error al enviar la petición:", error);
+        alert("Error de conexión al guardar cambios");
       }
     });
 
@@ -86,23 +94,29 @@ const dep = await res.json();
       if (urlLink) form.append("link_url", urlLink);
       if (archivo) form.append("link_file", archivo);
 
-      const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
-        method: "POST",
-        credentials: "include",
-        body: form,
-      });
+      try {
+        const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
+          method: "POST",
+          credentials: "include",
+          body: form,
+        });
 
-      if (res.ok) {
-        alert("Link agregado");
-        formLink.reset();
-      } else {
-        const errorText = await res.text();
-        console.error("Error al agregar link:", errorText);
-        alert(`Error al agregar link: ${res.status}`);
+        if (res.ok) {
+          alert("Link agregado");
+          formLink.reset();
+        } else {
+          const errorText = await res.text();
+          console.error("Error al agregar link:", errorText);
+          alert(`Error al agregar link: ${res.status}`);
+        }
+      } catch (error) {
+        console.error("Error al enviar la petición para agregar link:", error);
+        alert("Error de conexión al agregar link");
       }
     });
   });
 </script>
+
 
 
 <!--
