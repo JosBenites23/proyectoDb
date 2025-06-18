@@ -1,37 +1,16 @@
 ---
-import ListaNoticias from "../cards/ListaNoticias.astro";
+import EditarDep from "./EditarDep.astro";
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
+const id = url.searchParams.get("id");
 ---
 
 <div>
     <div id="contenedor-dep"></div>
 </div>
 <main>
-    {panel === 'noticias-lista' && <ListaNoticias />}
+    {panel === 'noticias-dep' && <EditarDep id={Number(id)} />}
 </main>
-<!-- PANEL PARA EDITAR 
- 
-<div id="panel-editar-dep" class="fixed top-0 right-0 w-full max-w-xl h-full bg-white shadow-lg overflow-y-auto z-50 hidden p-6">
-  <button onclick="cerrarPanelEditar()" class="text-red-600 font-bold float-right">✖ Cerrar</button>
-  <h2 class="text-2xl font-bold mb-4">Editar Departamento</h2>
-
-  <input type="text" id="editTitulo" class="w-full p-2 border mb-2 rounded" placeholder="Título" />
-  <textarea id="editDescripcion" class="w-full p-2 border mb-2 rounded" placeholder="Descripción"></textarea>
-  <input type="file" id="editImagen" accept="image/*" class="mb-4" />
-  <button onclick="guardarCambiosDep()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Guardar Cambios</button>
-
-  <hr class="my-6" />
-  <h3 class="text-xl font-semibold mb-4">Agregar Link</h3>
-  <form id="formAgregarLink">
-    <input type="text" id="titulo_link" placeholder="Título del link" class="w-full p-2 border rounded mb-2" />
-    <input type="url" id="url" placeholder="URL" class="w-full p-2 border rounded mb-2" />
-    <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="mb-4" />
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Agregar Link</button>
-  </form>
-</div>
--->
-
 
 <script>
 
@@ -77,7 +56,7 @@ const panel = url.searchParams.get("panel");
                 <h2 class="font-bold text-lg">${dep.titulo}</h2>
                 <p class="text-gray-700">${dep.descripcion}</p>
                 ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>
-                <a href="/AdminPanel?panel=noticias-lista" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>` : ""}
+                <a href="/AdminPanel?panel=editar-dep&id=${dep.id}" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>` : ""}
             `;
             contenedor.appendChild(card);
         });
