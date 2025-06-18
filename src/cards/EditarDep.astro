@@ -1,0 +1,137 @@
+---
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+
+const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+
+const id = Astro.url.searchParams.get("id");
+if (!id) throw new Error("ID de departamento no proporcionado");
+
+const res = await fetch(`${URLBACK}/departamento/id/${id}`);
+if (!res.ok) throw new Error("Departamento no encontrado");
+
+type Link = {
+  id: number;
+  titulo_link: string;
+  url: string;
+};
+
+type Departamento = {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  imagen: string;
+  slug: string;
+  links: Link[];
+};
+
+const departamento: Departamento = await res.json();
+---
+
+<Layout showMenu={false}>
+  <section class="max-w-3xl mx-auto py-8 px-4 text-gray-800" id="editar-dep" data-id={departamento.id}>
+    <h1 class="text-2xl font-bold mb-4">Editar Departamento</h1>
+
+    <label class="block font-semibold mt-4">Título</label>
+    <input id="titulo" class="w-full p-2 border rounded" value={departamento.titulo} />
+
+    <label class="block font-semibold mt-4">Descripción</label>
+    <textarea id="descripcion" class="w-full p-2 border rounded">{departamento.descripcion}</textarea>
+
+    <label class="block font-semibold mt-4">Imagen actual</label>
+    <img src={departamento.imagen} alt="Imagen actual" class="rounded w-full max-w-md mb-2" />
+
+    <input type="file" id="imagen" class="block mt-2" accept="image/*" />
+
+    <button id="guardarCambios" class="mt-6 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+      Guardar Cambios
+    </button>
+
+    <hr class="my-8" />
+
+    <h2 class="text-xl font-bold mb-4">Agregar Link</h2>
+    <form id="form-link" enctype="multipart/form-data">
+      <input type="text" id="titulo_link" placeholder="Título del link" class="w-full p-2 border rounded mb-2" />
+      <input type="url" id="url" placeholder="URL (opcional)" class="w-full p-2 border rounded mb-2" />
+      <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="block mb-4" />
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Agregar Link</button>
+    </form>
+  </section>
+
+  <script type="module">
+    const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+    const depId = document.getElementById('editar-dep').dataset.id;
+    let tokenValido = false;
+
+    async function verificarToken() {
+      try {
+        const response = await fetch(`${URL}/protegida`, { credentials: 'include' });
+        tokenValido = response.ok;
+        if (!tokenValido) {
+          alert("Acceso denegado");
+          window.location.href = "/";
+        }
+      } catch {
+        alert("Error al verificar acceso");
+        window.location.href = "/";
+      }
+    }
+
+    async function guardarCambios() {
+      const titulo = document.getElementById('titulo').value;
+      const descripcion = document.getElementById('descripcion').value;
+      const imagen = document.getElementById('imagen').files[0];
+      const form = new FormData();
+
+      if (titulo) form.append("titulo", titulo);
+      if (descripcion) form.append("descripcion", descripcion);
+      if (imagen) form.append("imagen", imagen);
+
+      const res = await fetch(`${URL}/departamento/editar-dep/${depId}`, {
+        method: "PUT",
+        credentials: "include",
+        body: form
+      });
+
+      if (res.ok) {
+        alert("Departamento actualizado");
+        location.reload();
+      } else {
+        alert("Error al guardar cambios");
+      }
+    }
+
+    async function agregarLink(e) {
+      e.preventDefault();
+      const titulo = document.getElementById("titulo_link").value;
+      const url = document.getElementById("url").value;
+      const archivo = document.getElementById("archivo").files[0];
+      const form = new FormData();
+
+      if (!titulo) return alert("Debes poner un título");
+      form.append("titulo_link", titulo);
+
+      if (url && archivo) return alert("Solo puedes subir archivo o poner URL, no ambos.");
+      if (url) form.append("link_url", url);
+      if (archivo) form.append("link_file", archivo);
+
+      const res = await fetch(`${URL}/departamento/${depId}/agregar-link`, {
+        method: "POST",
+        credentials: "include",
+        body: form
+      });
+
+      if (res.ok) {
+        alert("Link agregado");
+        location.reload();
+      } else {
+        alert("Error al agregar link");
+      }
+    }
+
+    await verificarToken();
+
+    document.getElementById("guardarCambios").addEventListener("click", guardarCambios);
+    document.getElementById("form-link").addEventListener("submit", agregarLink);
+  </script>
+</Layout>

@@ -46,7 +46,7 @@
                 <h2 class="font-bold text-lg">${dep.titulo}</h2>
                 <p class="text-gray-700">${dep.descripcion}</p>
                 ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>
-                <a href="/departamento/${dep.slug}" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>` : ""}
+                <a href="/card/editar-dep?id=${dep.id}" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>` : ""}
             `;
             contenedor.appendChild(card);
         });
