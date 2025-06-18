@@ -42,50 +42,17 @@ import Layout from "../layouts/Layout.astro"
             <img id="aboutImg3" src="" alt="Imagen 3" class="w-full h-auto max-h-80 object-contain rounded-lg" />
         </div>
     </section>
-            <!-- 
-                <div class="grid lg:grid-cols-6 gap-5 p-3 w-full md:grid-cols-4 sm-grid-cols-1" id="sobreNosotrosGrid">
-    
-                    <div class="bg-blue-900 col-span-3 h-auto w-full rounded-lg flex flex-col px-5 py-5">
-                     Historia 
-                    <h3 class="text-center font-medium text-2xl">Historia</h3>
-                    <p id="historiaText" class="text-gray-200"></p>
-                    </div>
-                    Imagen
-                    <div class="col-span-3 rounded-lg overflow-hidden flex justify-center items-center hover:scale-105 transition-transform duration-300 ease-in-out" id="aboutImgDiv">
-                        <img id="aboutImg" src="" alt="Imagen de la sucursal" class="object-contain max-w-md h-auto rounded-2xl">
-                    </div>
-                     Misión 
-                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                        <h3 class="font-medium">Misión</h3>
-                        <p id="misionText"></p>
-                    </div>
-                     Visión 
-                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                        <h3 class="font-medium">Visión</h3>
-                        <p id="visionText"></p>
-                    </div>
-                     Valores
-                    <div class="bg-blue-900 col-span-2 h-auto w-full rounded-lg flex flex-col items-center justify-center text-gray-200 py-5 px-5">
-                        <h3 class="font-medium mb-3">Valores</h3>
-                        <p id="valoresText" class="text-center"></p>
-                    </div>
-                     Botón editar solo para admin 
-                    <button id="editarSobreBtn" style="display:none" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold mt-4 hover:bg-yellow-500 transition cursor-pointer">✏️ Editar</button>
-                    <button id="guardarSobreBtn" style="display:none" class="bg-green-500 text-white px-4 py-2 rounded font-bold mt-4 hover:bg-green-600 transition cursor-pointer">Guardar</button>
-                </div>
-            -->
+    <footer class="flex flex-col items-center justify-center mt-10">
+        <div class="flex items-center justify-center mb-2">
+            <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
+            <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
+        </div>
+        <section class="bg-white rounded-tr-[45px] w-full flex items-center justify-center">
+            <section id="contenedorEmpresas" class="flex flex-col items-center gap-7 p-4 overflow-hidden no-scrollbar relative max-w-[1920px]">
 
-            <footer class="flex flex-col items-center justify-center mt-10">
-                <div class="flex items-center justify-center">
-                    <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
-                    <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
-                </div>
-                <section class="bg-white rounded-tr-[45px] w-full flex items-center justify-center">
-                    <section id="contenedorEmpresas" class="flex flex-col items-center gap-7 p-4 overflow-hidden no-scrollbar relative max-w-[1920px]">
-                        <!-- Aquí se cargarán las empresas --> 
-                    </section>
-                </section>
-            </footer>
+            </section>
+        </section>
+    </footer>
             
             
         </section>
@@ -222,186 +189,6 @@ import Layout from "../layouts/Layout.astro"
             a.appendChild(img);
             return a;
         }
-
-
-        /*
-        function activarEdicionSobreNosotros() {
-
-            const historiaText = document.getElementById('historiaText');
-            const misionText = document.getElementById('misionText');
-            const visionText = document.getElementById('visionText');
-            const valoresText = document.getElementById('valoresText');
-            if (historiaText) historiaText.outerHTML = `<textarea id="historiaEdit" class="w-full p-2 rounded mb-2 min-h-60">${aboutData.historia || ''}</textarea>`;
-            if (misionText) misionText.outerHTML = `<textarea id="misionEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.mision || ''}</textarea>`;
-            if (visionText) visionText.outerHTML = `<textarea id="visionEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.vision || ''}</textarea>`;
-            if (valoresText) valoresText.outerHTML = `<textarea id="valoresEdit" class="w-full p-2 rounded mb-2 min-h-28">${aboutData.valores || ''}</textarea>`;
-
-            // Imagen: input file + preview (sin botón guardar aquí)
-            const imgDiv = document.getElementById('aboutImgDiv');
-            if (imgDiv) {
-                imgDiv.innerHTML = `
-                    <div class="flex flex-col items-center w-full">
-                        <input type="file" id="aboutImgInput" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
-                        <img id="aboutImgPreview" src="${aboutData.imagen || ''}" class="object-contain max-w-md h-auto rounded-2xl mb-2" />
-                    </div>
-                `;
-
-                const aboutImgInput = document.getElementById('aboutImgInput');
-                if (aboutImgInput) {
-                    aboutImgInput.addEventListener('change', (e) => {
-                        const file = (e.target as HTMLInputElement).files?.[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = ev => {
-                                const preview = document.getElementById('aboutImgPreview') as HTMLImageElement | null;
-                                if (preview && ev.target) preview.src = ev.target.result as string;
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    });
-                }
-            }
-
-            // Oculta el botón editar y muestra el de guardar
-            const editarBtn = document.getElementById('editarSobreBtn') as HTMLButtonElement | null;
-            const guardarBtn = document.getElementById('guardarSobreBtn') as HTMLButtonElement | null;
-            if (editarBtn) editarBtn.style.display = 'none';
-            if (guardarBtn) guardarBtn.style.display = '';
-
-            // Evento guardar (solo se agrega una vez)
-            if (guardarBtn && !guardarBtn.onclick) {
-                guardarBtn.onclick = async () => {
-                    const historiaEdit = document.getElementById('historiaEdit') as HTMLTextAreaElement | null;
-                    const misionEdit = document.getElementById('misionEdit') as HTMLTextAreaElement | null;
-                    const visionEdit = document.getElementById('visionEdit') as HTMLTextAreaElement | null;
-                    const valoresEdit = document.getElementById('valoresEdit') as HTMLTextAreaElement | null;
-                    const fileInput = document.getElementById('aboutImgInput') as HTMLInputElement | null;
-
-                    const formData = new FormData();
-                    if (historiaEdit) formData.append('historia', historiaEdit.value);
-                    if (misionEdit) formData.append('mision', misionEdit.value);
-                    if (visionEdit) formData.append('vision', visionEdit.value);
-                    if (valoresEdit) formData.append('valores', valoresEdit.value);
-                    if (fileInput && fileInput.files && fileInput.files[0]) {
-                        formData.append('imagen', fileInput.files[0]);
-                    }
-                    const res = await fetch(`${URLBACK}/about/`, {
-                        method: 'PUT',
-                        credentials: 'include',
-                        body: formData
-                    });
-                    if (res.ok) {
-                        alert('Información actualizada');
-                        location.reload();
-                    } else {
-                        alert('Error al actualizar');
-                    }
-                };
-            }
-        }
-        
-        // ----------- EMPRESAS (CARRUSEL) -----------
-        
-        type Empresa = {
-            id: number;
-            contenido: string;
-            imagen: string;
-        };
-        
-        let scrollAmount = 0;
-        let scrollSpeed = 1;
-        let isDragging = false;
-        let startX = 0;
-        let scrollLeft = 0;
-        let autoScrollId: number;
-        let resumeTimeout: number;
-        
-        async function cargarEmpresas(): Promise<Empresa[]> {
-            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
-            const response = await fetch(`${URLBACK}/company/`, {
-                credentials: 'include'
-            });
-            if (!response.ok) throw new Error('Error al obtener las empresas');
-        
-            const empresas: Empresa[] = await response.json();
-            if (!contenedor) return [];
-        
-            contenedor.innerHTML = '';
-            empresas.forEach(empresa => {
-                const card = document.createElement('div');
-                card.className = 'w-auto flex-shrink-0 rounded-lg shadow-lg hover:scale-110 transition duration-300 ease-in-out';
-                card.innerHTML = `
-                    <a href="${empresa.contenido}" target="_blank" rel="noopener noreferrer">
-                        <img src="${empresa.imagen}" alt="imagen de empresa" class="w-32 h-20 object-contain" />
-                    </a>
-                    ${tokenValido ? `<button onclick="eliminarCo(${empresa.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
-                `;
-                contenedor.appendChild(card);
-            });
-        
-            return empresas;
-        }
-        
-        function duplicarContenido() {
-            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
-            if (contenedor) contenedor.innerHTML += contenedor.innerHTML;
-        }
-        
-        function autoScroll() {
-            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
-            if (!contenedor) return;
-            scrollAmount += scrollSpeed;
-            if (scrollAmount >= contenedor.scrollWidth / 2) {
-                scrollAmount = 0;
-            }
-            contenedor.scrollLeft = scrollAmount;
-            autoScrollId = requestAnimationFrame(autoScroll);
-        }
-        
-        function setupDrag() {
-            const contenedor = document.getElementById('contenedorEmpresas') as HTMLElement | null;
-            if (!contenedor) return;
-            contenedor.addEventListener('pointerdown', e => {
-                isDragging = true;
-                startX = e.pageX;
-                scrollLeft = contenedor.scrollLeft;
-                cancelAnimationFrame(autoScrollId);
-                clearTimeout(resumeTimeout);
-            });
-        
-            contenedor.addEventListener('pointermove', e => {
-                if (!isDragging) return;
-                const x = e.pageX;
-                const walk = (startX - x);
-                contenedor.scrollLeft = scrollLeft + walk;
-            });
-        
-            const stopDrag = () => {
-                if (!isDragging) return;
-                isDragging = false;
-                resumeTimeout = setTimeout(() => autoScroll(), 5000);
-            };
-        
-            contenedor.addEventListener('pointerup', stopDrag);
-            contenedor.addEventListener('mouseleave', stopDrag);
-        }
-        
-        async function eliminarCo(id: number) {
-            const response = await fetch(`${URLBACK}/eliminar-empresa/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-        
-            if (response.ok) {
-                alert('Empresa eliminada');
-                location.reload();
-            } else {
-                alert('Error al eliminar empresa');
-            }
-        }
-        
-        (window as any).eliminarCo = eliminarCo;
-        */
     </script>
 
 </Layout>
