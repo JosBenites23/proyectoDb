@@ -7,10 +7,11 @@ import ListaEmpresas from "../cards/ListaEmpresas.astro";
 import ActualizarInfo from "../cards/ActualizarInfo.astro";
 import SubirDep from "../cards/SubirDep.astro";
 import ListaDep from "../cards/ListaDep.astro";
+import EditarDep from "../cards/EditarDep.astro";
 
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
-
+const id = url.searchParams.get("id");
 ---
 
 <Layout showMenu={false}>
@@ -68,6 +69,7 @@ const panel = url.searchParams.get("panel");
         {panel === 'quienes-somos' && <ActualizarInfo />}
         {panel === 'subir-departamento' && <SubirDep />}
         {panel === 'departamentos-lista' && <ListaDep />}
+        {panel === 'editar-dep' && id && <EditarDep id={Number(id)} />}
         </main>
 
   </div>

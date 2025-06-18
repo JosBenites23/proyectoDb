@@ -1,16 +1,19 @@
 ---
+/*
 import EditarDep from "./EditarDep.astro";
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
-const id = url.searchParams.get("id");
+const id = url.searchParams.get("id");*/
 ---
 
 <div>
     <div id="contenedor-dep"></div>
 </div>
-<main>
-    {panel === 'noticias-dep' && <EditarDep id={Number(id)} />}
-</main>
+<!--
+    <main>
+        {panel === 'noticias-dep' && <EditarDep id={Number(id)} />}
+    </main>
+ -->
 
 <script>
 
