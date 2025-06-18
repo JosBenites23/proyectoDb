@@ -7,13 +7,11 @@ if (!res.ok) throw new Error("Error al obtener el departamento");
 
 const dep = await res.json();
 ---
-<!-- 
-    <script is:inline>
-      // Definimos la variable global con la URL del backend
-      window.BACKEND_URL = `${URL_BACKEND}`;
-    </script>
 
--->
+<script is:inline>
+  // Definimos la variable global con la URL del backend
+  window.BACKEND_URL = `${URL_BACKEND}`;
+</script>
 
 <section class="p-6 bg-white shadow-md rounded">
   <!-- Formulario para editar departamento -->
@@ -39,14 +37,14 @@ const dep = await res.json();
 
 <script type="module">
   // Esperamos a que el DOM esté completamente cargado para acceder a window.BACKEND_URL
-  const URLBACK = this.dataset.URL_BACKEND
   window.addEventListener('DOMContentLoaded', () => {
+    const URL_BACKEND = window.BACKEND_URL;
     const depId = document.getElementById("depId").value;
 
     const formEditar = document.getElementById("formEditarDep");
     formEditar.addEventListener("submit", async (e) => {
       e.preventDefault();
-      console.log("Enviando cambios para depId", depId, "a", URLBACK);
+      console.log("Enviando cambios para depId", depId, "a", URL_BACKEND);
 
       const titulo = document.getElementById("titulo").value;
       const descripcion = document.getElementById("descripcion").value;
@@ -58,7 +56,7 @@ const dep = await res.json();
       if (imagen) form.append("imagen", imagen);
 
       try {
-        const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
+        const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
           method: "PUT",
           credentials: "include",
           body: form,
@@ -97,7 +95,7 @@ const dep = await res.json();
       if (archivo) form.append("link_file", archivo);
 
       try {
-        const res = await fetch(`${URLBACK}/departamento/${depId}/agregar-link`, {
+        const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
           method: "POST",
           credentials: "include",
           body: form,
