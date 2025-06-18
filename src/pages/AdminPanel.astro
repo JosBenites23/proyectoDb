@@ -5,6 +5,8 @@ import ListaNoticias from "../cards/ListaNoticias.astro";
 import SubirEmpresa from "../cards/SubirEmpresa.astro";
 import ListaEmpresas from "../cards/ListaEmpresas.astro";
 import ActualizarInfo from "../cards/ActualizarInfo.astro";
+import SubirDep from "../cards/SubirDep.astro";
+import ListaDep from "../cards/ListaDep.astro";
 
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
@@ -37,7 +39,13 @@ const panel = url.searchParams.get("panel");
                 </ul>
             </li>
             <li><a href="/AdminPanel?panel=quienes-somos">Quiénes somos</a></li>
-            <li>Departamentos</li>
+            <li class="relative group flex items-center justify-center">
+                Departamentos
+                <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
+                    <li><a href="/AdminPanel?panel=subir-departamento" >Subir Departamento</a></li>
+                    <li><a href="/AdminPanel?panel=departamentos-lista">Lista de Departamentos</a></li>
+                </ul>
+            </li>
             <li>Links</li>
             <li class="relative group flex items-center justify-center">
                 Empresas
@@ -58,6 +66,8 @@ const panel = url.searchParams.get("panel");
         {panel === 'noticias-lista' && <ListaNoticias />}
         {panel === 'empresas-lista' && <ListaEmpresas />}
         {panel === 'quienes-somos' && <ActualizarInfo />}
+        {panel === 'subir-departamento' && <SubirDep />}
+        {panel === 'departamentos-lista' && <ListaDep />}
         </main>
 
   </div>
