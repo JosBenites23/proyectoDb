@@ -39,8 +39,8 @@ const dep = await res.json();
 
 <script type="module">
   // Esperamos a que el DOM esté completamente cargado para acceder a window.BACKEND_URL
+  const URLBACK = this.dataset.URL_BACKEND
   window.addEventListener('DOMContentLoaded', () => {
-    const URLBACK = this.dataset.URL_BACKEND
     const depId = document.getElementById("depId").value;
 
     const formEditar = document.getElementById("formEditarDep");
