@@ -1,7 +1,7 @@
-<form id="noticiaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+<form id="aboutForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
     <input id="anio1" type="text" placeholder="año de creación" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
     <label class="mb-2 text-white font-black">Imagen antigua</label>
-    <input id="imagen" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+    <input id="imagen1" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
     <input id="anio2" type="text" placeholder="año de creación" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
     <label class="mb-2 text-white font-black">Imagen actual</label>
     <input id="imagen2" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
@@ -31,17 +31,6 @@
 
 <script>
     const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
-    type AboutData = {
-        historia?: string;
-        mision?: string;
-        vision?: string;
-        presencia?: string;
-        imagen?: string;
-        imagen2?: string;
-        imagen3?: string;
-        anio?: string;
-        anio2?: string;
-    };
 
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('aboutForm') as HTMLFormElement | null;
@@ -57,7 +46,7 @@
                 const anio1 = (document.getElementById('anio1') as HTMLInputElement).value;
                 const anio2 = (document.getElementById('anio2') as HTMLInputElement).value;
 
-                const imagen1 = (document.getElementById('imagen') as HTMLInputElement).files?.[0];
+                const imagen1 = (document.getElementById('imagen1') as HTMLInputElement).files?.[0];
                 const imagen2 = (document.getElementById('imagen2') as HTMLInputElement).files?.[0];
                 const imagen3 = (document.getElementById('imagen3') as HTMLInputElement).files?.[0];
 
@@ -69,7 +58,7 @@
                 formData.append('anio', anio1);
                 formData.append('anio2', anio2);
 
-                if (imagen1) formData.append('imagen', imagen1);
+                if (imagen1) formData.append('imagen1', imagen1);
                 if (imagen2) formData.append('imagen2', imagen2);
                 if (imagen3) formData.append('imagen3', imagen3);
 
