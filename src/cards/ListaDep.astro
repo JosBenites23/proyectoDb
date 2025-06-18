@@ -54,11 +54,10 @@
 
     async function eliminarDep(id: number) {
         console.log("Eliminando dep con ID:", id);
-        const response = await fetch(`${URL}/eliminar-dep/${id}`, {
+        const response = await fetch(`${URL}/departamento/eliminar-dep/${id}`, {
             method: 'DELETE',
             credentials: 'include' // Incluye cookies en la solicitud
         });
-        console.log("Respuesta del servidor:", id);
 
         if (response.ok) {
             alert('Departamento eliminado');
