@@ -4,6 +4,7 @@ import SubirNoticia from "../cards/SubirNoticia.astro";
 import ListaNoticias from "../cards/ListaNoticias.astro";
 import SubirEmpresa from "../cards/SubirEmpresa.astro";
 import ListaEmpresas from "../cards/ListaEmpresas.astro";
+import ActualizarInfo from "../cards/ActualizarInfo.astro";
 
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
@@ -35,7 +36,7 @@ const panel = url.searchParams.get("panel");
                     <li><a href="/AdminPanel?panel=noticias-lista">Lista de Noticias</a></li>
                 </ul>
             </li>
-            <li>Quiénes somos</li>
+            <li><a href="/AdminPanel?panel=quienes-somos">Quiénes somos</a></li>
             <li>Departamentos</li>
             <li>Links</li>
             <li class="relative group flex items-center justify-center">
@@ -56,6 +57,7 @@ const panel = url.searchParams.get("panel");
         {panel === 'subir-noticia' && <SubirNoticia />}
         {panel === 'noticias-lista' && <ListaNoticias />}
         {panel === 'empresas-lista' && <ListaEmpresas />}
+        {panel === 'quienes-somos' && <ActualizarInfo />}
         </main>
 
   </div>
