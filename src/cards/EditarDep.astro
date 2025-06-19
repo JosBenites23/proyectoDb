@@ -31,6 +31,7 @@ const dep = await res.json();
   <form id="formLink">
     <input type="text" id="titulo_link" placeholder="Título del link" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
     <input type="url" id="url" placeholder="URL" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
+    <label class="mb-2 text-white font-black">Seleccione un archivo PDF o Word</label>
     <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Agregar Link</button>
   </form>
