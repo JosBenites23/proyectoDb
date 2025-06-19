@@ -18,7 +18,7 @@
                 </li>
                 <li class="relative group border-white border-2 rounded-2xl items-center">
                     <a href="/Links">Links</a>
-                    <ul id="subLiLink" class="h-auto w-auto hidden group-hover:flex flex-col absolute top-full right-0 items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mb-2 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-auto max-h-60 scrollbar-none [&>li>a]:whitespace-nowrap [&>li>a]:block">
+                    <ul id="subLiLink" class="h-auto w-auto hidden group-hover:flex flex-col absolute top-full right-1/2 translate-x-1/2 items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mb-2 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-auto max-h-60 scrollbar-none [&>li>a]:whitespace-nowrap [&>li>a]:block">
                     <!-- Aquí se cargarán dinámicamente los links -->
                     </ul>
                 </li>
@@ -118,7 +118,7 @@
             links.forEach(link => {
                 const card = document.createElement('li');
                 card.innerHTML = `
-                    <a href="${link.link}" class="px-4 py-2 text-white w-auto inline-block">
+                    <a href="${link.link}" target="_blank" class="px-4 py-2 text-white w-auto inline-block">
                         ${link.name}
                     </a>
                 `;
