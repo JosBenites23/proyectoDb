@@ -14,23 +14,24 @@ const dep = await res.json();
   window.BACKEND_URL = `${URL_BACKEND}`;
 </script>
 
-<section id="editar-dep" class="p-6 bg-white shadow-md rounded" data-url-backend={URL_BACKEND}>
+<section id="editar-dep" class="p-6 rounded" data-url-backend={URL_BACKEND}>
   <!-- Formulario para editar departamento -->
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
-    <textarea id="descripcion" class="w-full p-2 border rounded mb-2">{dep.descripcion}</textarea>
-    <input type="file" id="imagen" accept="image/*" class="mb-4" />
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Guardar Cambios</button>
+    <textarea id="descripcion" class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32">{dep.descripcion}</textarea>
+    <label class="mb-2">Imagen</label>
+    <input type="file" id="imagen" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200 cursor-pointer">Guardar Cambios</button>
   </form>
 
   <hr class="my-6" />
 
   <!-- Formulario para agregar link -->
-  <h3 class="text-lg font-semibold mb-2">Agregar Link</h3>
+  <h3 class="text-lg font-black mb-2">Agregar Link</h3>
   <form id="formLink">
-    <input type="text" id="titulo_link" placeholder="Título del link" class="w-full p-2 border rounded mb-2" />
-    <input type="url" id="url" placeholder="URL" class="w-full p-2 border rounded mb-2" />
-    <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="mb-4" />
+    <input type="text" id="titulo_link" placeholder="Título del link" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
+    <input type="url" id="url" placeholder="URL" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
+    <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Agregar Link</button>
   </form>
 </section>

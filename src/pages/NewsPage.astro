@@ -6,7 +6,9 @@ import Birthday from "../components/Birthday.astro"
     <section class="w-full h-auto flex flex-col items-center justify-center mt-32">
         <h1 class="text-5xl text-white font-black">Novedades y </h1>
         <h1 class="text-5xl text-[#00d0fe] font-black">Cumpleaños</h1>
-        <Birthday />
+        <!-- 
+            <Birthday />
+        -->
     </section>
     <section class="w-full justify-center justify-items-center">
         <section id="contenedorNoticias" class="min-h-screen max-w-[1920px] mt-5 py-5 px-10 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1  gap-4 text-sky-300 justify-items-center">
@@ -50,7 +52,9 @@ import Birthday from "../components/Birthday.astro"
 
                 if (noticia.tipo_contenido === 'imagen') {
                     contenidoHTML = `
-                        <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-64">
+                        <a href="${noticia.contenido}" target="_blank" class="block hover:scale-105 transition duration-200">
+                            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-64">
+                        </a>
                     `;
                 } else if (noticia.tipo_contenido === 'video') {
                     contenidoHTML = `
