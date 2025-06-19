@@ -54,7 +54,7 @@ import Layout from "../layouts/Layout.astro";
     
             links.forEach((link) => {
                 const card = document.createElement('ul');
-                card.className = 'mb-6 h-auto w-auto flex flex-col bg-[#00d0fe] rounded-4xl [&>li>a]:px-9 [&>li>a]:py-5 [&>li>a]:text-xl [&>li>a]:text-center [&>li]:hover:bg-[#0d122e] [&>li]:transition [&>li]:duration-300 ease-in-out [&>li]:hover:text-[#00d0fe] [&>li>a]:text-[#0d122e] font-black ';
+                card.className = '[&>li]:mb-6 h-auto w-auto flex flex-col [&>li>a]:bg-[#00d0fe] [&>li>a]:rounded-4xl [&>li>a]:px-9 [&>li>a]:py-5 [&>li>a]:text-xl [&>li>a]:text-center [&>li>a]:hover:bg-[#0d122e] [&>li>a]:transition [&>li>a]:duration-300 ease-in-out [&>li>a]:hover:text-[#00d0fe] [&>li>a]:text-[#0d122e] font-black ';
     
                 card.innerHTML = `
                     <li><a href="${link.link}" target="_blank">${link.name}</a></li>
