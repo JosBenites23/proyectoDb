@@ -1,0 +1,63 @@
+<form id="EmpresaForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+    <input id="urlE" type="text" placeholder="Url" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white" required/>
+    <div class="flex justify-center items-center">
+        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer">Agregar Link</button>
+        <a class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer ml-3" href="/Links">
+            ver
+        </a>
+    </div>
+</form>
+
+<script>
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+
+    interface Link{
+        id: number
+        name: string
+        link: string
+    }
+
+    // Función para subir link 
+    async function subirLinkInterno(nuevoLink:Link) {
+        const response = await fetch(`${URLBACK}/links/`, {
+            method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(nuevoLink)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al subir link');
+        }
+            const noticiaCreada = await response.json();
+            console.log('link subida exitosamente:', noticiaCreada);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#linkForm') as HTMLFormElement;
+
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
+
+            const nombre = (document.querySelector('#nombre') as HTMLInputElement).value;
+            const url = (document.querySelector('#url') as HTMLInputElement).value;
+
+            const nuevoLink = {
+                name: nombre,
+                link: url
+            } as Link;
+
+            try {
+                await subirLinkInterno(nuevoLink);
+                alert('Link subido correctamente.');
+                formulario.reset(); // Limpiar formulario
+            } catch (error) {
+                console.error(error);
+                alert('Error al subir link.');
+            }
+        });
+    });
+</script>
+

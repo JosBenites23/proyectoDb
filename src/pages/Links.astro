@@ -4,13 +4,18 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
     <section class="w-full">
-        <section class="min-h-screen w-full mt-36 py-5 px-10 justify-items-center text-gray-200">
-            <h2 class="text-2xl font-bold py-5 px-10">
-                Links de Consulta
-            </h2>
-            <p class="text-xl">Accede a las plataformas internas de la empresa</p>
+        <section class="min-h-screen w-full mt-24 py-5 px-10 justify-items-center text-gray-200">
+            <div class="text-5xl flex mb-5 font-black justify-center items-center">
+                <h2 class=" text-white mr-3">
+                    Links de 
+                </h2>
+                <h2 class=" text-[#00d0fe]">
+                    consulta
+                </h2>
+            </div>
+            <p class="text-xl">Aquí podrás accede a todas las plataformas internas de la empresa</p>
     
-            <nav id="contenedorLinks" class="mt-10 flex flex-col items-center justify-center">
+            <nav id="contenedorLinks" class="mt-5 flex flex-col items-center justify-center">
     
             </nav>
         </section>
@@ -49,50 +54,17 @@ import Layout from "../layouts/Layout.astro";
     
             links.forEach((link) => {
                 const card = document.createElement('ul');
-                card.className = 'mb-4 h-auto w-full flex flex-col bg-white/10 rounded-lg px-8 py-4 text-xl text-center hover:bg-cyan-300/20 text-sky-300 font-medium transition duration-300 ease-in-out';
+                card.className = 'mb-4 h-auto w-auto flex flex-col bg-[#00d0fe] rounded-4xl [&>li>a]:px-8 [&>li>a]:py-4 [&>li>a]:text-xl [&>li>a]:text-center [&>li]:hover:bg-[#0d122e] transition duration-300 ease-in-out [&>li>a]:hover:text-[#00d0fe] [&>li>a]:text-[#0d122e] font-bold ';
     
                 card.innerHTML = `
-                    <a href="${link.link}" target="_blank">${link.name}</a>
-                    ${tokenValido ? `<button onclick="eliminarLink(${link.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
+                    <li><a href="${link.link}" target="_blank">${link.name}</a></li>
                 `;
     
                 contenedorLinks.appendChild(card);
             });
         }
-    
-        // Función para eliminar un link
-        async function eliminarLink(id: number) {
-            const response = await fetch(`${URLBACK}/eliminar-link/${id}`, {
-                method: 'DELETE',
-                credentials: 'include' // Incluye cookies en la solicitud
-            });
-    
-            if (response.ok) {
-                alert('Link eliminado');
-                cargarLinks(); // Recargar los links
-            } else {
-                alert('Error al eliminar el link');
-            }
-        }
-
-        let tokenValido = false; // Variable para almacenar el estado del token
-
-        async function verificarToken() {
-            try {
-                const response = await fetch(`${URLBACK}/protegida`, {
-                    credentials: 'include' // Incluye cookies en la solicitud
-                });
-
-                tokenValido = response.ok;
-            } catch (error) {
-                tokenValido = false;
-                console.error('Error al verificar el token:', error);
-            }
-        }
-
-        window.eliminarLink = eliminarLink;    
+            
         document.addEventListener('DOMContentLoaded', async () => {
-            await verificarToken();
             cargarLinks();
         });
     </script>
