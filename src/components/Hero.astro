@@ -38,39 +38,6 @@
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 
-    /*
-    const adminBtn = document.querySelector('#adminBtn')
-    
-    adminBtn?.addEventListener('click', () => {
-        // Validar sesión con cookies
-        fetch(`${URLBACK}/protegida`, {
-            method: 'GET',
-            credentials: 'include' // Incluye cookies en la solicitud
-        })
-        .then(response => {
-            if (response.ok) {
-                // Sesión válida, llevar al panel
-                window.location.href = '/AdminPanel';
-            } else {
-                // Sesión inválida, llevar a login
-                window.location.href = '/Admin';
-            }
-        })
-        .catch(err => {
-            console.error('Error al validar sesión:', err);
-            window.location.href = '/Admin';
-        });
-    });
-
-    const menuToggle = document.querySelector('#menu-btn') as HTMLElement
-    const menu = document.querySelector('#menu') as HTMLElement
-
-    menuToggle.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
-
-    */
-
 
     document.addEventListener('DOMContentLoaded', async () => {
         const subLiDep = document.getElementById('subLiDep');
@@ -120,7 +87,7 @@
             console.error('Error al cargar departamentos:', error);
         }
 
-        /*
+        
         const subLiLink = document.getElementById('subLiLink');
         if (!subLiLink) {
             return;
@@ -145,7 +112,7 @@
             if (!subLiLink) return [];
 
             // Limpia el contenido previo del submenú
-            subLiDep.innerHTML = '';
+            subLiLink.innerHTML = '';
 
             // Agrega cada departamento al submenú
             links.forEach(link => {
@@ -159,7 +126,7 @@
             });
         } catch (error) {
             console.error('Error al cargar links:', error);
-        }*/
+        }
     });     
     
 </script>
