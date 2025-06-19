@@ -20,17 +20,9 @@ const id = url.searchParams.get("id");
 <Layout showMenu={false}>
     <div class="flex flex-col min-h-screen">
 
-    <header class="flex justify-between fixed items-center py-6 px-5 bg-white rounded-bl-[45px] z-50 shadow-md w-full top-0 ">
-        <div class="flex flex-col items-center justify-center">
-            <div class="flex items-center justify-center">
-                <h1 class="text-2xl font-black text-[#0d122e] text-center w-full">Panel de Administrador</h1>
-            <button id="logoutButton"
-            class="absolute right-5 bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer z-70">
-            Cerrar Sesión
-            </button>
-            </div>
-            <nav>
-            <ul class="[&>li]:bg-white [&>li]:text-[#0d122e] [&>li]:hover:bg-[#00d0fe] [&>li]:hover:text-[#0d122e] [&>li]:mb-5 [&>li]:mx-4 [&>li]:py-2 [&>li]:rounded-4xl [&>li]:font-black [&>li]:text-lg text-center w-full [&>li]:cursor-pointer">
+    <header class=" fixed items-center py-6 px-5 bg-white rounded-bl-[45px] z-50 shadow-md w-full top-0 ">
+            <h1 class="text-2xl font-black text-[#0d122e] text-center w-full">Panel de Administrador</h1>
+            <ul class="[&>li]:bg-[#0d122e] [&>li]:text-[#0d122e] [&>li]:hover:bg-[#00d0fe] [&>li]:hover:text-[#0d122e] [&>li]:mb-5 [&>li]:mx-4 [&>li]:py-2 [&>li]:rounded-4xl [&>li]:font-black [&>li]:text-lg text-center w-full [&>li]:cursor-pointer">
             <li class="relative group flex items-center justify-center">
                 Noticias
                 <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
@@ -61,6 +53,12 @@ const id = url.searchParams.get("id");
                 </ul>
             </li>
             <li><a href="/AdminPanel?panel=editar-colaboradores">Colaboradores</a></li>
+            <li>
+                <button id="logoutButton"
+            class="absolute right-5 bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer z-70">
+            Cerrar Sesión
+            </button>
+            </li>
             </ul>
         </nav>
         </div>
