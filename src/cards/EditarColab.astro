@@ -14,7 +14,7 @@
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
     async function subirColaboradores(nuevoTeam: FormData) {
-            const response = await fetch(`${URLBACK}$/team/`, {
+            const response = await fetch(`${URLBACK}/team/`, {
                 method: 'POST',
                 credentials: 'include', // Incluye cookies en la solicitud
                 body: nuevoTeam
