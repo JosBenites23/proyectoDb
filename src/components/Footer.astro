@@ -58,7 +58,7 @@
 
     grupos.forEach((grupo, index) => {
       const fila = document.createElement('div');
-      fila.className = `flex gap-8 justify-center flex-wrap w-full lg:max-w-[2560px] ${
+      fila.className = `flex gap-8 lg:gap-10 justify-center flex-wrap w-full lg:max-w-[2560px] ${
         index % 2 === 0 ? 'pl-0' : 'pl-[5%]'
       }`;
       const ordenado = orderCentered(grupo);
