@@ -16,7 +16,12 @@
                     <!-- Aquí se cargarán dinámicamente los departamentos -->
                     </ul>
                 </li>
-                <li><a href="/Links">Links</a></li>
+                <li>
+                    <a href="/Links">Links</a>
+                    <ul id="subLiLink" class="h-auto w-auto hidden group-hover:flex flex-col absolute top-full right-0 items-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mb-2 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-auto max-h-60 scrollbar-none [&>li>a]:whitespace-nowrap [&>li>a]:block">
+                    <!-- Aquí se cargarán dinámicamente los links -->
+                    </ul>
+                </li>
                 <!-----
                 <li><a id="adminBtn" href="/Admin">Admin</a></li> descomentar si se quiere mostrar el botón de admin en la barra de navegación -->
             </ul>
@@ -94,7 +99,6 @@
             const departamentos: Departamento[] = await response.json();
             if (!subLiDep) return [];
 
-            console.log('Departamentos obtenidos:', departamentos);
             // Limpia el contenido previo del submenú
             subLiDep.innerHTML = '';
 
@@ -114,6 +118,47 @@
             console.log('Departamentos cargados:', subLiDep.innerHTML);
         } catch (error) {
             console.error('Error al cargar departamentos:', error);
+        }
+
+
+        const subLiLink = document.getElementById('subLiLink');
+        if (!subLiLink) {
+            return;
+        }
+
+        interface Link {
+            id: number;
+            name: string;
+            link: string;
+            descripcion: string;
+        }
+
+        try {
+            const response = await fetch(`${URLBACK}/links/`, {
+                credentials: 'include'
+            });
+
+            if (!response.ok) throw new Error('Error al obtener links');
+
+            
+            const links: Link[] = await response.json();
+            if (!subLiLink) return [];
+
+            // Limpia el contenido previo del submenú
+            subLiDep.innerHTML = '';
+
+            // Agrega cada departamento al submenú
+            links.forEach(link => {
+                const card = document.createElement('li');
+                card.innerHTML = `
+                    <a href="${link.link}" class="px-4 py-2 text-white w-auto inline-block">
+                        ${link.name}
+                    </a>
+                `;
+                subLiLink.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error al cargar links:', error);
         }
     });
     
