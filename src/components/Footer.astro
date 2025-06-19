@@ -1,5 +1,5 @@
 <section class="bg-white text-gray-700 py-2 rounded-tr-[100px]">
-  <section id="contenedorEmpresas" class="flex flex-col gap-6 p-4 overflow-visible no-scrollbar relative w-full ">
+  <section id="contenedorEmpresas" class="flex flex-col gap-6 p-4 overflow-visible no-scrollbar relative w-full">
     <!-----
     <div id="fila1" class="flex flex-wrap gap-4 justify-center pl-1"></div>
     <div id="fila2" class="flex flex-wrap gap-4 justify-center pl-[9%]"></div>
@@ -58,7 +58,7 @@
 
     grupos.forEach((grupo, index) => {
       const fila = document.createElement('div');
-      fila.className = `flex gap-3 md:gap-4 lg:gap-8 xl:gap-32 justify-center flex-wrap w-full lg:max-w-[2560px] ${
+      fila.className = `flex gap-3 md:gap-4 lg:gap-8 xl:gap-40 justify-center flex-wrap w-full lg:max-w-[2560px] ${
         index % 2 === 0 ? 'pl-0' : 'pl-[5%]'
       }`;
       const ordenado = orderCentered(grupo);
