@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import Footer from "../components/Footer.astro"
 ---
 
 <Layout>
@@ -42,19 +43,21 @@ import Layout from "../layouts/Layout.astro"
             <img id="aboutImg3" src="" alt="Imagen 3" class="w-full h-auto max-h-80 object-contain rounded-lg" />
         </div>
     </section>
-    <footer class="flex flex-col items-center justify-center mt-10">
-        <div class="flex items-center justify-center mb-2">
-            <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
-            <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
-        </div>
-        <section class="bg-white rounded-tr-[45px] w-full flex items-center justify-center">
-            <section id="contenedorEmpresas" class="flex flex-col items-center gap-7 p-4 overflow-hidden no-scrollbar relative max-w-[1920px]">
-
+    <!--
+        <footer class="flex flex-col items-center justify-center mt-10">
+            <div class="flex items-center justify-center mb-2">
+                <h2 class="text-5xl font-black text-white mr-3">Nuestras</h2>
+                <h2 class="text-5xl font-black text-[#00d0fe]">marcas</h2>
+            </div>
+            <section class="bg-white rounded-tr-[45px] w-full flex items-center justify-center">
+                <section id="contenedorEmpresas" class="flex flex-col items-center gap-7 p-4 overflow-hidden no-scrollbar relative max-w-[1920px]">
+    
+                </section>
             </section>
-        </section>
-    </footer>
-            
-            
+        </footer>
+     -->
+        <Footer/>
+              
         </section>
     </section>
 
@@ -77,8 +80,8 @@ import Layout from "../layouts/Layout.astro"
 
         document.addEventListener('DOMContentLoaded', async () => {
         await cargarSobreNosotros();
-        await cargarEmpresas();
-        });
+        //await cargarEmpresas();
+        }); 
 
         async function cargarSobreNosotros() {
             try {
@@ -110,7 +113,7 @@ import Layout from "../layouts/Layout.astro"
                 console.error("Error al cargar sección 'Sobre Nosotros':", err);
             }
         }
-
+        /*
         type Empresa = {
             id: number;
             contenido: string;
@@ -188,7 +191,7 @@ import Layout from "../layouts/Layout.astro"
 
             a.appendChild(img);
             return a;
-        }
+        }*/
     </script>
 
 </Layout>
