@@ -55,7 +55,7 @@ import Birthday from "../components/Birthday.astro"
                 if (noticia.tipo_contenido === 'imagen') {
                     contenidoHTML = `
                         <a href="${noticia.contenido}" target="_blank" class="block hover:scale-105 transition duration-200">
-                            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-contain w-full h-64">
+                            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-cover w-full h-64">
                         </a>
                     `;
                 } else if (noticia.tipo_contenido === 'video') {
