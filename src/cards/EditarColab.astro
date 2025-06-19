@@ -1,0 +1,64 @@
+
+<form id="colaboradorForm" class="flex flex-col items-center justify-center w-full h-auto px-5 py-5">
+    <label class="mb-2">Imagen</label>
+    <input id="imagenCol" type="file" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
+    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">Actualizar imagen</button>
+    <textarea id="descripcionCol"
+        placeholder="Descripción" 
+        class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32"
+    required></textarea>
+    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">💾 Actualizar descripcion</button>
+    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer mb-3">Agregar colaboradores</button>
+</form>
+
+<script>
+    const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
+    async function subirColaboradores(nuevoTeam: FormData) {
+            const response = await fetch(`${URLBACK}$/team/`, {
+                method: 'POST',
+                credentials: 'include', // Incluye cookies en la solicitud
+                body: nuevoTeam
+            });
+    
+            //console.log(response)
+    
+            if (!response.ok) {
+                throw new Error('Error al subir el colaborador');
+            }
+    
+            const colaboradorCreado = await response.json();
+            console.log('cumpleanos subido exitosamente:', colaboradorCreado);
+        }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            const formulario = document.querySelector('#colaboradorForm') as HTMLFormElement;
+    
+            formulario.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevenir que recargue la página
+    
+                const descripcion = (document.querySelector('#descripcionCol') as HTMLTextAreaElement).value;
+                const imagenInput = document.querySelector('#imagenCol') as HTMLInputElement;
+    
+                const archivo = imagenInput.files?.[0]
+    
+                if (!archivo && !descripcion) {
+                    alert('Por favor selecciona una imagen o agrega una descripción');
+                    return;
+                }
+    
+                const formData = new FormData();
+                if (descripcion) formData.append('descripcion', descripcion);
+                if (archivo) formData.append('contenido', archivo);
+    
+                try {
+                    await subirColaboradores(formData);
+                    alert('colaborador subido correctamente.');
+                    formulario.reset(); // Limpiar el formulario
+                } catch (error) {
+                    console.error('Error al subir el colaborador:', error);
+                    alert('Error al subir el colaborador.');
+                }
+    
+            })
+        })
+</script>

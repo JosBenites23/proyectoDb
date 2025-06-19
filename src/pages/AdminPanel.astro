@@ -10,6 +10,7 @@ import ListaDep from "../cards/ListaDep.astro";
 import EditarDep from "../cards/EditarDep.astro";
 import ListaLinks from "../cards/ListaLinks.astro";
 import SubirLink from "../cards/SubirLink.astro";
+import EditarColab from "../cards/EditarColab.astro";
 
 const url = new URL(Astro.request.url);
 const panel = url.searchParams.get("panel");
@@ -63,7 +64,7 @@ const id = url.searchParams.get("id");
                     <li><a href="/AdminPanel?panel=empresas-lista">Lista de Empresas</a></li>
                 </ul>
             </li>
-            <li>Otros</li>
+            <li><a href="/AdminPanel?panel=editar-colaboradores">Colaboradores</a></li>
             </ul>
         </nav>
         </aside>
@@ -80,6 +81,7 @@ const id = url.searchParams.get("id");
         {panel === 'editar-dep' && id && <EditarDep id={Number(id)} />}
         {panel === 'links-lista' && <ListaLinks />}
         {panel === 'subir-link' && <SubirLink />}
+        {panel === 'editar-colaboradores' && <EditarColab />}
         </main>
 
   </div>
