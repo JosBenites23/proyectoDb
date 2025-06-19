@@ -58,8 +58,8 @@
 
     grupos.forEach((grupo, index) => {
       const fila = document.createElement('div');
-      fila.className = `flex gap-4 justify-center flex-wrap w-full ${
-        index % 2 === 0 ? 'pl-1' : 'pl-[10%]'
+      fila.className = `flex gap-10 justify-center flex-wrap w-full ${
+        index % 2 === 0 ? 'pl-0' : 'pl-[5%]'
       }`;
       const ordenado = orderCentered(grupo);
       ordenado.forEach(emp => fila.appendChild(crearCardEmpresa(emp)));
