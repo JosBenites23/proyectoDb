@@ -13,57 +13,55 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <script>
-        const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost';
+        const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         interface Departamento {
-            id: number;
-            titulo: string;
-            descripcion: string;
-            slug: string;
-            imagen: string;
-            fecha_creacion: string;
+            id: number
+            titulo: string
+            descripcion: string
+            slug: string
+            imagen: string
+            fecha_creacion: string
         }
     
         const contenedor = document.getElementById('contenedorDep') as HTMLElement
 
-    document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        await cargarDepartamentos()
-    } catch (error) {
-        console.error("Error al cargar departamentos:", error);
-    }
-    });
+        document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            await cargarDepartamentos()
+        } catch (error) {
+            console.error("Error al cargar departamentos:", error)
+        }
+        })
 
-    async function cargarDepartamentos(): Promise<Departamento[]> {
-        const response = await fetch(`${URLBACK}/departamento/cards`, {
-                credentials: 'include'
-            });
-        if (!response.ok) throw new Error('Error al obtener departamentos');
+        async function cargarDepartamentos(): Promise<Departamento[]> {
+            const response = await fetch(`${URLBACK}/departamento/cards`, {
+                    credentials: 'include'
+                })
+            if (!response.ok) throw new Error('Error al obtener departamentos')
 
-        const departamentos: Departamento[] = await response.json();
-        if (!contenedor) return [];
+            const departamentos: Departamento[] = await response.json()
+            if (!contenedor) return []
 
-        contenedor.innerHTML = '';
-        departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+            contenedor.innerHTML = ''
+            departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime())
 
-        departamentos.forEach(dep => {
-            const card = document.createElement('div');
-            card.className = 'bg-black/25 rounded-lg shadow-md w-72 gap-4 transition duration-300 ease-in-out flex flex-shrink-0 flex-col';
-            card.innerHTML = `
-            <figure class="w-full h-64 flex justify-center items-center overflow-hidden">
-                <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
-            </figure>
-            <div class="p-4">
-                 <a href="/departamento/${dep.slug}">
-                    <h2 class="text-xl font-medium mb-2 text-gray-200 hover:scale-105 transition duration-150">${dep.titulo}</h2>
-                </a>
-                <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
-            </div>
-            `;
-            contenedor.appendChild(card);
-        });
-        return departamentos;
-    }
-
-
+            departamentos.forEach(dep => {
+                const card = document.createElement('div')
+                card.className = 'bg-black/25 rounded-lg shadow-md w-72 gap-4 transition duration-300 ease-in-out flex flex-shrink-0 flex-col'
+                card.innerHTML = `
+                <figure class="w-full h-64 flex justify-center items-center overflow-hidden">
+                    <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
+                </figure>
+                <div class="p-4">
+                    <a href="/departamento/${dep.slug}">
+                        <h2 class="text-xl font-medium mb-2 text-gray-200 hover:scale-105 transition duration-150">${dep.titulo}</h2>
+                    </a>
+                    <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
+                </div>
+                `
+                contenedor.appendChild(card)
+            })
+            return departamentos
+        }
     </script>
 </Layout>

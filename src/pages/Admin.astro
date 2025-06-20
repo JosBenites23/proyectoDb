@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout>
@@ -22,23 +22,23 @@ import Layout from "../layouts/Layout.astro";
         try {
           const res = await fetch(`${URLBACK}/protegida`, {
             credentials: 'include',
-          });
+          })
 
           if (res.ok) {
             // Ya está autenticado, redirige automáticamente
-            window.location.href = '/AdminPanel';
+            window.location.href = '/AdminPanel'
           }
           // Si no está autenticado, no hace nada y permite mostrar el login
         } catch (err) {
-          console.error('Error al verificar autenticación:', err);
+          console.error('Error al verificar autenticación:', err)
         }
-      });
+      })
 
       const loginform = document.querySelector('#loginForm') as HTMLFormElement
       const errorMsg = document.querySelector('#errorMsg') as HTMLElement
 
         loginform.addEventListener('submit', async function (e: Event) {
-            e.preventDefault();
+            e.preventDefault()
             
             const username = (document.querySelector('#username') as HTMLInputElement).value
             const password = (document.querySelector('#password') as HTMLInputElement).value
@@ -54,22 +54,22 @@ import Layout from "../layouts/Layout.astro";
                   username: username,
                   password: password
                 })
-              });
+              })
        
               if (response.ok) {
-                window.location.href = '/AdminPanel'; // Redirige al panel
+                window.location.href = '/AdminPanel' // Redirige al panel
               } else {
-                const errorText = await response.text();
-                errorMsg.innerText = 'Credenciales inválidas';
-                console.error('Error de login:', errorText);
+                const errorText = await response.text()
+                errorMsg.innerText = 'Credenciales inválidas'
+                console.error('Error de login:', errorText)
               }
             } 
             
             catch (error) {
-              console.error('Error de red o servidor:', error);
-              errorMsg.innerText = 'Error del servidor';
+              console.error('Error de red o servidor:', error)
+              errorMsg.innerText = 'Error del servidor'
             }
-          });
+          })
           
     </script>
 

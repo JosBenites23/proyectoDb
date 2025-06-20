@@ -21,34 +21,34 @@ import Birthday from "../components/Birthday.astro"
     <script>
         const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         interface Noticia {
-            id: number;
-            titulo: string;
-            descripcion: string;
-            tipo_contenido: string;
-            contenido: string;
-            fecha_creacion: string;
+            id: number
+            titulo: string
+            descripcion: string
+            tipo_contenido: string
+            contenido: string
+            fecha_creacion: string
         }       
     
         async function cargarNoticias() {
             const response = await fetch(`${URLBACK}/noticias`, {
                 credentials: 'include'
-            });
+            })
             if (!response.ok) {
-                console.error('Error al obtener noticias');
-                return;
+                console.error('Error al obtener noticias')
+                return
             }
             
-            const noticias: Noticia[] = await response.json();
+            const noticias: Noticia[] = await response.json()
     
             // Ordenar por fecha más reciente primero
-            noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+            noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime())
     
-            const contenedorNoticias = document.getElementById('contenedorNoticias') as HTMLElement;
-            contenedorNoticias.innerHTML = '';
+            const contenedorNoticias = document.getElementById('contenedorNoticias') as HTMLElement
+            contenedorNoticias.innerHTML = ''
     
             noticias.forEach((noticia) => {
-                const card = document.createElement('div');
-                card.className = 'shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2';
+                const card = document.createElement('div')
+                card.className = 'shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2'
     
                 let contenidoHTML = ""
 
@@ -57,20 +57,20 @@ import Birthday from "../components/Birthday.astro"
                         <a href="${noticia.contenido}" target="_blank" class="block hover:scale-105 transition duration-200">
                             <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-cover w-full h-64">
                         </a>
-                    `;
+                    `
                 } else if (noticia.tipo_contenido === 'video') {
                     contenidoHTML = `
                         <video controls class="w-full h-64">
                             <source src="${noticia.contenido}" type="video/mp4">
                             Tu navegador no soporta videos.
                         </video>
-                    `;
+                    `
                 } else if (noticia.tipo_contenido === 'texto') {
                     contenidoHTML = `
                         <div class="w-full h-64 flex items-center justify-center text-2xl text-blue-600 font-semibold text-center p-4">
                         <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="/images/LogoBanner.png" class="object-contain w-full h-auto">Lea aquí</a>
                         </div>
-                    `;
+                    `
                 }
     
                 card.innerHTML = `
@@ -81,57 +81,15 @@ import Birthday from "../components/Birthday.astro"
                         <h2 class="text-xl font-medium mb-2 text-gray-200">${noticia.titulo}</h2>
                         <p class="text-gray-200 text-sm mb-3">${noticia.descripcion}</p>
                     </div>
-                `;
+                `
     
-                contenedorNoticias.appendChild(card);
-            });
+                contenedorNoticias.appendChild(card)
+            })
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            cargarNoticias();
-        });
-
-        /*
-         Función para eliminar la noticia
-         declare global {
-            interface Window {
-                eliminarNoticia: (id: number) => Promise<void>;
-            }
-        }
-        async function eliminarNoticia(id: number) {
-            console.log("Eliminando noticia con ID:", id);
-            const response = await fetch(`${URLBACK}/eliminar-noticia/${id}`, {
-                method: 'DELETE',
-                credentials: 'include' // Incluye cookies en la solicitud
-            });
-
-            if (response.ok) {
-                alert('Noticia eliminada');
-                cargarNoticias(); // Recargar las noticias
-            } else {
-                alert('Error al eliminar la noticia');
-            }
-        }
-
-        window.eliminarNoticia = eliminarNoticia;
-
-        
-
-        let tokenValido = false; // Variable para almacenar el estado del token
-
-        async function verificarToken() {
-            try {
-                const response = await fetch(`${URLBACK}/protegida`, {
-                    credentials: 'include' // Incluye cookies en la solicitud
-                });
-
-                tokenValido = response.ok;
-            } catch (error) {
-                tokenValido = false;
-                console.error('Error al verificar el token:', error);
-            }
-        }*/
+            cargarNoticias()
+        })
     </script>
-    
     
 </Layout>

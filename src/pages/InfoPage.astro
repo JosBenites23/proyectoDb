@@ -66,55 +66,55 @@ import Footer from "../components/Footer.astro"
     </section>
 
     <script>
-        const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost';
+        const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 
         type AboutData = {
-        historia?: string;
-        mision?: string;
-        vision?: string;
-        presencia?: string;
-        imagen?: string;
-        imagen2?: string;
-        imagen3?: string;
-        anio?: string;
-        anio2?: string;
-        };
+        historia?: string
+        mision?: string
+        vision?: string
+        presencia?: string
+        imagen?: string
+        imagen2?: string
+        imagen3?: string
+        anio?: string
+        anio2?: string
+        }
 
-        let aboutData: AboutData = {};
+        let aboutData: AboutData = {}
 
         document.addEventListener('DOMContentLoaded', async () => {
-        await cargarSobreNosotros();
-        //await cargarEmpresas();
-        }); 
+        await cargarSobreNosotros()
+        //await cargarEmpresas()
+        })
 
         async function cargarSobreNosotros() {
             try {
-                const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' });
-                aboutData = await res.json();
+                const res = await fetch(`${URLBACK}/about/`, { credentials: 'include' })
+                aboutData = await res.json()
 
                 // Elementos del DOM
-                const historiaText = document.getElementById('historiaText');
-                const misionText = document.getElementById('misionText');
-                const visionText = document.getElementById('visionText');
-                const presenciaText = document.getElementById('presenciaText');
-                const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null;
-                const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null;
-                const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null;
-                const anio = document.getElementById('anio');
-                const anio2 = document.getElementById('anio2');
+                const historiaText = document.getElementById('historiaText')
+                const misionText = document.getElementById('misionText')
+                const visionText = document.getElementById('visionText')
+                const presenciaText = document.getElementById('presenciaText')
+                const aboutImg = document.getElementById('aboutImg') as HTMLImageElement | null
+                const aboutImg2 = document.getElementById('aboutImg2') as HTMLImageElement | null
+                const aboutImg3 = document.getElementById('aboutImg3') as HTMLImageElement | null
+                const anio = document.getElementById('anio')
+                const anio2 = document.getElementById('anio2')
 
-                if (historiaText) historiaText.textContent = aboutData.historia || '';
-                if (misionText) misionText.textContent = aboutData.mision || '';
-                if (visionText) visionText.textContent = aboutData.vision || '';
-                if (presenciaText) presenciaText.textContent = aboutData.presencia || '';
-                if (aboutImg) aboutImg.src = aboutData.imagen || '';
-                if (aboutImg2) aboutImg2.src = aboutData.imagen2 || '';
-                if (aboutImg3) aboutImg3.src = aboutData.imagen3 || '';
-                if (anio) anio.textContent = aboutData.anio || '';
-                if (anio2) anio2.textContent = aboutData.anio2 || '';
+                if (historiaText) historiaText.textContent = aboutData.historia || ''
+                if (misionText) misionText.textContent = aboutData.mision || ''
+                if (visionText) visionText.textContent = aboutData.vision || ''
+                if (presenciaText) presenciaText.textContent = aboutData.presencia || ''
+                if (aboutImg) aboutImg.src = aboutData.imagen || ''
+                if (aboutImg2) aboutImg2.src = aboutData.imagen2 || ''
+                if (aboutImg3) aboutImg3.src = aboutData.imagen3 || ''
+                if (anio) anio.textContent = aboutData.anio || ''
+                if (anio2) anio2.textContent = aboutData.anio2 || ''
 
             } catch (err) {
-                console.error("Error al cargar sección 'Sobre Nosotros':", err);
+                console.error("Error al cargar sección 'Sobre Nosotros':", err)
             }
         }
 

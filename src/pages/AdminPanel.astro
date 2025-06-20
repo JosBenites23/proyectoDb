@@ -1,20 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import SubirNoticia from "../cards/SubirNoticia.astro";
-import ListaNoticias from "../cards/ListaNoticias.astro";
-import SubirEmpresa from "../cards/SubirEmpresa.astro";
-import ListaEmpresas from "../cards/ListaEmpresas.astro";
-import ActualizarInfo from "../cards/ActualizarInfo.astro";
-import SubirDep from "../cards/SubirDep.astro";
-import ListaDep from "../cards/ListaDep.astro";
-import EditarDep from "../cards/EditarDep.astro";
-import ListaLinks from "../cards/ListaLinks.astro";
-import SubirLink from "../cards/SubirLink.astro";
-import EditarColab from "../cards/EditarColab.astro";
+import SubirNoticia from "../cards/SubirNoticia.astro"
+import ListaNoticias from "../cards/ListaNoticias.astro"
+import SubirEmpresa from "../cards/SubirEmpresa.astro"
+import ListaEmpresas from "../cards/ListaEmpresas.astro"
+import ActualizarInfo from "../cards/ActualizarInfo.astro"
+import SubirDep from "../cards/SubirDep.astro"
+import ListaDep from "../cards/ListaDep.astro"
+import EditarDep from "../cards/EditarDep.astro"
+import ListaLinks from "../cards/ListaLinks.astro"
+import SubirLink from "../cards/SubirLink.astro"
+import EditarColab from "../cards/EditarColab.astro"
 
-const url = new URL(Astro.request.url);
-const panel = url.searchParams.get("panel");
-const id = url.searchParams.get("id");
+const url = new URL(Astro.request.url)
+const panel = url.searchParams.get("panel")
+const id = url.searchParams.get("id")
 ---
 
 <Layout showMenu={false}>
@@ -136,33 +136,33 @@ const id = url.searchParams.get("id");
     .then(response => {
     if (!response.ok) {
         // Si no está autorizado, redirige al login
-        window.location.href = '/Admin';
+        window.location.href = '/Admin'
     } else {
-        return response.json();
+        return response.json()
     }
     })
     .then(data => {
-    console.log('Bienvenido:', 'user');
+    console.log('Bienvenido:', 'user')
     })
     .catch(error => {
-        console.error('Error al verificar sesión:', error);
-        window.location.href = '/Admin';
-    });
+        console.error('Error al verificar sesión:', error)
+        window.location.href = '/Admin'
+    })
 
     document.querySelector('#logoutButton')!.addEventListener('click', async() => {
         try {
         const response = await fetch(`${URLBACK}/logout`, {
             method: 'POST',
             credentials: 'include' // Incluye cookies en la solicitud
-        });
+        })
 
         if (response.ok) {
             window.location.href = '/'; // Redirige después de logout
         } else {
-            console.error('Error en la respuesta del servidor al cerrar sesión');
+            console.error('Error en la respuesta del servidor al cerrar sesión')
         }
         } catch (error) {
-        console.error('Error al cerrar sesión:', error);
+        console.error('Error al cerrar sesión:', error)
         }
-    });
+    })
 </script>
