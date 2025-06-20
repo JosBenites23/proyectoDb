@@ -21,7 +21,7 @@ async def crear_Empresa(
         file_object.write(imagen.file.read())
 
     url_contenido = contenido if contenido else f"{URLBACK}/uploads/{imagen.filename}"
-    url_imagen = f"{URLFRONT}/uploads/{imagen.filename}"
+    url_imagen = f"{URLBACK}/uploads/{imagen.filename}"
 
     nueva_Empresa = CoModel(
         #id=noticia.id,
