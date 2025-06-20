@@ -4,13 +4,14 @@ from dataBase.modelCompany import CoModel
 from dataBase.schemaCompany import CoSchema
 from client import get_db
 from fastapi import UploadFile, File, Form
-from config import URLBACK
+from config import URLBACK, URLFRONT
+from typing import Optional 
 
 router = APIRouter()
 
 @router.post("/company/", response_model=CoSchema)
 async def crear_Empresa(
-    contenido: str = Form(..., max_length=10000),
+    contenido: Optional[str] = Form(..., max_length=10000),
     imagen: UploadFile = File(...),
     db: Session = Depends(get_db)):
 
@@ -19,7 +20,7 @@ async def crear_Empresa(
     with open(file_location, "wb+") as file_object:
         file_object.write(imagen.file.read())
 
-    url_contenido = f"{URLBACK}/uploads/{imagen.filename}"
+    url_contenido = contenido if contenido else f"{URLBACK}/uploads/{imagen.filename}"
 
     nueva_Empresa = CoModel(
         #id=noticia.id,
