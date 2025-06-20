@@ -31,7 +31,7 @@ const id = url.searchParams.get("id");
             <ul class="flex gap-x-5 md:gap-x-6 lg:gap-x-10 xl:gap-x-28 mr-10 [&>li>a]:px-7 [&>li>a]:py-2 [&>li>a]:inline-block [&>li>a]:text-sm [&>li>a]:font-black [&>li>a]:text-[#0d122e] [&>li>a]:bg-[#00d0fe] [&>li>a:hover]:text-[#00d0fe] [&>li>a:hover]:bg-[#0d122e] [&>li>a]:transition-colors [&>li>a]:duration-300 [&>li>a]:rounded-4xl">
             <li class="relative group flex items-center justify-center px-7 py-2 text-sm font-black text-[#0d122e] bg-[#00d0fe] hover:text-[#00d0fe] hover:bg-[#0d122e] transition-colors duration-300 rounded-4xl">
                 Noticias
-                <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
+                <ul class="hidden group-hover:flex flex-col absolute top-full left-1/2 -translate-x-1/2 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
                     <li><a href="/AdminPanel?panel=subir-noticia" >Subir Noticia</a></li>
                     <li><a href="/AdminPanel?panel=noticias-lista">Lista de Noticias</a></li>
                 </ul>
@@ -39,21 +39,21 @@ const id = url.searchParams.get("id");
             <li><a href="/AdminPanel?panel=quienes-somos">Quiénes somos</a></li>
             <li class="relative group flex items-center justify-center px-7 py-2 text-sm font-black text-[#0d122e] bg-[#00d0fe] hover:text-[#00d0fe] hover:bg-[#0d122e] transition-colors duration-300 rounded-4xl">
                 Departamentos
-                <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block z-10">
+                <ul class="hidden group-hover:flex flex-col absolute top-full left-1/2 -translate-x-1/2 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block z-10">
                     <li><a href="/AdminPanel?panel=subir-departamento" >Subir Departamento</a></li>
                     <li><a href="/AdminPanel?panel=departamentos-lista">Lista de Departamentos</a></li>
                 </ul>
             </li>
             <li class="relative group flex items-center justify-center px-7 py-2 text-sm font-black text-[#0d122e] bg-[#00d0fe] hover:text-[#00d0fe] hover:bg-[#0d122e] transition-colors duration-300 rounded-4xl">
                 Links
-                <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block z-10">
+                <ul class="hidden group-hover:flex flex-col absolute top-full left-1/2 -translate-x-1/2 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block z-10">
                     <li><a href="/AdminPanel?panel=subir-link" >Subir Links</a></li>
                     <li><a href="/AdminPanel?panel=links-lista">Lista de Links</a></li>
                 </ul>
             </li>
             <li class="relative group flex items-center justify-center px-7 py-2 text-sm font-black text-[#0d122e] bg-[#00d0fe] hover:text-[#00d0fe] hover:bg-[#0d122e] transition-colors duration-300 rounded-4xl">
                 Empresas
-                <ul class="hidden group-hover:flex absolute top-full left-0 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
+                <ul class="hidden group-hover:flex flex-col absolute top-full left-1/2 -translate-x-1/2 [&>li]:items-center [&>li]:justify-center space-y-4 p-4 bg-[#0d122e] shadow-lg border-white border-2 rounded-lg [&>li>a]:bg-white [&>li>a]:text-[#0d122e] [&>li>a]:hover:bg-[#00d0fe] [&>li>a]:hover:text-[#0d122e] [&>li]:mr-4 [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:rounded-4xl [&>li>a]:font-black [&>li>a]:text-sm overflow-y-scroll scrollbar-none [&>li>a]:w-auto [&>li>a]:whitespace-nowrap [&>li>a]:block">
                     <li><a href="/AdminPanel?panel=subir-empresa" >Subir Empresa</a></li>
                     <li><a href="/AdminPanel?panel=empresas-lista">Lista de Empresas</a></li>
                 </ul>
