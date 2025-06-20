@@ -21,11 +21,12 @@ async def crear_Empresa(
         file_object.write(imagen.file.read())
 
     url_contenido = contenido if contenido else f"{URLBACK}/uploads/{imagen.filename}"
+    url_imagen = f"{URLFRONT}/uploads/{imagen.filename}"
 
     nueva_Empresa = CoModel(
         #id=noticia.id,
-        contenido=contenido,
-        imagen=url_contenido
+        contenido=url_contenido,
+        imagen=url_imagen
     )
 
     db.add(nueva_Empresa)
