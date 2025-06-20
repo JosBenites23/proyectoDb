@@ -18,8 +18,24 @@ import Layout from "../layouts/Layout.astro";
 
     <script>
       const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
-        const loginform = document.querySelector('#loginForm') as HTMLFormElement
-        const errorMsg = document.querySelector('#errorMsg') as HTMLElement
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const res = await fetch(`${URLBACK}/protegida`, {
+            credentials: 'include',
+          });
+
+          if (res.ok) {
+            // Ya está autenticado, redirige automáticamente
+            window.location.href = '/AdminPanel';
+          }
+          // Si no está autenticado, no hace nada y permite mostrar el login
+        } catch (err) {
+          console.error('Error al verificar autenticación:', err);
+        }
+      });
+
+      const loginform = document.querySelector('#loginForm') as HTMLFormElement
+      const errorMsg = document.querySelector('#errorMsg') as HTMLElement
 
         loginform.addEventListener('submit', async function (e: Event) {
             e.preventDefault();
