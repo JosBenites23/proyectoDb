@@ -12,25 +12,25 @@
     <script>
         const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
         interface Team {
-            id: number;
-            descripcion: string;
-            contenido: string;
+            id: number
+            descripcion: string
+            contenido: string
         }        
     
         async function cargarColaboradores() {
             const response = await fetch(`${URLBACK}/team/`, {
                 credentials: 'include'
-            });
+            })
             if (!response.ok) {
                 console.error('Error al obtener los colaboradores')
-                return;
+                return
             }
             
             const Colaboradores: Team[] = await response.json()
 
             const ultimoTeam = Colaboradores[0]
     
-            const contenedorColaboradores = document.getElementById('contenedorColaboradores') as HTMLElement;
+            const contenedorColaboradores = document.getElementById('contenedorColaboradores') as HTMLElement
 
             contenedorColaboradores.innerHTML = ''
     
@@ -40,7 +40,7 @@
                 card.innerHTML = `
                     <p class="mb-4 font-medium">${ultimoTeam.descripcion}</p>
                         <img src="${ultimoTeam.contenido}" alt="Imagen de Noticia" class="object-contain w-full max-w-xl h-auto rounded-lg shadow-lg">                        
-                `;
+                `
     
                 contenedorColaboradores.appendChild(card)
         }   

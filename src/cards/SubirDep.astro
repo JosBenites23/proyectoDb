@@ -19,77 +19,78 @@
 </form>
 
 <script>
-const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
+    
     async function subirDep(nuevoDep: FormData) {
-    const response = await fetch(`${URLBACK}/departamento/`, {
-        method: 'POST',
-        credentials: 'include',
-        body: nuevoDep
-        });
+        const response = await fetch(`${URLBACK}/departamento/`, {
+            method: 'POST',
+            credentials: 'include',
+            body: nuevoDep
+        })
 
         if (!response.ok) {
-            throw new Error('Error al subir departamento');
+            throw new Error('Error al subir departamento')
         }
 
-        const departamentoCreado = await response.json();
-        console.log('Departamento subido exitosamente:', departamentoCreado);
+        const departamentoCreado = await response.json()
+        console.log('Departamento subido exitosamente:', departamentoCreado)
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const formulario = document.querySelector('#depForm') as HTMLFormElement;
+        const formulario = document.querySelector('#depForm') as HTMLFormElement
 
         formulario.addEventListener('submit', async (event) => {
-            event.preventDefault();
+            event.preventDefault()
 
             const titulo = (document.querySelector('#tituloD') as HTMLInputElement).value
             const descripcion = (document.querySelector('#descripcionD') as HTMLTextAreaElement).value
 
-            const imagenInput = document.querySelector('#imagenD') as HTMLInputElement;
-            const file = document.querySelector('#archivoD') as HTMLInputElement;
+            const imagenInput = document.querySelector('#imagenD') as HTMLInputElement
+            const file = document.querySelector('#archivoD') as HTMLInputElement
             const urlInput = document.querySelector('#urlD') as HTMLInputElement
             const nombreLinkInput = document.querySelector('#nombreDL') as HTMLInputElement
 
-            const imagen = imagenInput.files?.[0];
-            const link_file = file.files?.[0];
-            const link_url = urlInput.value.trim();
+            const imagen = imagenInput.files?.[0]
+            const link_file = file.files?.[0]
+            const link_url = urlInput.value.trim()
             const titulo_link = nombreLinkInput.value.trim()
 
             if (!imagen) {
-                alert('Debes subir una imagen');
+                alert('Debes subir una imagen')
                 return;
             }
 
-            const nuevoDep = new FormData();
-            nuevoDep.append('titulo', titulo);
-            nuevoDep.append('descripcion', descripcion);
-            nuevoDep.append('imagen', imagen);
+            const nuevoDep = new FormData()
+            nuevoDep.append('titulo', titulo)
+            nuevoDep.append('descripcion', descripcion)
+            nuevoDep.append('imagen', imagen)
 
             if (titulo_link !== "") {
-                nuevoDep.append('titulo_link', titulo_link);
+                nuevoDep.append('titulo_link', titulo_link)
                 if (link_file && link_url) {
-                    alert('Solo puedes agregar un archivo o una URL, no ambos.');
-                    return;
+                    alert('Solo puedes agregar un archivo o una URL, no ambos.')
+                    return
                 }
 
                 if (link_file) {
-                    nuevoDep.append('link_file', link_file);
+                    nuevoDep.append('link_file', link_file)
                 } else if (link_url) {
-                    nuevoDep.append('link_url', link_url);
+                    nuevoDep.append('link_url', link_url)
                 } else {
-                    alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
-                    return;
+                    alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.')
+                    return
                 }
             }
 
             try {
-                await subirDep(nuevoDep);
-                alert('Departamento subido correctamente.');
-                formulario.reset();
+                await subirDep(nuevoDep)
+                alert('Departamento subido correctamente.')
+                formulario.reset()
             } catch (error) {
-                console.error(error);
-                alert('Error al subir Departamento.');
+                console.error(error)
+                alert('Error al subir Departamento.')
             }
-        });
-    });
+        })
+    })
 
 </script>

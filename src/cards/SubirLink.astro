@@ -10,7 +10,7 @@
 </form>
 
 <script>
-    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
 
     interface Link{
         id: number
@@ -18,7 +18,6 @@
         link: string
     }
 
-    // Función para subir link 
     async function subirLinkInterno(nuevoLink:Link) {
         const response = await fetch(`${URLBACK}/links/`, {
             method: 'POST',
@@ -27,38 +26,39 @@
                 'content-type': 'application/json',
             },
             body: JSON.stringify(nuevoLink)
-        });
+        })
 
         if (!response.ok) {
-            throw new Error('Error al subir link');
+            throw new Error('Error al subir link')
         }
-            const noticiaCreada = await response.json();
-            console.log('link subida exitosamente:', noticiaCreada);
+        
+        const noticiaCreada = await response.json()
+        console.log('link subida exitosamente:', noticiaCreada)
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const formulario = document.querySelector('#linkForm') as HTMLFormElement;
+        const formulario = document.querySelector('#linkForm') as HTMLFormElement
 
         formulario.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevenir que recargue la página
 
-            const nombre = (document.querySelector('#nombre') as HTMLInputElement).value;
-            const url = (document.querySelector('#url') as HTMLInputElement).value;
+            const nombre = (document.querySelector('#nombre') as HTMLInputElement).value
+            const url = (document.querySelector('#url') as HTMLInputElement).value
 
             const nuevoLink = {
                 name: nombre,
                 link: url
-            } as Link;
+            } as Link
 
             try {
-                await subirLinkInterno(nuevoLink);
-                alert('Link subido correctamente.');
-                formulario.reset(); // Limpiar formulario
+                await subirLinkInterno(nuevoLink)
+                alert('Link subido correctamente.')
+                formulario.reset() // Limpiar formulario
             } catch (error) {
-                console.error(error);
-                alert('Error al subir link.');
+                console.error(error)
+                alert('Error al subir link.')
             }
-        });
-    });
+        })
+    })
 </script>
 

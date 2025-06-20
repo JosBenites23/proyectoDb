@@ -26,60 +26,60 @@
 </form>
 
 <script>
-    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
 
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('aboutForm') as HTMLFormElement | null;
+        const form = document.getElementById('aboutForm') as HTMLFormElement | null
         if (form) {
             form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+                e.preventDefault()
 
-                const historia = (document.getElementById('historia') as HTMLTextAreaElement).value.trim();
-                const mision = (document.getElementById('mision') as HTMLTextAreaElement).value.trim();
-                const vision = (document.getElementById('vision') as HTMLTextAreaElement).value.trim();
-                const presencia = (document.getElementById('presencia') as HTMLTextAreaElement).value.trim();
+                const historia = (document.getElementById('historia') as HTMLTextAreaElement).value.trim()
+                const mision = (document.getElementById('mision') as HTMLTextAreaElement).value.trim()
+                const vision = (document.getElementById('vision') as HTMLTextAreaElement).value.trim()
+                const presencia = (document.getElementById('presencia') as HTMLTextAreaElement).value.trim()
 
-                const anio1 = (document.getElementById('anio1') as HTMLInputElement).value.trim();
-                const anio2 = (document.getElementById('anio2') as HTMLInputElement).value.trim();
+                const anio1 = (document.getElementById('anio1') as HTMLInputElement).value.trim()
+                const anio2 = (document.getElementById('anio2') as HTMLInputElement).value.trim()
 
-                const imagen1 = (document.getElementById('imagen1') as HTMLInputElement).files?.[0];
-                const imagen2 = (document.getElementById('imagen2') as HTMLInputElement).files?.[0];
-                const imagen3 = (document.getElementById('imagen3') as HTMLInputElement).files?.[0];
+                const imagen1 = (document.getElementById('imagen1') as HTMLInputElement).files?.[0]
+                const imagen2 = (document.getElementById('imagen2') as HTMLInputElement).files?.[0]
+                const imagen3 = (document.getElementById('imagen3') as HTMLInputElement).files?.[0]
 
-                const formData = new FormData();
+                const formData = new FormData()
 
-                if (historia) formData.append('historia', historia);
-                if (mision) formData.append('mision', mision);
-                if (vision) formData.append('vision', vision);
-                if (presencia) formData.append('presencia', presencia);
+                if (historia) formData.append('historia', historia)
+                if (mision) formData.append('mision', mision)
+                if (vision) formData.append('vision', vision)
+                if (presencia) formData.append('presencia', presencia)
 
-                if (anio1) formData.append('anio', anio1);
-                if (anio2) formData.append('anio2', anio2);
+                if (anio1) formData.append('anio', anio1)
+                if (anio2) formData.append('anio2', anio2)
 
-                if (imagen1) formData.append('imagen', imagen1);
-                if (imagen2) formData.append('imagen2', imagen2);
-                if (imagen3) formData.append('imagen3', imagen3);
+                if (imagen1) formData.append('imagen', imagen1)
+                if (imagen2) formData.append('imagen2', imagen2)
+                if (imagen3) formData.append('imagen3', imagen3)
 
                 if ([...formData.entries()].length === 0) {
-                    alert('No se ha modificado ningún campo.');
-                    return;
+                    alert('No se ha modificado ningún campo.')
+                    return
                 }
 
                 const res = await fetch(`${URLBACK}/about/`, {
                     method: 'PUT',
                     credentials: 'include',
                     body: formData
-                });
+                })
 
                 if (res.ok) {
-                    alert('Información actualizada con éxito.');
+                    alert('Información actualizada con éxito.')
                     form.reset(); // Opcional: limpia los campos
                 } else {
-                    alert('Error al actualizar la información.');
+                    alert('Error al actualizar la información.')
                 }
-            });
+            })
         }
-    });
+    })
 
 
 </script>

@@ -5,159 +5,81 @@
 </section>
 
 <script>
-  const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost';
+  const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 
   type Empresa = {
-    id: number;
-    contenido: string;
-    imagen: string;
-  };
+    id: number
+    contenido: string
+    imagen: string
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
-    cargarEmpresas();
-  });
+    cargarEmpresas()
+  })
 
   function orderCentered(arr: Empresa[]): Empresa[] {
-    const result: Empresa[] = [];
-    const mid = Math.floor(arr.length / 2);
-    if (arr.length === 0) return result;
-    result.push(arr[mid]);
-    let step = 1;
+    const result: Empresa[] = []
+    const mid = Math.floor(arr.length / 2)
+    if (arr.length === 0) return result
+    result.push(arr[mid])
+    let step = 1
     while (result.length < arr.length) {
-      if (mid + step < arr.length) result.push(arr[mid + step]);
-      if (mid - step >= 0) result.push(arr[mid - step]);
-      step++;
+      if (mid + step < arr.length) result.push(arr[mid + step])
+      if (mid - step >= 0) result.push(arr[mid - step])
+      step++
     }
-    return result;
+    return result
   }
 
   function dividirEnGrupos<T>(array: T[], tam: number): T[][] {
-    const result: T[][] = [];
+    const result: T[][] = []
     for (let i = 0; i < array.length; i += tam) {
-      result.push(array.slice(i, i + tam));
+      result.push(array.slice(i, i + tam))
     }
-    return result;
+    return result
   }
 
   async function cargarEmpresas(): Promise<Empresa[]> {
-    const contenedor = document.getElementById('contenedorEmpresas');
-    if (!contenedor) return [];
+    const contenedor = document.getElementById('contenedorEmpresas')
+    if (!contenedor) return []
 
     const response = await fetch(`${URLBACK}/company/`, {
       credentials: 'include'
-    });
-    if (!response.ok) throw new Error('Error al obtener las empresas');
+    })
+    if (!response.ok) throw new Error('Error al obtener las empresas')
 
-    const empresas: Empresa[] = await response.json();
-    contenedor.innerHTML = '';
+    const empresas: Empresa[] = await response.json()
+    contenedor.innerHTML = ''
 
-    const grupos = dividirEnGrupos(empresas, 10);
+    const grupos = dividirEnGrupos(empresas, 10)
 
     grupos.forEach((grupo, index) => {
-      const fila = document.createElement('div');
+      const fila = document.createElement('div')
       fila.className = `flex gap-3 md:gap-4 lg:gap-14 xl:gap-44 justify-center flex-wrap w-full lg:max-w-[2560px] ${
         index % 2 === 0 ? 'pl-0' : 'pl-[5%]'
-      }`;
-      const ordenado = orderCentered(grupo);
-      ordenado.forEach(emp => fila.appendChild(crearCardEmpresa(emp)));
-      contenedor.appendChild(fila);
+      }`
+      const ordenado = orderCentered(grupo)
+      ordenado.forEach(emp => fila.appendChild(crearCardEmpresa(emp)))
+      contenedor.appendChild(fila)
     });
 
-    return empresas;
+    return empresas
   }
 
   function crearCardEmpresa(empresa: Empresa): HTMLElement {
-    const a = document.createElement('a');
-    a.href = empresa.contenido;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.className = 'w-[60px] h-auto flex-shrink-0 rounded-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
+    const a = document.createElement('a')
+    a.href = empresa.contenido
+    a.target = '_blank'
+    a.rel = 'noopener noreferrer'
+    a.className = 'w-[60px] h-auto flex-shrink-0 rounded-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer'
 
-    const img = document.createElement('img');
-    img.src = empresa.imagen;
-    img.alt = 'imagen de empresa';
-    img.className = 'w-full h-full object-contain rounded-lg';
+    const img = document.createElement('img')
+    img.src = empresa.imagen
+    img.alt = 'imagen de empresa'
+    img.className = 'w-full h-full object-contain rounded-lg'
 
-    a.appendChild(img);
-    return a;
+    a.appendChild(img)
+    return a
   }
+
 </script>
-
-<!-----
-
-<script>
-  const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
-
-      type Empresa = {
-      id: number;
-      contenido: string;
-      imagen: string;
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarEmpresas();
-    });
-
-    function orderCentered(arr: Empresa[]): Empresa[] {
-      const result: Empresa[] = [];
-      const mid = Math.floor(arr.length / 2);
-      if (arr.length === 0) return result;
-      result.push(arr[mid]);
-      let step = 1;
-      while (result.length < arr.length) {
-        if (mid + step < arr.length) result.push(arr[mid + step]);
-        if (mid - step >= 0) result.push(arr[mid - step]);
-        step++;
-      }
-      return result;
-    }
-
-    async function cargarEmpresas(): Promise<Empresa[]> {
-      const fila1 = document.getElementById('fila1');
-      const fila2 = document.getElementById('fila2');
-      if (!fila1 || !fila2) return [];
-
-      const response = await fetch(`${URLBACK}/company/`, {
-        credentials: 'include'
-      });
-      if (!response.ok) throw new Error('Error al obtener las empresas');
-
-      const empresas: Empresa[] = await response.json();
-
-      fila1.innerHTML = '';
-      fila2.innerHTML = '';
-
-      const primerGrupo = empresas.slice(0, 10);
-      const segundoGrupo = empresas.slice(10, 20);
-
-      const orden1 = orderCentered(primerGrupo);
-      const orden2 = orderCentered(segundoGrupo);
-
-      orden1.forEach(empresa => {
-        fila1.appendChild(crearCardEmpresa(empresa));
-      });
-
-      orden2.forEach(empresa => {
-        fila2.appendChild(crearCardEmpresa(empresa));
-      });
-
-      return empresas;
-    }
-
-    function crearCardEmpresa(empresa: Empresa): HTMLElement {
-      const a = document.createElement('a');
-      a.href = empresa.contenido;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.className = 'w-20 h-auto flex-shrink-0 rounded-lg hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer';
-
-      const img = document.createElement('img');
-      img.src = empresa.imagen;
-      img.alt = 'imagen de empresa';
-      img.className = 'w-full h-full object-contain rounded-lg';
-
-      a.appendChild(img);
-      return a;
-    }
-</script>
---- -->

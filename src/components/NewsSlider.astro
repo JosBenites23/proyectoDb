@@ -24,59 +24,59 @@
 <script>
   const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
     document.addEventListener('DOMContentLoaded', async () => {
-      const contenedor = document.getElementById('ultimasNoticias') as HTMLElement;
+      const contenedor = document.getElementById('ultimasNoticias') as HTMLElement
       const preBtn = document.getElementById('preBtn') as HTMLElement
       const nxtBtn = document.getElementById('nxtBtn') as HTMLElement
     
       interface Noticia {
-        id: number;
-        titulo: string;
-        descripcion: string;
-        tipo_contenido: string;
-        contenido: string;
-        fecha_creacion: string;
+        id: number
+        titulo: string
+        descripcion: string
+        tipo_contenido: string
+        contenido: string
+        fecha_creacion: string
     }
 
     async function obtenerNoticias(): Promise<Noticia[]> {
         const res = await fetch(`${URLBACK}/noticias`, {
             credentials: 'include' // Incluye cookies en la solicitud
-        });
-        if (!res.ok) throw new Error('Error al obtener noticias');
+        })
+        if (!res.ok) throw new Error('Error al obtener noticias')
         const data: Noticia[] = await res.json()
-        return data;
+        return data
+    }
+    
+    try {
+      const noticias = await obtenerNoticias()
+      const ultimasNueve = noticias.slice(0, 9)
+    
+      ultimasNueve.forEach((noticia) => {
+        const card = document.createElement('div')
+        card.className = 'shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0'
+          
+        let contenidoHTML = ""
+
+        if (noticia.tipo_contenido === 'imagen') {
+          contenidoHTML = `
+          <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-cover w-full h-64">
+          `
+        } else if (noticia.tipo_contenido === 'video') {
+          contenidoHTML = `
+              <video controls class="w-full h-64">
+                  <source src="${noticia.contenido}" type="video/mp4">
+                  Tu navegador no soporta videos.
+              </video>
+          `
+        } else if (noticia.tipo_contenido === 'texto') {
+          contenidoHTML = `
+            <div class="w-full h-64 flex items-center justify-center
+            text-2xl text-blue-600 font-semibold text-center p-4">
+            <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="/images/LogoBanner.png" class="object-contain w-full h-auto">Lea aquí</a>
+            </div>
+            `
         }
     
-      try {
-        const noticias = await obtenerNoticias();
-        const ultimasNueve = noticias.slice(0, 9);
-    
-        ultimasNueve.forEach((noticia) => {
-          const card = document.createElement('div');
-          card.className = 'shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0';
-          
-          let contenidoHTML = ""
-
-          if (noticia.tipo_contenido === 'imagen') {
-            contenidoHTML = `
-            <img src="${noticia.contenido}" alt="Imagen de Noticia" class="object-cover w-full h-64">
-            `
-          } else if (noticia.tipo_contenido === 'video') {
-            contenidoHTML = `
-                <video controls class="w-full h-64">
-                    <source src="${noticia.contenido}" type="video/mp4">
-                    Tu navegador no soporta videos.
-                </video>
-            `;
-          } else if (noticia.tipo_contenido === 'texto') {
-            contenidoHTML = `
-              <div class="w-full h-64 flex items-center justify-center
-              text-2xl text-blue-600 font-semibold text-center p-4">
-              <a href="${noticia.contenido}" target="_blank" class="hover:underline"><img src="/images/LogoBanner.png" class="object-contain w-full h-auto">Lea aquí</a>
-              </div>
-              `
-            }
-    
-          card.innerHTML = `
+        card.innerHTML = `
             <div class="w-full overflow-hidden rounded-t-2xl">
               ${contenidoHTML}
             </div>
@@ -84,27 +84,27 @@
               <h2 class="text-xl font-bold mb-2 text-gray-200">${noticia.titulo}</h2>
               <p class="text-gray-400 text-sm mt-2">${new Date(noticia.fecha_creacion).toLocaleDateString()}</p>
             </div>
-          `;
-          contenedor?.appendChild(card);
-        });
+          `
+          contenedor?.appendChild(card)
+        })
     
         // Slider funcionalidad
         const scrollAmount = contenedor.offsetWidth/3
         preBtn.addEventListener('click', () => {
-          contenedor.scrollLeft -= scrollAmount;
-        });
+          contenedor.scrollLeft -= scrollAmount
+        })
         nxtBtn.addEventListener('click', () => {
-          contenedor.scrollLeft += scrollAmount;
-        });
+          contenedor.scrollLeft += scrollAmount
+        })
     
       } catch (error) {
-        console.error('Error cargando noticias:', error);
+        console.error('Error cargando noticias:', error)
       }
-      const mesActual = new Date().toLocaleDateString('es-ES', { month: 'long' });
-      const spanMes = document.getElementById("mesActual");
+      const mesActual = new Date().toLocaleDateString('es-ES', { month: 'long' })
+      const spanMes = document.getElementById("mesActual")
       if (spanMes) {
         // Capitalizamos la primera letra del mes (por si acaso viene en minúscula)
-        spanMes.textContent = mesActual.charAt(0).toUpperCase() + mesActual.slice(1);
+        spanMes.textContent = mesActual.charAt(0).toUpperCase() + mesActual.slice(1)
       }
-    });   
+    })
 </script>

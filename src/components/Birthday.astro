@@ -9,39 +9,40 @@
 
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
-        interface cumpleanos {
-            id: number;
-            descripcion: string;
-            contenido: string;
-        }     
+    interface cumpleanos {
+        id: number
+        descripcion: string
+        contenido: string
+    }     
     
-        async function cargarCumpleanos() {
+    async function cargarCumpleanos() {
             const response = await fetch(`${URLBACK}/birthday`, {
                 credentials: 'include'
-            });
+        })
 
-            if (!response.ok) {
-                console.error('Error al obtener los cumpleaños');
-                return;
-            }
+        if (!response.ok) {
+            console.error('Error al obtener los cumpleaños')
+            return;
+        }
             
-            const cumpleanos: cumpleanos[] = await response.json(); //crea lista de cumpleaños
+        const cumpleanos: cumpleanos[] = await response.json() //crea lista de cumpleaños
 
-            const ultimoCumple = cumpleanos[0] //devuelve el primero
+        const ultimoCumple = cumpleanos[0] //devuelve el primero
     
-            const contenedorCumpleanos = document.getElementById('contenedorCumpleanos') as HTMLElement;
+        const contenedorCumpleanos = document.getElementById('contenedorCumpleanos') as HTMLElement
 
-            contenedorCumpleanos.innerHTML = '';
+        contenedorCumpleanos.innerHTML = ''
     
-                const card = document.createElement('div');
-                card.className = 'mb-4 h-auto w-full flex flex-col rounded-lg px-8 py-4 text-xl text-center justify-center items-center';
+        const card = document.createElement('div')
+        card.className = 'mb-4 h-auto w-full flex flex-col rounded-lg px-8 py-4 text-xl text-center justify-center items-center'
     
-                card.innerHTML = `
-                    <p class="mb-4 font-medium">${ultimoCumple.descripcion}</p>
-                        <img src="${ultimoCumple.contenido}" alt="Imagen de Cumpleaños" class="object-contain w-52 max-w-xl h-auto rounded-lg shadow-lg">                        
-                `;
+        card.innerHTML = `
+            <p class="mb-4 font-medium">${ultimoCumple.descripcion}</p>
+            <img src="${ultimoCumple.contenido}" alt="Imagen de Cumpleaños" class="object-contain w-52 max-w-xl h-auto rounded-lg shadow-lg">                        
+        `;
     
-                contenedorCumpleanos.appendChild(card);
-        }   
-        document.addEventListener('DOMContentLoaded', cargarCumpleanos);
+        contenedorCumpleanos.appendChild(card)
+    }   
+    
+    document.addEventListener('DOMContentLoaded', cargarCumpleanos)
     </script>

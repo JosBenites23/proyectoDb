@@ -40,93 +40,93 @@
 
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const subLiDep = document.getElementById('subLiDep');
+        const subLiDep = document.getElementById('subLiDep')
         if (!subLiDep) {
-            console.error('Elemento subLiDep no encontrado');
-            return;
+            console.error('Elemento subLiDep no encontrado')
+            return
         }
 
         interface Departamento {
-            id: number;
-            titulo: string;
-            descripcion: string;
-            slug: string;
-            imagen: string;
-            fecha_creacion: string;
+            id: number
+            titulo: string
+            descripcion: string
+            slug: string
+            imagen: string
+            fecha_creacion: string
         }
 
         try {
             const response = await fetch(`${URLBACK}/departamento/cards`, {
                 credentials: 'include'
-            });
+            })
 
-            if (!response.ok) throw new Error('Error al obtener departamentos');
+            if (!response.ok) throw new Error('Error al obtener departamentos')
 
             
-            const departamentos: Departamento[] = await response.json();
-            if (!subLiDep) return [];
+            const departamentos: Departamento[] = await response.json()
+            if (!subLiDep) return []
 
             // Limpia el contenido previo del submenú
-            subLiDep.innerHTML = '';
+            subLiDep.innerHTML = ''
 
             // Ordena los departamentos por fecha de creación (más recientes primero)
-            departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+            departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime())
 
             // Agrega cada departamento al submenú
             departamentos.forEach(dep => {
-                const card = document.createElement('li');
+                const card = document.createElement('li')
                 card.innerHTML = `
                     <a href="/departamento/${dep.slug}" class="px-4 py-2 text-white w-auto inline-block">
                         ${dep.titulo}
                     </a>
-                `;
-                subLiDep.appendChild(card);
-            });
-            console.log('Departamentos cargados:', subLiDep.innerHTML);
+                `
+                subLiDep.appendChild(card)
+            })
+            console.log('Departamentos cargados:', subLiDep.innerHTML)
         } catch (error) {
-            console.error('Error al cargar departamentos:', error);
+            console.error('Error al cargar departamentos:', error)
         }
 
         
-        const subLiLink = document.getElementById('subLiLink');
+        const subLiLink = document.getElementById('subLiLink')
         if (!subLiLink) {
-            return;
+            return
         }
 
         interface Link {
-            id: number;
-            name: string;
-            link: string;
-            descripcion: string;
+            id: number
+            name: string
+            link: string
+            descripcion: string
         }
 
         try {
             const response = await fetch(`${URLBACK}/links/`, {
                 credentials: 'include'
-            });
+            })
 
-            if (!response.ok) throw new Error('Error al obtener links');
+            if (!response.ok) throw new Error('Error al obtener links')
 
             
-            const links: Link[] = await response.json();
-            if (!subLiLink) return [];
+            const links: Link[] = await response.json()
+            if (!subLiLink) return []
 
             // Limpia el contenido previo del submenú
-            subLiLink.innerHTML = '';
+            subLiLink.innerHTML = ''
 
             // Agrega cada departamento al submenú
             links.forEach(link => {
-                const card = document.createElement('li');
+                const card = document.createElement('li')
                 card.innerHTML = `
                     <a href="${link.link}" target="_blank" class="px-4 py-2 text-white w-auto inline-block">
                         ${link.name}
                     </a>
-                `;
-                subLiLink.appendChild(card);
-            });
+                `
+                subLiLink.appendChild(card)
+            })
         } catch (error) {
-            console.error('Error al cargar links:', error);
+            console.error('Error al cargar links:', error)
         }
-    });     
+    })
     
 </script>

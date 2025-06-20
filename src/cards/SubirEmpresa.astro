@@ -12,51 +12,49 @@
 </form>
 
 <script>
-    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321';
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
     async function subirCo(nuevaCo: FormData) {
         const response = await fetch(`${URLBACK}/company/`, {
             method: 'POST',
             credentials: 'include', // Incluye cookies en la solicitud
             body: nuevaCo
-        });
-
-        //console.log(response)
+        })
 
         if (!response.ok) {
-            throw new Error('Error al subir la empresa');
+            throw new Error('Error al subir la empresa')
         }
 
-        const CoCreada = await response.json();
-        console.log('empresa subida exitosamente:', CoCreada);
+        const CoCreada = await response.json()
+        console.log('empresa subida exitosamente:', CoCreada)
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const formulario = document.querySelector('#EmpresaForm') as HTMLFormElement;
+        const formulario = document.querySelector('#EmpresaForm') as HTMLFormElement
 
         formulario.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevenir que recargue la página
+            event.preventDefault() // Prevenir que recargue la página
 
-            const contenido = (document.querySelector('#urlE') as HTMLTextAreaElement).value;
-            const imagenInput = document.querySelector('#imagenE') as HTMLInputElement;
+            const contenido = (document.querySelector('#urlE') as HTMLTextAreaElement).value
+            const imagenInput = document.querySelector('#imagenE') as HTMLInputElement
 
             const archivo = imagenInput.files?.[0]
 
             if (!archivo) {
-                alert('Por favor selecciona una imagen');
-                return;
+                alert('Por favor selecciona una imagen')
+                return
             }
 
-            const formData = new FormData();
-            formData.append('contenido', contenido || '');
-            formData.append('imagen', archivo);
+            const formData = new FormData()
+            formData.append('contenido', contenido || '')
+            formData.append('imagen', archivo)
 
             try {
-                await subirCo(formData);
-                alert('marca subida correctamente.');
+                await subirCo(formData)
+                alert('marca subida correctamente.')
                 formulario.reset(); // Limpiar el formulario
             } catch (error) {
-                console.error('Error al subir la marca:', error);
-                alert('Error al subir la marca.');
+                console.error('Error al subir la marca:', error)
+                alert('Error al subir la marca.')
             }
 
         })

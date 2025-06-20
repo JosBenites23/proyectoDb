@@ -1,5 +1,3 @@
----
----
 
 <div>
     <div id="contenedor-noticias"></div>
@@ -9,18 +7,18 @@
 
     declare global {
         interface Window {
-            eliminarNoticia: (id: number) => Promise<void>;
+            eliminarNoticia: (id: number) => Promise<void>
         }
     }
 
-    const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081';
+    const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081'
     interface Noticia {
-        id: number;
-        titulo: string;
-        descripcion: string;
-        tipo_contenido: string;
-        contenido: string;
-        fecha_creacion: string;
+        id: number
+        titulo: string
+        descripcion: string
+        tipo_contenido: string
+        contenido: string
+        fecha_creacion: string
     } 
     
     window.addEventListener('DOMContentLoaded', async () => {
@@ -28,61 +26,61 @@
             await verificarToken()
             cargarNoticias()
         } catch (error) {
-            console.error('Error al cargar noticias:', error);
+            console.error('Error al cargar noticias:', error)
         }
-    });
+    })
 
     
     async function cargarNoticias(){
-        const response = await fetch(`${URL}/noticias`);
-        const noticias:Noticia[] = await response.json();
+        const response = await fetch(`${URL}/noticias`)
+        const noticias:Noticia[] = await response.json()
         
-        noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime());
+        noticias.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime())
         
-        const contenedor = document.querySelector('#contenedor-noticias') as HTMLElement;
-        contenedor.innerHTML = '';
+        const contenedor = document.querySelector('#contenedor-noticias') as HTMLElement
+        contenedor.innerHTML = ''
         
         noticias.forEach((noticia) => {
-            const card = document.createElement('div');
-            card.className = 'p-4 border rounded-lg shadow-md mb-4 bg-white';
+            const card = document.createElement('div')
+            card.className = 'p-4 border rounded-lg shadow-md mb-4 bg-white'
             card.innerHTML = `
                 <h2 class="font-bold text-lg">${noticia.titulo}</h2>
                 <p class="text-gray-700">${noticia.descripcion}</p>
                 ${tokenValido ? `<button onclick="eliminarNoticia(${noticia.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>` : ""}
             `;
-            contenedor.appendChild(card);
-        });
+            contenedor.appendChild(card)
+        })
     }
 
     async function eliminarNoticia(id: number) {
-        console.log("Eliminando noticia con ID:", id);
+        console.log("Eliminando noticia con ID:", id)
         const response = await fetch(`${URL}/eliminar-noticia/${id}`, {
             method: 'DELETE',
             credentials: 'include' // Incluye cookies en la solicitud
-        });
+        })
 
         if (response.ok) {
-            alert('Noticia eliminada');
-            cargarNoticias(); // Recargar las noticias
+            alert('Noticia eliminada')
+            cargarNoticias() // Recargar las noticias
         } else {
-            alert('Error al eliminar la noticia');
+            alert('Error al eliminar la noticia')
         }
     }
 
-    window.eliminarNoticia = eliminarNoticia;
+    window.eliminarNoticia = eliminarNoticia
 
     let tokenValido = false
 
     async function verificarToken() {
-            try {
-                const response = await fetch(`${URL}/protegida`, {
-                    credentials: 'include' // Incluye cookies en la solicitud
-                });
+        try {
+            const response = await fetch(`${URL}/protegida`, {
+                credentials: 'include' // Incluye cookies en la solicitud
+            })
 
-                tokenValido = response.ok;
-            } catch (error) {
-                tokenValido = false;
-                console.error('Error al verificar el token:', error);
-            }
+            tokenValido = response.ok
+        } catch (error) {
+            tokenValido = false
+            console.error('Error al verificar el token:', error)
         }
+    }
 </script>

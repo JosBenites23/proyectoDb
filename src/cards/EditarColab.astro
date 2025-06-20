@@ -19,51 +19,50 @@
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
     async function subirColaboradores(nuevoTeam: FormData) {
-            const response = await fetch(`${URLBACK}/team/`, {
-                method: 'POST',
-                credentials: 'include', // Incluye cookies en la solicitud
-                body: nuevoTeam
-            });
+        const response = await fetch(`${URLBACK}/team/`, {
+            method: 'POST',
+            credentials: 'include', // Incluye cookies en la solicitud
+            body: nuevoTeam
+        })
     
-            //console.log(response)
+
     
-            if (!response.ok) {
-                throw new Error('Error al subir el colaborador');
-            }
-    
-            const colaboradorCreado = await response.json();
-            console.log('cumpleanos subido exitosamente:', colaboradorCreado);
+        if (!response.ok) {
+            throw new Error('Error al subir el colaborador')
         }
     
-        document.addEventListener('DOMContentLoaded', () => {
-            const formulario = document.querySelector('#colaboradorForm') as HTMLFormElement;
+        const colaboradorCreado = await response.json()
+        console.log('cumpleanos subido exitosamente:', colaboradorCreado)
+    }
     
-            formulario.addEventListener('submit', async (event) => {
-                event.preventDefault(); // Prevenir que recargue la página
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.querySelector('#colaboradorForm') as HTMLFormElement
     
-                const descripcion = (document.querySelector('#descripcionCol') as HTMLTextAreaElement).value;
-                const imagenInput = document.querySelector('#imagenCol') as HTMLInputElement;
+        formulario.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevenir que recargue la página
     
-                const archivo = imagenInput.files?.[0]
+            const descripcion = (document.querySelector('#descripcionCol') as HTMLTextAreaElement).value
+            const imagenInput = document.querySelector('#imagenCol') as HTMLInputElement
     
-                if (!archivo && !descripcion) {
-                    alert('Por favor selecciona una imagen o agrega una descripción');
-                    return;
-                }
+            const archivo = imagenInput.files?.[0]
     
-                const formData = new FormData();
-                if (descripcion) formData.append('descripcion', descripcion);
-                if (archivo) formData.append('contenido', archivo);
+            if (!archivo && !descripcion) {
+                alert('Por favor selecciona una imagen o agrega una descripción')
+                return
+            }
     
-                try {
-                    await subirColaboradores(formData);
-                    alert('colaborador subido correctamente.');
-                    formulario.reset(); // Limpiar el formulario
-                } catch (error) {
-                    console.error('Error al subir el colaborador:', error);
-                    alert('Error al subir el colaborador.');
-                }
+            const formData = new FormData()
+            if (descripcion) formData.append('descripcion', descripcion)
+            if (archivo) formData.append('contenido', archivo)
     
-            })
+            try {
+                await subirColaboradores(formData)
+                alert('colaborador subido correctamente.')
+                formulario.reset(); // Limpiar el formulario
+            } catch (error) {
+                console.error('Error al subir el colaborador:', error)
+                alert('Error al subir el colaborador.')
+            }
         })
+    })
 </script>

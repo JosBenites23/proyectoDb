@@ -1,17 +1,17 @@
 ---
-const { id } = Astro.props;
+const { id } = Astro.props
 
-const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081";
+const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081"
 
-const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' });
-if (!res.ok) throw new Error("Error al obtener el departamento");
+const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' })
+if (!res.ok) throw new Error("Error al obtener el departamento")
 
-const dep = await res.json();
+const dep = await res.json()
 ---
 
 <script is:inline>
   // Definimos la variable global con la URL del backend
-  window.BACKEND_URL = `${URL_BACKEND}`;
+  window.BACKEND_URL = `${URL_BACKEND}`
 </script>
 
 <section id="editar-dep" class="p-6 rounded" data-url-backend={URL_BACKEND}>
@@ -23,8 +23,6 @@ const dep = await res.json();
     <input type="file" id="imagen" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200 cursor-pointer">Guardar Cambios</button>
   </form>
-
-  <!--<hr class="my-6" /> -->
 
   <!-- Formulario para agregar link -->
   <h3 class="text-lg text-white font-black mb-2">Agregar Link</h3>
@@ -38,153 +36,83 @@ const dep = await res.json();
 </section>
 
 <script type="module">
-  // Esperamos a que el DOM esté completamente cargado para acceder a window.BACKEND_URL
   window.addEventListener('DOMContentLoaded', () => {
-    const URL_BACKEND = document.getElementById("editar-dep").dataset.urlBackend;
-    const depId = document.getElementById("depId").value;
+    const URL_BACKEND = document.getElementById("editar-dep").dataset.urlBackend
+    const depId = document.getElementById("depId").value
 
-    const formEditar = document.getElementById("formEditarDep");
+    const formEditar = document.getElementById("formEditarDep")
     formEditar.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      console.log("Enviando cambios para depId", depId, "a", URL_BACKEND);
+      e.preventDefault()
+      console.log("Enviando cambios para depId", depId, "a", URL_BACKEND)
 
-      const descripcion = document.getElementById("descripcion").value;
-      const imagen = document.getElementById("imagen").files[0];
+      const descripcion = document.getElementById("descripcion").value
+      const imagen = document.getElementById("imagen").files[0]
 
-      const form = new FormData();
-      form.append("descripcion", descripcion);
-      if (imagen) form.append("imagen", imagen);
+      const form = new FormData()
+      form.append("descripcion", descripcion)
+      if (imagen) form.append("imagen", imagen)
 
       try {
         const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
           method: "PUT",
           credentials: "include",
           body: form,
-        });
+        })
 
         if (res.ok) {
-          alert("Departamento actualizado");
-          formEditar.reset();
+          alert("Departamento actualizado")
+          formEditar.reset()
         } else {
-          const errorText = await res.text();
-          console.error("Error en respuesta:", errorText);
-          alert(`Error al guardar cambios: ${res.status}`);
+          const errorText = await res.text()
+          console.error("Error en respuesta:", errorText)
+          alert(`Error al guardar cambios: ${res.status}`)
         }
       } catch (error) {
-        console.error("Error al enviar la petición:", error);
-        alert("Error de conexión al guardar cambios");
+        console.error("Error al enviar la petición:", error)
+        alert("Error de conexión al guardar cambios")
       }
-    });
+    })
 
-    const formLink = document.getElementById("formLink");
+    const formLink = document.getElementById("formLink")
     formLink.addEventListener("submit", async (e) => {
-      e.preventDefault();
+      e.preventDefault()
 
-      const titulo = document.getElementById("titulo_link").value;
-      const urlLink = document.getElementById("url").value;
-      const archivo = document.getElementById("archivo").files[0];
+      const titulo = document.getElementById("titulo_link").value
+      const urlLink = document.getElementById("url").value
+      const archivo = document.getElementById("archivo").files[0]
 
       if (urlLink && archivo) {
-        alert("Solo uno: archivo o URL");
-        return;
+        alert("Solo uno: archivo o URL")
+        return
       }
 
-      const form = new FormData();
-      form.append("titulo_link", titulo);
-      if (urlLink) form.append("link_url", urlLink);
-      if (archivo) form.append("link_file", archivo);
+      const form = new FormData()
+      form.append("titulo_link", titulo)
+      if (urlLink) form.append("link_url", urlLink)
+      if (archivo) form.append("link_file", archivo)
 
       try {
         const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
           method: "POST",
           credentials: "include",
           body: form,
-        });
+        })
 
         if (res.ok) {
-          alert("Link agregado");
-          formLink.reset();
+          alert("Link agregado")
+          formLink.reset()
         } else {
-          const errorText = await res.text();
-          console.error("Error al agregar link:", errorText);
-          alert(`Error al agregar link: ${res.status}`);
+          const errorText = await res.text()
+          console.error("Error al agregar link:", errorText)
+          alert(`Error al agregar link: ${res.status}`)
         }
       } catch (error) {
-        console.error("Error al enviar la petición para agregar link:", error);
-        alert("Error de conexión al agregar link");
+        console.error("Error al enviar la petición para agregar link:", error)
+        alert("Error de conexión al agregar link")
       }
-    });
-  });
+    })
+  })
 </script>
-
-
-
-<!--
-
-<script type="module" defer>
-  const URL_BACKEND = window.BACKEND_URL;
-  const depId = document.getElementById("depId").value;
-
-  const formEditar = document.getElementById("formEditarDep");
-  formEditar.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const titulo = document.getElementById("titulo").value;
-    const descripcion = document.getElementById("descripcion").value;
-    const imagen = document.getElementById("imagen").files[0];
-
-    const form = new FormData();
-    form.append("titulo", titulo);
-    form.append("descripcion", descripcion);
-    if (imagen) form.append("imagen", imagen);
-
-    const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
-      method: "PUT",
-      credentials: "include",
-      body: form,
-    });
-
-    if (res.ok) {
-      alert("Departamento actualizado");
-      window.location.href = "/AdminPanel";
-    } else {
-      alert("Error al guardar cambios");
-    }
-  });
-
-  const formLink = document.getElementById("formLink");
-  formLink.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const titulo = document.getElementById("titulo_link").value;
-    const urlLink = document.getElementById("url").value;
-    const archivo = document.getElementById("archivo").files[0];
-
-    if (urlLink && archivo) {
-      alert("Solo uno: archivo o URL");
-      return;
-    }
-
-    const form = new FormData();
-    form.append("titulo_link", titulo);
-    if (urlLink) form.append("link_url", urlLink);
-    if (archivo) form.append("link_file", archivo);
-
-    const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
-      method: "POST",
-      credentials: "include",
-      body: form,
-    });
-
-    if (res.ok) {
-      alert("Link agregado");
-      formLink.reset();
-    } else {
-      alert("Error al agregar link");
-    }
-  });
-</script>
--->
 
 
 

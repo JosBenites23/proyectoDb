@@ -9,25 +9,25 @@ const res = await fetch(`${URLBACKEND}/departamento/page-dep/${slug}`, {
   credentials: 'include'
 })
 if (!res.ok) {
-  throw new Error('Departamento no encontrado');
+  throw new Error('Departamento no encontrado')
 }
 type Link = {
-  id: number;
-  titulo_link: string;
-  url: string;
-  fecha_creacion?: string;
-};
+  id: number
+  titulo_link: string
+  url: string
+  fecha_creacion?: string
+}
 
 type Departamento = {
-  id: number;
-  titulo: string;
-  descripcion: string;
-  imagen: string;
-  slug: string;
-  links: Link[];
-};
+  id: number
+  titulo: string
+  descripcion: string
+  imagen: string
+  slug: string
+  links: Link[]
+}
 
-const departamento: Departamento = await res.json();
+const departamento: Departamento = await res.json()
 ---
 
 <Layout showMenu={false}>
@@ -74,220 +74,105 @@ const departamento: Departamento = await res.json();
     </section>
   </section>
 
-
-<script type="module">
-  //const URLBACK=this.dataset.URLBACK
-  const URLBACK = this.dataset.URLBACKEND
-  console.log(URLBACK)
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log("dom loaded")
-    let esAdmin = false;
-
-    async function verificarToken() {
-      try {
-        console.log("verificando token")
-        const response = await fetch(`${URLBACK}/protegida`, {
-          credentials: 'include'
-        });
-        console.log("verificacion de token", response)
-        if (response.ok) {
-          esAdmin = true;
-          console.log("token valido")
-          document.getElementById('agregarLinkForm').style.display = '';
+<!--
+  <script type="module">
+    //const URLBACK=this.dataset.URLBACK
+    const URLBACK = this.dataset.URLBACKEND
+    console.log(URLBACK)
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("dom loaded")
+      let esAdmin = false
+  
+      async function verificarToken() {
+        try {
+          console.log("verificando token")
+          const response = await fetch(`${URLBACK}/protegida`, {
+            credentials: 'include'
+          });
+          console.log("verificacion de token", response)
+          if (response.ok) {
+            esAdmin = true
+            console.log("token valido")
+            document.getElementById('agregarLinkForm').style.display = ''
+          }
+          mostrarBotonesEliminar()
+          mostrarBotonesEditar()
+        } catch (error) {
+          esAdmin = false
         }
-        mostrarBotonesEliminar();
-        mostrarBotonesEditar();
-      } catch (error) {
-        esAdmin = false;
       }
-    }
-    verificarToken();
-
-    function mostrarBotonesEliminar() {
-      if (!esAdmin) return;
-      document.querySelectorAll('#link-item').forEach((item) => {
-        const linkId = item.getAttribute('data-link-id');
-        if (!item.querySelector('.btn-eliminar-link')) {
-          const btn = document.createElement('button');
-          btn.textContent = 'Eliminar';
-          btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition duration-200 cursor-pointer mt-2';
-          btn.onclick = async () => {
-              const res = await fetch(`${URLBACK}/departamento/link/${linkId}`, {
-                method: 'DELETE',
-                credentials: 'include'
-              });
-              if (res.ok) {
-                alert('Link eliminado');
-                location.reload();
-              } else {
-                alert('Error al eliminar el link');
-              }
-          };
-          item.appendChild(btn);
-        }
-      });
-    }
-
-    const form = document.getElementById('agregarLinkForm');
-    if (form) {
-      const depId = form.getAttribute('data-id');
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData();
-
-        const titulo_link = form.querySelector('#titulo_link').value;
-        const link_url = form.querySelector('#url').value;
-        const link_file = form.querySelector('#archivoD').files[0];
-
-        if (titulo_link !== "") {
-          data.append('titulo_link', titulo_link);
-
-          if (link_file && link_url) {
-            alert('Solo puedes agregar un archivo o una URL, no ambos.');
-            return;
-          } else if (link_file) {
-            data.append('link_file', link_file);
-          } else if (link_url) {
-            data.append('link_url', link_url);
-          } else {
-            alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.');
-            return;
+      verificarToken()
+  
+      function mostrarBotonesEliminar() {
+        if (!esAdmin) return
+        document.querySelectorAll('#link-item').forEach((item) => {
+          const linkId = item.getAttribute('data-link-id')
+          if (!item.querySelector('.btn-eliminar-link')) {
+            const btn = document.createElement('button')
+            btn.textContent = 'Eliminar'
+            btn.className = 'btn-eliminar-link bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-700 transition duration-200 cursor-pointer mt-2'
+            btn.onclick = async () => {
+                const res = await fetch(`${URLBACK}/departamento/link/${linkId}`, {
+                  method: 'DELETE',
+                  credentials: 'include'
+                })
+                if (res.ok) {
+                  alert('Link eliminado')
+                  location.reload()
+                } else {
+                  alert('Error al eliminar el link')
+                }
+            }
+            item.appendChild(btn)
           }
-        }
-
-        const res = await fetch(`${URLBACK}/departamento/${depId}/agregar-link`, {
-          method: 'POST',
-          credentials: 'include',
-          body: data
-        });
-
-        if (!res.ok) {
-          alert('Link no se agregó');
-          location.reload();
-        } else {
-          alert('Link agregado correctamente');
-          form.reset();
-          location.reload();
-        }
-      });
-    }
-    
-    function mostrarBotonesEditar() {
-      if (!esAdmin) return;
-    
-      // Mostrar botones de editar
-      document.getElementById('editDescBtn').style.display = '';
-      document.getElementById('editImgBtn').style.display = '';
-    
-      // Editar descripción
-      const descBtn = document.getElementById('editDescBtn');
-      const descP = document.getElementById('depDesc');
-      descBtn.addEventListener('click', () => {
-        const currentDesc = descP.textContent;
-        descP.outerHTML = `<textarea id="editDescArea" class="mb-6 w-full min-h-32 min-w-64 p-2 rounded">${currentDesc}</textarea>`;
-        descBtn.style.display = 'none';
-    
-        // Botón guardar
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 ml-2 h-10 w-20 hover:bg-green-600 transition duration-200 cursor-pointer';
-        descBtn.parentNode.appendChild(saveBtn);
-    
-        saveBtn.addEventListener('click', async () => {
-          const newDesc = document.getElementById('editDescArea').value;
-          const data = new FormData();
-          data.append('descripcion', newDesc);
-
-          const depId = document.getElementById('depInfo').getAttribute('data-id')
-          console.log(depId)
-
-          const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
-            method: 'PUT',
+        })
+      }
+  
+      const form = document.getElementById('agregarLinkForm')
+      if (form) {
+        const depId = form.getAttribute('data-id')
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault()
+          const data = new FormData()
+  
+          const titulo_link = form.querySelector('#titulo_link').value
+          const link_url = form.querySelector('#url').value
+          const link_file = form.querySelector('#archivoD').files[0]
+  
+          if (titulo_link !== "") {
+            data.append('titulo_link', titulo_link)
+  
+            if (link_file && link_url) {
+              alert('Solo puedes agregar un archivo o una URL, no ambos.')
+              return
+            } else if (link_file) {
+              data.append('link_file', link_file)
+            } else if (link_url) {
+              data.append('link_url', link_url)
+            } else {
+              alert('Si agregas un nombre de link, debes subir un archivo o proporcionar una URL.')
+              return
+            }
+          }
+  
+          const res = await fetch(`${URLBACK}/departamento/${depId}/agregar-link`, {
+            method: 'POST',
             credentials: 'include',
             body: data
-          });
-
-          if (res.ok) {
-            alert('Descripción actualizada');
-            location.reload();
+          })
+  
+          if (!res.ok) {
+            alert('Link no se agregó')
+            location.reload()
           } else {
-            alert('Error al actualizar la descripción');
+            alert('Link agregado correctamente')
+            form.reset()
+            location.reload()
           }
-        });
-      });
-    
-      // Editar imagen
-      const imgBtn = document.getElementById('editImgBtn');
-      const imgEl = document.getElementById('depImg');
-      imgBtn.addEventListener('click', () => {
-        const currentImgSrc = imgEl.src
-        const container = document.createElement('div');
-        container.className = "flex flex-col items-center w-full";
-
-        // Input de archivo
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.id = 'editImgInput';
-        fileInput.accept = 'image/*';
-        fileInput.className = 'mb-4 file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 file:cursor-pointer h-10 file:hover:bg-blue-600 transition duration-200';
-
-        // Imagen de preview
-        const previewImg = document.createElement('img');
-        previewImg.id = 'previewImg';
-        previewImg.src = currentImgSrc;
-        previewImg.className = 'w-full max-w-md rounded-lg shadow-lg mb-4';
-
-        // Botón guardar
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = 'Guardar';
-        saveBtn.className = 'bg-green-500 text-white px-3 py-1 rounded mt-2 h-10 w-20 hover:bg-green-600 transition duration-200 cursor-pointer';
-
-        // Reemplaza la imagen por el contenedor
-        imgEl.parentNode.replaceChild(container, imgEl);
-        container.appendChild(fileInput);
-        container.appendChild(previewImg);
-        container.appendChild(saveBtn);
-
-        imgBtn.style.display = 'none';
-
-        fileInput.addEventListener('change', (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-              previewImg.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-          }
-        });
-
-        saveBtn.addEventListener('click', async () => {
-          const file = fileInput.files[0];
-          if (!file) {
-            alert('Selecciona una imagen');
-            return;
-          }
-          const data = new FormData();
-          data.append('imagen', file);
-
-          const depId = document.getElementById('depInfo').getAttribute('data-id')
-
-          const res = await fetch(`${URLBACK}/departamento/editar-dep/${depId}`, {
-            method: 'PUT',
-            credentials: 'include',
-            body: data
-          });
-
-          if (res.ok) {
-            alert('Imagen actualizada');
-            location.reload();
-          } else {
-            alert('Error al actualizar la imagen');
-          }
-        });
-      });
-    }
-  });
-</script>
+        })
+      }
+    });
+  </script>
+   -->
 
 </Layout>
