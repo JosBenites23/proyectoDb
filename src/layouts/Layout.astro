@@ -17,15 +17,21 @@ const {showFooter=true}=Astro.props
 	</head>
 	<body class="relative bg-cover bg-[url('/images/background.png')] w-screen h-auto bg-center bg-no-repeat bg-fixed">
 		<div class="fixed inset-0 bg-black/35 z-0 pointer-events-none"></div>
-		<header class="relative z-70">
-			{showMenu && <Hero />}
-		</header>
-		<main class="relative z-10 h-auto w-full">
-			<slot />
-		</main>
-		<footer class="relative z-10 bottom-0">
-			{showFooter && <Footer />}
-		</footer>
+		<div class="relative z-10 flex flex-col min-h-screen">
+      
+			<header class="relative z-70">
+				{showMenu && <Hero />}
+			</header>
+
+			<main class="grow w-full">
+				<slot />
+			</main>
+
+			<footer class="relative bottom-0">
+				{showFooter && <Footer />}
+			</footer>
+			
+		</div>
 	</body>
 </html>
 
