@@ -1,8 +1,10 @@
 ---
 import Hero from '../components/Hero.astro'
 import '../styles/global.css'
+import Footer from '../components/Footer.astro'
 
 const {showMenu=true}=Astro.props
+const {showFooter=true}=Astro.props
 ---
 <!doctype html>
 <html lang="es">
@@ -21,7 +23,9 @@ const {showMenu=true}=Astro.props
 		<main class="relative z-10 h-auto w-full">
 			<slot />
 		</main>
-		<footer class="relative z-10"></footer>
+		<footer class="relative z-10">
+			{showFooter && <Footer />}
+		</footer>
 	</body>
 </html>
 
