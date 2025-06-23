@@ -44,3 +44,17 @@ async def crear_Team(
 @router.get("/team/", response_model=list[TeamSchema])
 async def obtener_cumpleanos(db: Session = Depends(get_db)):
     return db.query(TeamModel).order_by(TeamModel.id.desc()).all()
+
+@router.delete("/eliminar-col/{id}", response_model=TeamSchema)
+async def eliminar_col(id: int, db: Session = Depends(get_db)):
+    # Buscar la noticia por su ID
+    db_col = db.query(TeamModel).filter(TeamModel.id == id).first()
+    
+    if db_col is None:
+        raise HTTPException(status_code=404, detail="colaboradores no encontrada")
+    
+    # Eliminar la noticia de la base de datos
+    db.delete(db_col)
+    db.commit()
+    
+    return db_col

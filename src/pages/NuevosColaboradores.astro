@@ -36,7 +36,7 @@ import Layout from "../layouts/Layout.astro";
             const col: Team[] = await response.json()
     
             // Ordenar por id más reciente primero
-            col.sort((a, b) => b.id - a.id);
+            col.sort((a, b) => b.id - a.id)
     
             const contenedorCol = document.getElementById('contenedorCol') as HTMLElement
             contenedorCol.innerHTML = ''
