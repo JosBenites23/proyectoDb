@@ -49,19 +49,17 @@
     if (!response.ok) throw new Error('Error al obtener las empresas')
 
     const empresas: Empresa[] = await response.json()
-    contenedor.innerHTML = ''
 
-    const grupos = dividirEnGrupos(empresas, 10)
+    const grid = document.createElement('div')
+    grid.className =
+      'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-4 justify-items-center w-full px-4'
 
-    grupos.forEach((grupo, index) => {
-      const fila = document.createElement('div')
-      fila.className = `flex gap-1 md:gap-2 lg:gap-14 xl:gap-32 justify-center flex-wrap w-full lg:max-w-[2560px] ${
-        index % 2 === 0 ? 'pl-0' : 'pl-[3%]'
-      }`
-      const ordenado = orderCentered(grupo)
-      ordenado.forEach(emp => fila.appendChild(crearCardEmpresa(emp)))
-      contenedor.appendChild(fila)
-    });
+    empresas.forEach(emp => {
+      grid.appendChild(crearCardEmpresa(emp))
+    })
+
+    contenedor.appendChild(grid)
+  
 
     return empresas
   }
