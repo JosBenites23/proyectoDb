@@ -47,7 +47,7 @@ import Layout from "../layouts/Layout.astro";
 
                 card.innerHTML = `
                     <div class=" h-auto w-full overflow-hidden rounded-t-2xl">
-                        ${col.contenido ? col.contenido : '<img src="/images/placeholder.png" alt="Placeholder" class="w-full h-auto object-cover">'}
+                        <img src="${col.contenido}" alt="Placeholder" class="w-full h-auto object-cover">'}
                     </div>
                     <div class="p-4 bg-black/25 rounded-b-2xl">
                         <p class="text-gray-200 text-sm mb-3">${col.descripcion}</p>
