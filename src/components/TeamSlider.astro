@@ -1,0 +1,82 @@
+<section class="w-full">
+    <section class="flex flex-col items-center justify-center mt-28 w-full">
+      <div class="relative overflow-hidden px-[10vw] py-5 w-full max-w-[1920px] h-full">
+        <div class="flex text-5xl font-black ">
+            <h1 class="text-white mr-3">Nuevos</h1>
+            <h1 class="text-[#00d0fe]">Colaboradores</h1>
+        </div>
+  
+        <button id="preBtn" class="pre-btn absolute top-1/2 -translate-y-1/2 left-3 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 rotate-180 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+          <img src="/images/arrow.png" class="opacity-100">
+        </button>
+  
+        <button id="nxtBtn" class="nxt-btn absolute top-1/2 -translate-y-1/2 right-5 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+          <img src="/images/arrow.png" class="opacity-100">
+        </button>
+  
+        <div id="ultimosColabs" class="flex overflow-x-auto gap-4 scroll-smooth scrollbar-none animate-fade-in animate-delay-150">
+          <!-- Aquí se cargarán dinámicamente las noticias -->
+        </div>
+      </div>
+    </section>
+</section>
+
+<script>
+  const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
+    document.addEventListener('DOMContentLoaded', async () => {
+        const contenedor = document.getElementById('ultimasNoticias') as HTMLElement
+        const preBtn = document.getElementById('preBtn') as HTMLElement
+        const nxtBtn = document.getElementById('nxtBtn') as HTMLElement
+    
+        interface Team {
+            id: number
+            descripcion: string
+            contenido: string
+        }
+
+        async function obtenerColab(): Promise<Team[]> {
+            const res = await fetch(`${URLBACK}/team/`, {
+                credentials: 'include' // Incluye cookies en la solicitud
+        })
+        if (!res.ok) throw new Error('Error al obtener noticias')
+        const data: Team[] = await res.json()
+        return data
+        }
+    
+    try {
+      const colaboradores = await obtenerColab()
+      const ultimosNueve = colaboradores.slice(0, 9)
+    
+      ultimosNueve.forEach((colab) => {
+        const card = document.createElement('div')
+        card.className = 'shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0'
+          
+        let contenidoHTML = ""
+    
+        card.innerHTML = `
+            <div class=" h-auto w-full overflow-hidden rounded-t-2xl">
+                <a href="${colab.contenido}" target="_blank" class="block hover:scale-105 transition duration-200">
+                    <img src="${colab.contenido}" alt="Placeholder" class="w-full h-64 object-cover">
+                </a>
+            </div>
+            <div class="p-4 bg-black/25 rounded-b-2xl">
+                <p class="text-gray-200 text-md mb-3">${colab.descripcion}</p>
+            </div>
+          `
+          contenedor?.appendChild(card)
+        })
+    
+        // Slider funcionalidad
+        const scrollAmount = contenedor.offsetWidth/3
+        preBtn.addEventListener('click', () => {
+          contenedor.scrollLeft -= scrollAmount
+        })
+        nxtBtn.addEventListener('click', () => {
+          contenedor.scrollLeft += scrollAmount
+        })
+    
+      } catch (error) {
+        console.error('Error cargando colaboradores:', error)
+      }
+    })
+</script>
