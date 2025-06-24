@@ -6,11 +6,11 @@
             <h1 class="text-[#00d0fe]">Colaboradores</h1>
         </div>
   
-        <button id="preBtn" class="pre-btn absolute top-1/2 -translate-y-1/2 left-3 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 rotate-180 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+        <button id="preBtnCol" class="pre-btn absolute top-1/2 -translate-y-1/2 left-3 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 rotate-180 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
           <img src="/images/arrow.png" class="opacity-100">
         </button>
   
-        <button id="nxtBtn" class="nxt-btn absolute top-1/2 -translate-y-1/2 right-5 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+        <button id="nxtBtnCol" class="nxt-btn absolute top-1/2 -translate-y-1/2 right-5 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
           <img src="/images/arrow.png" class="opacity-100">
         </button>
   
@@ -25,8 +25,8 @@
   const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
     document.addEventListener('DOMContentLoaded', async () => {
         const contenedor = document.getElementById('ultimasNoticias') as HTMLElement
-        const preBtn = document.getElementById('preBtn') as HTMLElement
-        const nxtBtn = document.getElementById('nxtBtn') as HTMLElement
+        const preBtnCol = document.getElementById('preBtnCol') as HTMLElement
+        const nxtBtnCol = document.getElementById('nxtBtnCol') as HTMLElement
     
         interface Team {
             id: number
@@ -50,8 +50,6 @@
       ultimosNueve.forEach((colab) => {
         const card = document.createElement('div')
         card.className = 'shadow-md overflow-hidden w-72 min-w-[18rem] flex-shrink-0'
-          
-        let contenidoHTML = ""
     
         card.innerHTML = `
             <div class=" h-auto w-full overflow-hidden rounded-t-2xl">
@@ -68,10 +66,10 @@
     
         // Slider funcionalidad
         const scrollAmount = contenedor.offsetWidth/3
-        preBtn.addEventListener('click', () => {
+        preBtnCol.addEventListener('click', () => {
           contenedor.scrollLeft -= scrollAmount
         })
-        nxtBtn.addEventListener('click', () => {
+        nxtBtnCol.addEventListener('click', () => {
           contenedor.scrollLeft += scrollAmount
         })
     
