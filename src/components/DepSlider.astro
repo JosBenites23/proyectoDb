@@ -1,0 +1,82 @@
+<section class="w-full">
+    <section class="flex flex-col items-center justify-center mt-28 w-full">
+      <div class="relative overflow-hidden px-[10vw] py-5 w-full max-w-[1920px] h-full">
+        <div class="flex text-5xl font-black justify-center items-center mb-10">
+            <h1 class="text-white mr-3">Departamentos</h1>
+        </div>
+  
+        <button id="preBtnDep" class="pre-btn absolute top-1/2 -translate-y-1/2 left-3 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 rotate-180 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+          <img src="/images/arrow.png" class="opacity-100">
+        </button>
+  
+        <button id="nxtBtnDep" class="nxt-btn absolute top-1/2 -translate-y-1/2 right-5 h-14 w-14 flex justify-center items-center z-10 rounded-4xl bg-gray-200 cursor-pointer animate-fade-in animate-delay-150 hover:bg-[#00d0fe] transition duration-200">
+          <img src="/images/arrow.png" class="opacity-100">
+        </button>
+  
+        <div id="ultimosDeps" class="flex overflow-x-auto gap-4 scroll-smooth scrollbar-none animate-fade-in animate-delay-150">
+          <!-- Aquí se cargarán dinámicamente las noticias -->
+        </div>
+      </div>
+    </section>
+</section>
+
+<script>
+  const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:4321'
+    document.addEventListener('DOMContentLoaded', async () => {
+        const contenedor = document.getElementById('ultimosDeps') as HTMLElement
+        const preBtnDep = document.getElementById('preBtnDep') as HTMLElement
+        const nxtBtnDep = document.getElementById('nxtBtnDep') as HTMLElement
+    
+        interface Departamento {
+            id: number
+            titulo: string
+            descripcion: string
+            slug: string
+            imagen: string
+            fecha_creacion: string
+        }
+
+        async function obtenerDep(): Promise<Departamento[]> {
+            const res = await fetch(`${URLBACK}/departamento/cards`, {
+                credentials: 'include' // Incluye cookies en la solicitud
+        })
+        if (!res.ok) throw new Error('Error al obtener Departamentos')
+        const data: Departamento[] = await res.json()
+        return data
+        }
+    
+    try {
+      const departamentos = await obtenerDep()
+      const ultimosNueve = departamentos.slice(0, 9)
+    
+      ultimosNueve.forEach((dep) => {
+        const card = document.createElement('div')
+            card.className = 'bg-blue-600/10 rounded-lg shadow-md w-72 gap-4 transition duration-300 ease-in-out flex flex-shrink-0 flex-col'
+            card.innerHTML = `
+            <figure class="w-full h-64 flex justify-center items-center overflow-hidden">
+                <img src="${dep.imagen}" alt="Imagen de departamento" class="object-contain w-full h-full">
+            </figure>
+            <div class="p-4">
+                 <a href="/departamento/${dep.slug}">
+                    <h2 class="text-xl font-medium mb-2 text-gray-200 hover:scale-105 transition duration-150">${dep.titulo}</h2>
+                </a>
+            <p class="text-gray-200 text-sm mb-3">${dep.descripcion}</p>
+            </div>
+            `
+          contenedor?.appendChild(card)
+        })
+    
+        // Slider funcionalidad
+        const scrollAmount = contenedor.offsetWidth/3
+        preBtnDep.addEventListener('click', () => {
+          contenedor.scrollLeft -= scrollAmount
+        })
+        nxtBtnDep.addEventListener('click', () => {
+          contenedor.scrollLeft += scrollAmount
+        })
+    
+      } catch (error) {
+        console.error('Error cargando departamentos:', error)
+      }
+    })
+</script>
