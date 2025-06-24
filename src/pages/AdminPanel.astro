@@ -139,25 +139,31 @@ const id = url.searchParams.get("id")
 <script>
     const URLBACK=import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost'
 
-    fetch(`${URLBACK}/protegida`, {
-        method: 'GET',
-        credentials: 'include'
-    })
-    .then(response => {
-    if (!response.ok) {
-        // Si no está autorizado, redirige al login
-        window.location.href = '/Admin'
-    } else {
-        return response.json()
+    function sesion(){
+        fetch(`${URLBACK}/protegida`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+        if (!response.ok) {
+            alert('Sesión expirada. Por favor, vuelve a iniciar sesión.')
+            // Si no está autorizado, redirige al login
+            window.location.href = '/Admin'
+        } else {
+            return response.json()
+        }
+        })
+        .then(data => {
+        console.log('Bienvenido:', 'user')
+        })
+        .catch(error => {
+            console.error('Error al verificar sesión:', error)
+            window.location.href = '/Admin'
+        })
     }
-    })
-    .then(data => {
-    console.log('Bienvenido:', 'user')
-    })
-    .catch(error => {
-        console.error('Error al verificar sesión:', error)
-        window.location.href = '/Admin'
-    })
+
+    sesion()
+    setInterval(sesion, 60000) // Verifica la sesión cada minuto
 
     document.querySelector('#logoutButton')!.addEventListener('click', async() => {
         try {
