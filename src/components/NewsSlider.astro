@@ -100,11 +100,15 @@
       } catch (error) {
         console.error('Error cargando noticias:', error)
       }
-      const mesActual = new Date().toLocaleDateString('es-ES', { month: 'long' })
-      const spanMes = document.getElementById("mesActual")
-      if (spanMes) {
-        // Capitalizamos la primera letra del mes (por si acaso viene en minúscula)
-        spanMes.textContent = mesActual.charAt(0).toUpperCase() + mesActual.slice(1)
+
+      function mes(){
+        const mesActual = new Date().toLocaleDateString('es-ES', { month: 'long' })
+        const spanMes = document.getElementById("mesActual")
+        if (spanMes) {
+          // Capitalizamos la primera letra del mes (por si acaso viene en minúscula)
+          spanMes.textContent = mesActual.charAt(0).toUpperCase() + mesActual.slice(1)
+        }
       }
+      setInterval(mes, 10000) // Actualiza el mes cada 10 segundos
     })
 </script>
