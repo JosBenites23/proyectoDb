@@ -46,12 +46,12 @@ import Layout from "../layouts/Layout.astro";
                 card.className = 'shadow-md overflow-hidden w-full max-w-sm mb-4 mx-2'
 
                 card.innerHTML = `
-                    <div class=" h-auto w-full overflow-hidden rounded-t-2xl">
+                    <div class="bg-black/50 h-auto w-full overflow-hidden rounded-t-2xl">
                         <a href="${col.contenido}" target="_blank" class="block hover:scale-105 transition duration-200">
                             <img src="${col.contenido}" alt="Placeholder" class="w-full h-64 object-cover">
                         </a>
                     </div>
-                    <div class="p-4 bg-black/25 rounded-b-2xl">
+                    <div class="p-4 bg-black/50 rounded-b-2xl">
                         <p class="text-gray-200 text-md mb-3">${col.descripcion}</p>
                     </div>
                 `
