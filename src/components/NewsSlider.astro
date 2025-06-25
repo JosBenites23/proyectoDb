@@ -77,10 +77,10 @@
         }
     
         card.innerHTML = `
-            <div class="w-full overflow-hidden rounded-t-2xl">
+            <div class="w-full overflow-hidden rounded-t-2xl bg-black/50">
               ${contenidoHTML}
             </div>
-            <div class="p-4 bg-black/25 rounded-b-2xl">
+            <div class="p-4 bg-black/50 rounded-b-2xl">
               <h2 class="text-xl font-bold mb-2 text-gray-200">${noticia.titulo}</h2>
               <p class="text-gray-400 text-sm mt-2">${new Date(noticia.fecha_creacion).toLocaleDateString()}</p>
             </div>
