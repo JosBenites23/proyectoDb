@@ -47,7 +47,7 @@ import Layout from "../layouts/Layout.astro";
 
             departamentos.forEach(dep => {
                 const card = document.createElement('div')
-                card.className = 'bg-black/50 overflow-hidden rounded-lg w-full h-auto max-w-sm mb-4 mx-2 '
+                card.className = 'bg-black/50 overflow-hidden rounded-lg w-full max-w-sm mb-4 mx-2 '
                 card.innerHTML = `
                 <figure class="w-full h-64 overflow-hidden">
                     <img src="${dep.imagen}" alt="Imagen de departamento" class="object-cover w-full h-full">
