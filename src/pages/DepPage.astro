@@ -49,9 +49,9 @@ import Layout from "../layouts/Layout.astro";
                 const card = document.createElement('div')
                 card.className = 'bg-black/50 overflow-hidden rounded-lg w-full max-w-sm mb-4 mx-2 '
                 card.innerHTML = `
-                <figure class="w-full h-64 overflow-hidden">
+                <div class="w-full h-64 overflow-hidden">
                     <img src="${dep.imagen}" alt="Imagen de departamento" class="object-cover w-full h-full">
-                </figure>
+                </div>
 
                 <div class="p-4">
                     <a href="/departamento/${dep.slug}">
