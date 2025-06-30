@@ -150,7 +150,7 @@ const dep: Departamento = await res.json()
       if (e.target.classList.contains('delete-link')) {
         const linkId = Number(e.target.getAttribute('data-id'))
 
-        const res = await fetch(`${window.URL_BACKEND}/departamento/link/${linkId}`, {
+        const res = await fetch(`${URL_BACKEND}/departamento/link/${linkId}`, {
           method: 'DELETE',
           credentials: 'include'
         })
