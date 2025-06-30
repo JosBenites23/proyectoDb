@@ -40,7 +40,7 @@ const departamento: Departamento = await res.json()
           <p id="depDesc"class="mb-6">{departamento.descripcion}</p>
 
           <!-- Botón para editar la descripción funcionalidad antigua
-           
+
           <button id="editDescBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20 hover:bg-yellow-600 transition duration-200">
             ✏️ Editar
           </button>
@@ -61,7 +61,7 @@ const departamento: Departamento = await res.json()
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
             <li id="link-item" data-link-id={link.id}>
-              <a href={link.url} target="_blank" class="mb-14 h-auto w-auto bg-[#00d0fe] rounded-4xl px-9 py-4 text-lg text-center hover:bg-[#0d122e] transition duration-300 ease-in-out hover:text-[#00d0fe] text-[#0d122e] font-black">{link.titulo_link}</a>
+              <a href={link.url} target="_blank" class="mb-24 h-auto w-auto bg-[#00d0fe] rounded-4xl px-9 py-4 text-lg text-center hover:bg-[#0d122e] transition duration-300 ease-in-out hover:text-[#00d0fe] text-[#0d122e] font-black">{link.titulo_link}</a>
               {}
             </li>
           ))
