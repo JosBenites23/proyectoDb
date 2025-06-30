@@ -1,12 +1,28 @@
 ---
 const { id } = Astro.props
 
+type Link = {
+  id: number
+  titulo_link: string
+  url: string
+  fecha_creacion?: string
+}
+
+type Departamento = {
+  id: number
+  titulo: string
+  descripcion: string
+  imagen: string
+  slug: string
+  links: Link[]
+}
+
 const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081"
 
 const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' })
 if (!res.ok) throw new Error("Error al obtener el departamento")
 
-const dep = await res.json()
+const dep: Departamento = await res.json()
 ---
 
 <script is:inline>
@@ -33,6 +49,22 @@ const dep = await res.json()
     <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Agregar Link</button>
   </form>
+</section>
+
+<section>
+  <h3 class="text-lg text-white font-black mb-2">Links del Departamento</h3>
+  <ul id="linksList" class="list-disc pl-5 text-gray-200">
+    {dep.links && dep.links.length > 0 ? (
+      dep.links.map(link => (
+        <li class="mb-2">
+          <a href={link.url} target="_blank" class="text-blue-400 hover:underline">{link.titulo_link}</a>
+          <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-700 delete-link">Eliminar</button>
+        </li>
+      ))
+    ) : (
+      <li class="text-gray-400">No hay links para este departamento.</li>
+    )}
+  </ul>
 </section>
 
 <script type="module">
@@ -109,6 +141,25 @@ const dep = await res.json()
       } catch (error) {
         console.error("Error al enviar la petición para agregar link:", error)
         alert("Error de conexión al agregar link")
+      }
+    })
+
+    document.addEventListener('click', async (e) => {
+      if (e.target.classList.contains('delete-link')) {
+        const linkId = e.target.getAttribute('data-id')
+        const confirmDelete = confirm('¿Seguro que deseas eliminar este link?')
+        if (!confirmDelete) return
+
+        const res = await fetch(`${window.BACKEND_URL}/links/${linkId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        })
+
+        if (res.ok) {
+          e.target.parentElement.remove()
+        } else {
+          alert('Error al eliminar el link.')
+        }
       }
     })
   })
