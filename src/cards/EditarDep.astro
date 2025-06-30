@@ -53,15 +53,13 @@ const dep: Departamento = await res.json()
 
 <section>
   <h3 class="text-lg text-white font-black mb-2">Links del Departamento</h3>
-  <ul id="linksList" class="list-disc pl-5">
+  <ul id="linksList" class="list-disc pl-5 p-4 border rounded-lg shadow-md mb-4 bg-white">
     {dep.links && dep.links.length > 0 ? (
       dep.links.map(link => (
-        <ul class="p-4 border rounded-lg shadow-md mb-4 bg-white">
           <li class="mb-2">
-            <a href={link.url} target="_blank" class="text-black hover:scale-150 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
+            <a href={link.url} target="_blank" class="inline-block text-black hover:scale-150 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
             <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-bold">Eliminar</button>
           </li>
-        </ul>
       ))
     ) : (
       <li class="text-gray-400">No hay links para este departamento.</li>
