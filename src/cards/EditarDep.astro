@@ -35,7 +35,7 @@ const dep: Departamento = await res.json()
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
     <textarea id="descripcion" class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32">{dep.descripcion}</textarea>
-    <label class="mb-2">Imagen</label>
+    <label class="mb-2 text-white font-black">Imagen del departamento</label>
     <input type="file" id="imagen" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200 cursor-pointer">Guardar Cambios</button>
   </form>
@@ -58,7 +58,7 @@ const dep: Departamento = await res.json()
       dep.links.map(link => (
         <ul class="p-4 border rounded-lg shadow-md mb-4 bg-white">
           <li class="mb-2">
-            <a href={link.url} target="_blank" class="text-black hover:scale-200 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
+            <a href={link.url} target="_blank" class="text-black hover:scale-150 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
             <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-bold">Eliminar</button>
           </li>
         </ul>
@@ -150,7 +150,7 @@ const dep: Departamento = await res.json()
       if (e.target.classList.contains('delete-link')) {
         const linkId = Number(e.target.getAttribute('data-id'))
 
-        const res = await fetch(`${window.BACKEND_URL}/departamento/link/${linkId}`, {
+        const res = await fetch(`${window.URL_BACKEND}/departamento/link/${linkId}`, {
           method: 'DELETE',
           credentials: 'include'
         })
