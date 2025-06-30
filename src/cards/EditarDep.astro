@@ -58,8 +58,8 @@ const dep: Departamento = await res.json()
       dep.links.map(link => (
         <ul class="p-4 border rounded-lg shadow-md mb-4 bg-white">
           <li class="mb-2">
-            <a href={link.url} target="_blank" class="text-black hover:scale-150 ease-in-out transition duration-150 font-black">{link.titulo_link}</a>
-            <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-black">Eliminar</button>
+            <a href={link.url} target="_blank" class="text-black hover:scale-200 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
+            <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-bold">Eliminar</button>
           </li>
         </ul>
       ))
@@ -148,7 +148,7 @@ const dep: Departamento = await res.json()
 
     document.addEventListener('click', async (e) => {
       if (e.target.classList.contains('delete-link')) {
-        const linkId = e.target.getAttribute('data-id')
+        const linkId = Number(e.target.getAttribute('data-id'))
 
         const res = await fetch(`${window.BACKEND_URL}/departamento/link/${linkId}`, {
           method: 'DELETE',
