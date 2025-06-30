@@ -57,11 +57,11 @@ const departamento: Departamento = await res.json()
         </div>
       </div>
     
-      <ul class="flex items-center flex-col gap-4 mb-8">
+      <ul class="flex items-center flex-col gap-10 mb-8">
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
             <li id="link-item" data-link-id={link.id}>
-              <a href={link.url} target="_blank" class="mb-32 h-auto w-auto bg-[#00d0fe] rounded-4xl px-9 py-4 text-lg text-center hover:bg-[#0d122e] transition duration-300 ease-in-out hover:text-[#00d0fe] text-[#0d122e] font-black">{link.titulo_link}</a>
+              <a href={link.url} target="_blank" class="mb-14 h-auto w-auto bg-[#00d0fe] rounded-4xl px-9 py-4 text-lg text-center hover:bg-[#0d122e] transition duration-300 ease-in-out hover:text-[#00d0fe] text-[#0d122e] font-black">{link.titulo_link}</a>
               {}
             </li>
           ))
