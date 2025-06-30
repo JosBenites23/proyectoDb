@@ -38,15 +38,22 @@ const departamento: Departamento = await res.json()
         <h1 class="text-3xl font-bold mb-2">{departamento.titulo}</h1>
         <div class=" flex">
           <p id="depDesc"class="mb-6">{departamento.descripcion}</p>
+
+          <!-- Botón para editar la descripción funcionalidad antigua
+           
           <button id="editDescBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20 hover:bg-yellow-600 transition duration-200">
             ✏️ Editar
           </button>
+          -->
         </div>
         <div class="flex">
           <img id="depImg" src={departamento.imagen} alt={departamento.titulo} class="w-full max-w-md rounded-lg shadow-lg mb-6" />
+          <!-- Botón para editar la imagen funcionalidad antigua 
+          
           <button id="editImgBtn" style="display:none" class="ml-5 bg-yellow-400 text-black px-2 py-1 rounded flex items-center gap-1 text-sm cursor-pointer h-10 w-20 hover:bg-yellow-600 transition duration-200">
             ✏️ Editar
           </button>
+          -->
         </div>
       </div>
     
@@ -54,7 +61,7 @@ const departamento: Departamento = await res.json()
         {departamento.links && departamento.links.length > 0 ? (
           departamento.links.map(link => (
             <li id="link-item" data-link-id={link.id}>
-              <a href={link.url} target="_blank" class="text-gray-200 font-medium hover:contrast-200 transition duration-200 cursor-pointer break-all bg-blue-900/40 rounded px-4 py-2 gap-2 text-center w-full h-auto">{link.titulo_link}</a>
+              <a href={link.url} target="_blank" class="mb-14 h-auto w-auto bg-[#00d0fe] rounded-4xl px-9 py-4 text-lg text-center hover:bg-[#0d122e] transition duration-300 ease-in-out hover:text-[#00d0fe] text-[#0d122e] font-black">{link.titulo_link}</a>
               {}
             </li>
           ))
@@ -62,7 +69,9 @@ const departamento: Departamento = await res.json()
           <li class="text-gray-400">No hay links para este departamento.</li>
         )}
       </ul>
-    
+
+      <!-- Formulario para agregar un nuevo link funcionalidad antigua
+       
       <form id="agregarLinkForm" data-id={departamento.id} style="display:none" class="bg-blue-900/30 rounded-lg p-4 flex flex-col gap-4" enctype="multipart/form-data">
       <h3 class="text-xl font-semibold mb-2">Agregar Link</h3>
       <input id="titulo_link" type="text" placeholder="Título del link" class="p-2 rounded bg-gray-800 text-gray-200" required />
@@ -71,6 +80,7 @@ const departamento: Departamento = await res.json()
       <input id="archivoD" type="file" accept=".pdf, .doc, .docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"/>
       <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">Agregar</button>
       </form>
+      -->
     </section>
   </section>
 
