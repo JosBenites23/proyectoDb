@@ -183,7 +183,8 @@ const id = url.searchParams.get("id")
         })
 
         if (response.ok) {
-            window.location.href = '/'; // Redirige después de logout
+            window.location.href = '/' // Redirige después de logout
+            alert('Sesión cerrada correctamente')
         } else {
             console.error('Error en la respuesta del servidor al cerrar sesión')
         }
