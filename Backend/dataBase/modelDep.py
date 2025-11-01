@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime
 from client import Base
+from .modelinDB import UserInDb
 
 class Dep(Base):
     __tablename__ = 'dep'
@@ -15,6 +16,9 @@ class Dep(Base):
     fecha_creacion = Column(DateTime, default=func.now())  # Fecha de creación
 
     links = relationship("Link", back_populates="departamento", cascade="all, delete")  # URL del link relacion con la tabla link
+    
+    autor_id = Column(Integer, ForeignKey('users.id'))
+    autor = relationship("UserInDb", back_populates="departamentos")
 
 class Link(Base):
     __tablename__ = 'linkdep'

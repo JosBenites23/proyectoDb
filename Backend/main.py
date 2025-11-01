@@ -4,7 +4,9 @@ from routers import user, jwt_auth, protected, obtain_news, create_news, vanish_
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from client import engine, Base
+from dataBase.modelLog import Log
 from config import URLFRONT
+from database_setup import initialize_triggers
 
 app = FastAPI() 
 
@@ -14,10 +16,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        URLFRONT,
-        f"{URLFRONT}:80",
-        f"{URLFRONT}:3000",],  # origen del frontend exactamente el puerto 80
+    allow_origins=URLFRONT,  # origen del frontend exactamente el puerto 80
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],   
@@ -38,6 +37,9 @@ app.include_router(company.router)
 app.include_router(Dep.router)
 app.include_router(logout.router)
 app.include_router(About.router)
+
+# Inicializa la lógica de la base de datos (triggers, etc.)
+initialize_triggers(engine)
 
 Base.metadata.create_all(bind=engine)
 

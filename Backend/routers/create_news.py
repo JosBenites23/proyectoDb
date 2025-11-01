@@ -5,6 +5,8 @@ from dataBase.modelNews import Noticia
 from dataBase.schemaNews import NewsSchema
 from fastapi import UploadFile, File, Form
 from config import URLBACK
+from routers.auth.dependencies import get_current_user
+from dataBase.modelinDB import UserInDb
 
 router = APIRouter()
 
@@ -14,7 +16,9 @@ async def crear_noticia(
     descripcion: str = Form(..., max_length=100000),
     tipo_contenido: str = Form(...),
     contenido: UploadFile = File(...),
-    db: Session = Depends(get_db)):
+    db: Session = Depends(get_db),
+    current_user: UserInDb = Depends(get_current_user)
+    ):
     
 
     upload_dir = "uploads"
@@ -25,11 +29,11 @@ async def crear_noticia(
     url_contenido = f"{URLBACK}/uploads/{contenido.filename}"
 
     db_noticia = Noticia(
-        #id=noticia.id,
         titulo=titulo,
         descripcion=descripcion,
         tipo_contenido=tipo_contenido,
-        contenido=url_contenido
+        contenido=url_contenido,
+        autor_id=current_user.id
     )
 
     db.add(db_noticia)
