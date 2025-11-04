@@ -1,0 +1,112 @@
+---
+// El code fence ahora estará vacío, ya que no haremos nada en el servidor.
+---
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-6 text-white text-center">
+        Estadísticas de Publicaciones
+    </h1>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                        Nombre
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                        Username
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                        Nº de Noticias Publicadas
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="stats-table-body">
+                <tr>
+                    <td colspan="3" class="text-center py-10">
+                        <p class="text-gray-500">Cargando datos...</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Este script se ejecuta en el navegador del cliente
+    interface User {
+        name: string;
+        username: string;
+        news_count: number;
+    }
+    async function loadStats() {
+        
+        const tableBody = document.getElementById(
+            "stats-table-body",
+        ) as HTMLTableSectionElement;
+
+        try {
+            // La URL del backend. Deberíamos obtenerla de una variable de entorno si es posible.
+            const response = await fetch(
+                "http://127.0.0.1:8000/stats/news_per_user",
+            );
+
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+
+            const stats = await response.json();
+
+            // Limpiar el mensaje de "Cargando..."
+            tableBody.innerHTML = "";
+
+            if (stats.length === 0) {
+                tableBody.innerHTML = `
+          <tr>
+            <td colspan="3" class="text-center py-10">
+              <p class="text-gray-500">No hay estadísticas para mostrar.</p>
+            </td>
+          </tr>
+        `;
+                return;
+            }
+
+            // Construir las filas de la tabla con los datos recibidos
+            stats.forEach((user: User) => {
+                const row = document.createElement("tr");
+                row.classList.add("hover:bg-gray-50");
+                row.innerHTML = `
+          <td class="px-5 py-5 border-b border-gray-200 text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">${user.name}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">${user.username}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 text-sm">
+            <p class="text-gray-900 whitespace-no-wrap text-center font-semibold">${user.news_count}</p>
+          </td>
+        `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error al hacer fetch de las estadísticas:", error);
+            tableBody.innerHTML = `
+        <tr>
+          <td colspan="3" class="text-center py-10">
+            <p class="text-red-500">No se pudieron cargar los datos. Revisa la consola para más detalles.</p>
+          </td>
+        </tr>
+      `;
+        }
+    }
+
+    // Llamar a la función cuando el componente se cargue en la página
+    loadStats();
+</script>

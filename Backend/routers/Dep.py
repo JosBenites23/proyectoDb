@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, selectinload
+from sqlalchemy import text
 from client import get_db
 from dataBase.modelDep import Dep, Link
 from dataBase.schemaDep import DepartamentoSchema, DepartamentoCard, LinkSchema
@@ -7,6 +8,8 @@ from fastapi import UploadFile, File, Form
 from typing import Optional, List
 from slugify import slugify
 from config import URLBACK
+from routers.auth.dependencies import get_current_user
+from dataBase.modelinDB import UserInDb
 
 router = APIRouter(prefix="/departamento", tags=["Departamentos"])
 
@@ -18,7 +21,8 @@ async def crear_departamento(
     titulo_link: Optional[str] = Form(None),
     link_file: Optional[UploadFile] = File(None),
     link_url: Optional[str] = Form(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: UserInDb = Depends(get_current_user)
 ):
     try:
         existing_dep = db.query(Dep).filter(Dep.titulo == titulo).first()
@@ -30,51 +34,60 @@ async def crear_departamento(
         file_location = f"{upload_dir}/{imagen.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
-
-        url_contenido = f"{URLBACK}/uploads/{imagen.filename}"
-
-        # Crear el departamento
-        nuevo_dep = Dep(
-            titulo=titulo,
-            descripcion=descripcion,
-            imagen=url_contenido,
-            slug=slugify(titulo)
-        )
-        db.add(nuevo_dep)
-        db.commit()
-        db.refresh(nuevo_dep)
-
-        # Crear el link solo si hay título y uno de los dos tipos de link
+        url_contenido_dep = f"{URLBACK}/uploads/{imagen.filename}"
+        
+        # --- LÓGICA REFACTORIZADA ---
         if titulo_link and (link_file or link_url):
+            # CASO 1: Crear Departamento CON Link (usando Stored Procedure)
+            
+            url_del_link = ""
             if link_file:
-                file_location = f"{upload_dir}/{link_file.filename}"
-                with open(file_location, "wb+") as file_object:
+                # Guardar el archivo del link
+                link_file_location = f"{upload_dir}/{link_file.filename}"
+                with open(link_file_location, "wb+") as file_object:
                     file_object.write(link_file.file.read())
-
-                url_file = f"{URLBACK}/uploads/{link_file.filename}"
-                nuevo_link = Link(
-                    titulo_link=titulo_link,
-                    url=url_file,
-                    dep_id=nuevo_dep.id
-                )
-                db.add(nuevo_link)
-
+                url_del_link = f"{URLBACK}/uploads/{link_file.filename}"
             elif link_url:
-                nuevo_link = Link(
-                    titulo_link=titulo_link,
-                    url=link_url,
-                    dep_id=nuevo_dep.id
-                )
-                db.add(nuevo_link)
+                url_del_link = link_url
 
-        db.commit()
+            # Llamar al Stored Procedure
+            db.execute(
+                text("CALL sp_create_department_with_link(:p_titulo, :p_slug, :p_descripcion, :p_imagen, :p_autor_id, :p_titulo_link, :p_url_link)"),
+                {
+                    "p_titulo": titulo,
+                    "p_slug": slugify(titulo),
+                    "p_descripcion": descripcion,
+                    "p_imagen": url_contenido_dep,
+                    "p_autor_id": current_user.id,
+                    "p_titulo_link": titulo_link,
+                    "p_url_link": url_del_link
+                }
+            )
+            db.commit()
+            
+            # Para devolver el objeto creado, lo buscamos después de la ejecución
+            dep_creado = db.query(Dep).options(selectinload(Dep.links)).filter(Dep.titulo == titulo).first()
+            return dep_creado
 
-        # Recargar el departamento con sus links
-        dep_con_links = db.query(Dep).options(selectinload(Dep.links)).filter(Dep.id == nuevo_dep.id).first()
-        return dep_con_links
+        else:
+            # CASO 2: Crear Departamento SIN Link (lógica original)
+            nuevo_dep = Dep(
+                titulo=titulo,
+                descripcion=descripcion,
+                imagen=url_contenido_dep,
+                slug=slugify(titulo),
+                autor_id=current_user.id
+            )
+            db.add(nuevo_dep)
+            db.commit()
+            db.refresh(nuevo_dep)
+            return nuevo_dep
 
     except Exception as e:
         db.rollback()
+        # Analizar el error para ver si es una violación de unicidad
+        if "Duplicate entry" in str(e) or "UNIQUE constraint failed" in str(e):
+             raise HTTPException(status_code=409, detail="Error de duplicado: Ya existe un registro con esos datos.")
         raise HTTPException(status_code=400, detail=f"No se pudo crear el departamento: {str(e)}")
 
 @router.get("/cards", response_model=List[DepartamentoCard])

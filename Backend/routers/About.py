@@ -6,6 +6,8 @@ from client import get_db
 from fastapi import UploadFile, File, Form
 from typing import Optional
 from config import URLBACK
+from routers.auth.dependencies import get_current_user
+from dataBase.modelinDB import UserInDb
 
 router = APIRouter()
 
@@ -20,7 +22,8 @@ async def update_about(
     imagen3: Optional[UploadFile] = File(None),
     anio: Optional[str] = Form(None),
     anio2: Optional[str] = Form(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: UserInDb = Depends(get_current_user)
 ):
     about = db.query(About).first()
     if not about:
@@ -56,6 +59,8 @@ async def update_about(
         about.anio = anio
     if anio2 is not None:
         about.anio2 = anio2
+        
+    autor_id = current_user.id
 
     db.commit()
     db.refresh(about)

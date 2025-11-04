@@ -17,7 +17,7 @@ type Departamento = {
   links: Link[]
 }
 
-const URL_BACKEND = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8081"
+const URL_BACKEND = "http://127.0.0.1:8000"
 
 const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' })
 if (!res.ok) throw new Error("Error al obtener el departamento")
