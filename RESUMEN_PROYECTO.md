@@ -88,3 +88,58 @@ Se corrigieron varios bugs que impedían el funcionamiento de la interfaz de adm
 *   **Bucle de Redirección:** Se solucionó un bucle infinito entre `/Admin` y `/AdminPanel` al corregir la URL del backend en `AdminPanel.astro`, que apuntaba al puerto incorrecto y causaba un fallo en la verificación de la sesión.
 *   **Botones Inactivos:** Se arreglaron los botones de "Eliminar" en `ListaDep.astro` y `ListaNoticias.astro` corrigiendo el puerto de la URL del backend y asegurando que el `id` (ahora un `string`) se pasara correctamente en la función `onclick`.
 *   **Error `NaN` en URL:** Se corrigió un bug en `AdminPanel.astro` que intentaba convertir el `id` de MongoDB (un string) a un `Number`, resultando en `NaN` y rompiendo la URL para la página de edición.
+
+---
+
+## 4. Descripción de los Elementos de Base de Datos
+
+La aplicación utiliza una base de datos NoSQL (MongoDB) para persistir la información. Los datos se organizan en **colecciones**, que son el equivalente a las tablas en las bases de datos relacionales.
+
+*   **Colecciones Principales:**
+    *   `users`: Almacena la información de los usuarios (nombre, contraseña hasheada, etc.).
+    *   `dep`: Contiene la información de los departamentos (título, descripción, imagen, etc.).
+    *   `news`: Almacena las noticias publicadas en la intranet.
+    *   `link`: Guarda los links de interés generales.
+    *   `linkdep`: Contiene los links específicos de cada departamento.
+    *   `company`, `about`, `birthday`: Colecciones para almacenar información institucional variada.
+    *   `logs`: Nueva colección para registrar las acciones de los usuarios.
+
+*   **Relaciones:**
+    *   A diferencia de SQL, MongoDB no impone "foreign keys". La relación se maneja a nivel de aplicación.
+    *   **Departamento-Links:** La colección `linkdep` contiene un campo `dep_id` que guarda el `_id` del departamento al que pertenece. Cuando se necesita mostrar un departamento con sus links, la aplicación primero busca el departamento y luego busca en `linkdep` todos los documentos que coincidan con ese `dep_id`.
+    *   **Usuario-Contenido:** Colecciones como `news` y `dep` tienen un campo `autor_id` para registrar qué usuario creó el contenido.
+
+*   **Esquemas (Pydantic):** A nivel de aplicación, se usan modelos de Pydantic para definir un esquema y validar los datos antes de interactuar con la base de datos, aportando una capa de estructura y seguridad de tipos.
+
+---
+
+## 5. Comparación: BD Relacional vs. MongoDB en esta Aplicación
+
+La migración de SQL a MongoDB en este proyecto resalta las diferencias clave entre ambos paradigmas.
+
+### Ventajas de MongoDB (NoSQL)
+
+*   **Flexibilidad de Esquema:** Si en el futuro se necesita añadir un nuevo tipo de noticia con campos completamente diferentes, o un departamento con una estructura nueva, no es necesario realizar una migración de esquema compleja como en SQL. Simplemente se inserta el nuevo documento con la nueva estructura.
+*   **Escalabilidad Horizontal:** Aunque no se aplica a esta escala, MongoDB está diseñado para escalar horizontalmente (añadir más servidores) de forma más sencilla que muchas bases de datos relacionales tradicionales.
+*   **Manejo de Datos Jerárquicos:** Para entidades como "Departamento y sus Links", es natural en MongoDB obtener el departamento y luego sus links, y unirlos en la aplicación en un solo objeto JSON, que es el formato nativo de la web moderna.
+
+### Desventajas de MongoDB y Ventajas de SQL
+
+*   **Transacciones:** Como descubrimos, habilitar transacciones en MongoDB requiere una configuración de entorno más compleja (un "replica set"). En la mayoría de las bases de datos SQL, las transacciones están disponibles por defecto y son un pilar fundamental del sistema.
+*   **Integridad de Datos:** Una base de datos relacional habría impedido, por ejemplo, que existiera un `linkdep` sin un departamento válido, gracias a las `FOREIGN KEY CONSTRAINTS`. En MongoDB, esta lógica de "borrado en cascada" o de validación de referencias debe ser implementada manualmente en el código de la aplicación, como se hizo en el endpoint `eliminar_departamento`.
+*   **JOINs Complejos:** Mientras que el `$lookup` de MongoDB es potente, realizar uniones complejas entre múltiples colecciones es generalmente más simple y performante en SQL, que está optimizado para ello desde su concepción.
+
+---
+
+## 6. Conclusión y Recomendación
+
+La migración de una base de datos relacional a MongoDB fue un éxito funcional, pero demostró que, aunque conceptualmente directa, presenta desafíos técnicos importantes. La mayor complejidad no provino de la lógica de la base de datos en sí, sino de la configuración del entorno (`Docker`, dependencias de Python) y de la necesidad de adaptar el código de la aplicación a un nuevo paradigma (manejo de IDs como `string` vs `ObjectId`, implementación manual de la integridad referencial).
+
+Como experiencia de aprendizaje, fue extremadamente valiosa, ya que expuso problemas del mundo real que ocurren en proyectos de software.
+
+**Recomendación:**
+
+*   Para una aplicación como esta intranet, donde las estructuras de datos pueden evolucionar (nuevos tipos de noticias, campos personalizados para departamentos), **MongoDB** es una excelente elección por su flexibilidad. Sin embargo, requiere una mayor disciplina por parte del equipo de desarrollo para mantener la consistencia de los datos en la lógica de la aplicación.
+*   Si la estructura de la intranet fuera muy rígida, con relaciones complejas y bien definidas que no se espera que cambien, una **base de datos relacional (SQL)** podría haber sido más simple a largo plazo, ya que el propio motor de la base de datos se encargaría de la integridad y las transacciones de forma más nativa.
+
+La elección final depende de las prioridades del proyecto: **flexibilidad y velocidad de desarrollo (MongoDB) vs. integridad de datos estricta y garantizada por el sistema (SQL)**. Para fines académicos y de aprendizaje de nuevos paradigmas, la elección de MongoDB fue muy acertada.
