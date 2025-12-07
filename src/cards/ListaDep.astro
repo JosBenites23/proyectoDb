@@ -1,87 +1,94 @@
-
 <div>
     <div id="contenedor-dep"></div>
 </div>
 
 <script>
-
     declare global {
         interface Window {
-            eliminarDep: (id: number) => Promise<void>
+            eliminarDep: (id: string) => Promise<void>;
         }
     }
 
-    const URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8081'
+    const URL = import.meta.env.PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
     interface Departamento {
-        id: number
-        titulo: string
-        descripcion: string
-        slug: string
-        imagen: string
-        fecha_creacion: string
+        id: string;
+        titulo: string;
+        descripcion: string;
+        slug: string;
+        imagen: string;
+        fecha_creacion: string;
     }
-    
-    window.addEventListener('DOMContentLoaded', async () => {
+
+    window.addEventListener("DOMContentLoaded", async () => {
         try {
-            await verificarToken()
-            cargarDep()
+            await verificarToken();
+            cargarDep();
         } catch (error) {
-            console.error('Error al cargar departamentos:', error)
+            console.error("Error al cargar departamentos:", error);
         }
-    })
+    });
 
+    async function cargarDep() {
+        const response = await fetch(`${URL}/departamento/cards`);
+        const departamentos: Departamento[] = await response.json();
 
-    async function cargarDep(){
-        const response = await fetch(`${URL}/departamento/cards`)
-        const departamentos:Departamento[] = await response.json()
-        
-        departamentos.sort((a, b) => new Date(b.fecha_creacion).getTime() - new Date(a.fecha_creacion).getTime())
-        
-        const contenedor = document.querySelector('#contenedor-dep') as HTMLElement
-        contenedor.innerHTML = ''
-        
+        departamentos.sort(
+            (a, b) =>
+                new Date(b.fecha_creacion).getTime() -
+                new Date(a.fecha_creacion).getTime(),
+        );
+
+        const contenedor = document.querySelector(
+            "#contenedor-dep",
+        ) as HTMLElement;
+        contenedor.innerHTML = "";
+
         departamentos.forEach((dep) => {
-            const card = document.createElement('div')
-            card.className = 'p-4 border rounded-lg shadow-md mb-4 bg-white'
+            const card = document.createElement("div");
+            card.className = "p-4 border rounded-lg shadow-md mb-4 bg-white";
             card.innerHTML = `
                 <h2 class="font-bold text-lg">${dep.titulo}</h2>
                 <p class="text-gray-700">${dep.descripcion}</p>
-                ${tokenValido ? `<button onclick="eliminarDep(${dep.id})" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>
-                <a href="/AdminPanel?panel=editar-dep&id=${dep.id}" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>` : ""}
+                ${
+                    tokenValido
+                        ? `<button onclick="window.eliminarDep('${dep.id}')" class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800 transition duration-300 ease-in-out">Eliminar</button>
+                <a href="/AdminPanel?panel=editar-dep&id=${dep.id}" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800 transition duration-300 ease-in-out">Editar</a>`
+                        : ""
+                }
             `;
-            contenedor.appendChild(card)
-        })
+            contenedor.appendChild(card);
+        });
     }
 
-    async function eliminarDep(id: number) {
-        console.log("Eliminando dep con ID:", id)
+    async function eliminarDep(id: string) {
+        console.log("Eliminando dep con ID:", id);
         const response = await fetch(`${URL}/departamento/eliminar-dep/${id}`, {
-            method: 'DELETE',
-            credentials: 'include' // Incluye cookies en la solicitud
-        })
+            method: "DELETE",
+            credentials: "include", // Incluye cookies en la solicitud
+        });
 
         if (response.ok) {
-            alert('Departamento eliminado')
-            cargarDep() // Recargar los departamentos
+            alert("Departamento eliminado");
+            cargarDep(); // Recargar los departamentos
         } else {
-            alert('Error al eliminar el departamento')
+            alert("Error al eliminar el departamento");
         }
     }
 
-    window.eliminarDep = eliminarDep
+    window.eliminarDep = eliminarDep;
 
-    let tokenValido = false
+    let tokenValido = false;
 
     async function verificarToken() {
         try {
             const response = await fetch(`${URL}/protegida`, {
-                credentials: 'include' // Incluye cookies en la solicitud
-            })
+                credentials: "include", // Incluye cookies en la solicitud
+            });
 
-            tokenValido = response.ok
+            tokenValido = response.ok;
         } catch (error) {
-            tokenValido = false
-            console.error('Error al verificar el token:', error)
+            tokenValido = false;
+            console.error("Error al verificar el token:", error);
         }
     }
 </script>

@@ -304,7 +304,7 @@ const id = url.searchParams.get("id");
         {panel === "quienes-somos" && <ActualizarInfo />}
         {panel === "subir-departamento" && <SubirDep />}
         {panel === "departamentos-lista" && <ListaDep />}
-        {panel === "editar-dep" && id && <EditarDep id={Number(id)} />}
+        {panel === "editar-dep" && id && <EditarDep id={id} />}
         {panel === "links-lista" && <ListaLinks />}
         {panel === "subir-link" && <SubirLink />}
         {panel === "editar-colaboradores" && <EditarColab />}
@@ -315,7 +315,7 @@ const id = url.searchParams.get("id");
 </Layout>
 
 <script>
-    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost";
+    const URLBACK = import.meta.env.PUBLIC_BACKEND_URL || "http://localhost:8000";
 
     function sesion() {
         fetch(`${URLBACK}/protegida`, {

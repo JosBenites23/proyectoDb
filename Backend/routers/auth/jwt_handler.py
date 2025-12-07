@@ -11,6 +11,9 @@ load_dotenv()
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    print(f"--- SIGNING TOKEN ---")
+    print(f"Using SECRET_KEY: '{SECRET_KEY}'")
+    print(f"Using ALGORITHM: '{ALGORITHM}'")
 
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -22,6 +25,9 @@ def verify_token_from_cookie(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No autorizado")
 
     try:
+        print(f"--- VERIFYING TOKEN ---")
+        print(f"Using SECRET_KEY: '{SECRET_KEY}'")
+        print(f"Using ALGORITHM: '{ALGORITHM}'")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
         if username is None:

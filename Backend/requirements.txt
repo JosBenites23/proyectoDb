@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+motor
+pydantic[email]
+python-multipart
+passlib
+python-jose
+python-dotenv
+python-slugify
+email-validator

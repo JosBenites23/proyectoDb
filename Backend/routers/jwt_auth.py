@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from client import get_db
 from dataBase.modelinDB import UserInDb
-from routers.auth.jwt_handler import create_access_token
+from .auth.jwt_handler import create_access_token
 from dataBase.schemainDB import UserLogin
 
 router = APIRouter()

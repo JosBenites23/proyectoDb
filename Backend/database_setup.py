@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-def initialize_triggers(engine):
+def initialize_functions_sql(engine):
     """
     Ejecuta los comandos DDL para crear los triggers y otros objetos de BD si no existen.
     """
@@ -83,6 +83,75 @@ def initialize_triggers(engine):
             VALUES (p_titulo_link, p_url_link, new_dep_id, NOW());
             COMMIT;
         END
+        """,
+        # --- Función para limpiar texto de entrada ---
+        """
+        CREATE FUNCTION IF NOT EXISTS fn_clean_input(
+            p_input TEXT
+        )
+        RETURNS TEXT
+        DETERMINISTIC
+        BEGIN
+            RETURN TRIM(p_input);
+        END;
+        """,
+        # --- Stored Procedure para crear una Noticia ---
+        """
+        CREATE PROCEDURE IF NOT EXISTS sp_create_news(
+            IN p_titulo VARCHAR(500),
+            IN p_descripcion TEXT,
+            IN p_tipo_contenido VARCHAR(50),
+            IN p_contenido_url VARCHAR(2083),
+            IN p_autor_id INT
+        )
+        BEGIN
+            START TRANSACTION;
+
+            INSERT INTO news (titulo, descripcion, tipo_contenido, contenido, autor_id, fecha_creacion)
+            VALUES (
+                fn_clean_input(p_titulo),
+                fn_clean_input(p_descripcion),
+                p_tipo_contenido,
+                p_contenido_url,
+                p_autor_id,
+                NOW()
+            );
+
+            COMMIT;
+        END;
+        """,
+        # --- Vistas ---        
+        """
+        CREATE OR REPLACE VIEW v_user_activity_log AS
+        SELECT
+            l.id AS log_id,
+            u.username,
+            u.name AS user_name,
+            l.action,
+            l.table_name,
+            l.record_id,
+            l.timestamp
+        FROM
+            logsdb l
+        JOIN
+            users u ON l.user_id = u.id;
+        """,
+        """
+        CREATE OR REPLACE VIEW v_news_with_author AS
+        SELECT
+            n.id,
+            n.titulo,
+            n.descripcion,
+            n.tipo_contenido,
+            n.contenido,
+            n.fecha_creacion,
+            n.autor_id,
+            u.username AS autor_username,
+            u.name AS autor_name
+        FROM
+            news n
+        JOIN
+            users u ON n.autor_id = u.id;
         """
     ]
 

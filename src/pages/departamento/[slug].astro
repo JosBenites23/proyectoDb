@@ -4,7 +4,8 @@ export const prerender = false
 import Layout from '../../layouts/Layout.astro'
 const { slug } = Astro.params
 
-const URLBACKEND='http://127.0.0.1:8000'
+const URLBACKEND = "http://127.0.0.1:8000";
+
 // Obtener datos del departamento
 const res = await fetch(`${URLBACKEND}/departamento/page-dep/${slug}`, {
   credentials: 'include'
@@ -13,14 +14,14 @@ if (!res.ok) {
   throw new Error('Departamento no encontrado')
 }
 type Link = {
-  id: number
+  id: string
   titulo_link: string
   url: string
   fecha_creacion?: string
 }
 
 type Departamento = {
-  id: number
+  id: string
   titulo: string
   descripcion: string
   imagen: string

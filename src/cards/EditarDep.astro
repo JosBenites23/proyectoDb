@@ -1,172 +1,238 @@
 ---
-const { id } = Astro.props
+const { id } = Astro.props;
 
 type Link = {
-  id: number
-  titulo_link: string
-  url: string
-  fecha_creacion?: string
-}
+  id: string; // Changed from number to string
+  titulo_link: string;
+  url: string;
+  fecha_creacion?: string;
+};
 
 type Departamento = {
-  id: number
-  titulo: string
-  descripcion: string
-  imagen: string
-  slug: string
-  links: Link[]
-}
+  id: string; // Changed from number to string
+  titulo: string;
+  descripcion: string;
+  imagen: string;
+  slug: string;
+  links: Link[];
+};
 
-const URL_BACKEND = "http://127.0.0.1:8000"
+const URL_BACKEND = "http://127.0.0.1:8000"; // Corrected port
 
-const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, { credentials: 'include' })
-if (!res.ok) throw new Error("Error al obtener el departamento")
+console.log("URL_BACKEND", URL_BACKEND);
+const res = await fetch(`${URL_BACKEND}/departamento/id/${id}`, {
+  credentials: "include",
+});
+if (!res.ok) throw new Error("Error al obtener el departamento");
 
-const dep: Departamento = await res.json()
+const dep: Departamento = await res.json();
+
+console.log("--- DEBUGGING ON ASTRO SERVER ---");
+console.log("Department object received from backend:", dep);
+console.log("Value of dep.id:", dep ? dep.id : "dep is null or undefined");
+console.log("--- END ASTRO SERVER DEBUG ---");
 ---
 
 <script is:inline>
   // Definimos la variable global con la URL del backend
-  window.BACKEND_URL = `${URL_BACKEND}`
+  window.BACKEND_URL = `${URL_BACKEND}`;
 </script>
 
 <section id="editar-dep" class="p-6 rounded" data-url-backend={URL_BACKEND}>
   <!-- Formulario para editar departamento -->
   <form id="formEditarDep" enctype="multipart/form-data">
     <input type="hidden" id="depId" value={dep.id} />
-    <textarea id="descripcion" class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32">{dep.descripcion}</textarea>
+    <textarea
+      id="descripcion"
+      class="border-2 border-gray-200 rounded-md p-2 mb-3 text-gray-800 bg-white w-full min-h-32"
+      >{dep.descripcion}</textarea
+    >
     <label class="mb-2 text-white font-black">Imagen del departamento</label>
-    <input type="file" id="imagen" accept="image/*" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200 cursor-pointer">Guardar Cambios</button>
+    <input
+      type="file"
+      id="imagen"
+      accept="image/*"
+      class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"
+    />
+    <button
+      type="submit"
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200 cursor-pointer"
+      >Guardar Cambios</button
+    >
   </form>
 
   <!-- Formulario para agregar link -->
   <h3 class="text-lg text-white font-black mb-2">Agregar Link</h3>
   <form id="formLink">
-    <input type="text" id="titulo_link" placeholder="Título del link" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
-    <input type="url" id="url" placeholder="URL" class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"/>
-    <label class="mb-2 text-white font-black">Seleccione un archivo PDF o Word</label>
-    <input type="file" id="archivo" accept=".pdf,.doc,.docx" class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer" />
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Agregar Link</button>
+    <input
+      type="text"
+      id="titulo_link"
+      placeholder="Título del link"
+      class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"
+    />
+    <input
+      type="url"
+      id="url"
+      placeholder="URL"
+      class="border-2 border-gray-200 w-full rounded-md p-2 mb-3 text-gray-800 bg-white"
+    />
+    <label class="mb-2 text-white font-black"
+      >Seleccione un archivo PDF o Word</label
+    >
+    <input
+      type="file"
+      id="archivo"
+      accept=".pdf,.doc,.docx"
+      class="file:bg-blue-500 file:text-white file:font-semibold file:border-none file:rounded file:px-4 file:py-2 text-gray-200 mb-4 file:cursor-pointer"
+    />
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+      >Agregar Link</button
+    >
   </form>
 </section>
 
 <section>
   <h3 class="text-lg text-white font-black mb-2">Links del Departamento</h3>
   <nav id="linksList" class="list-disc pl-5">
-    {dep.links && dep.links.length > 0 ? (
-      dep.links.map(link => (
-        <ul class="p-4 border rounded-lg shadow-md mb-4 bg-white">
-          <li class="mb-2">
-            <a href={link.url} target="_blank" class="inline-block text-black hover:scale-105 ease-in-out transition duration-150 font-bold">{link.titulo_link}</a>
-            <button data-id={link.id} class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-bold">Eliminar</button>
-          </li>
-        </ul>
-      ))
-    ) : (
-      <li class="text-gray-400">No hay links para este departamento.</li>
-    )}
+    {
+      dep.links && dep.links.length > 0 ? (
+        dep.links.map((link) => (
+          <ul class="p-4 border rounded-lg shadow-md mb-4 bg-white">
+            <li class="mb-2">
+              <a
+                href={link.url}
+                target="_blank"
+                class="inline-block text-black hover:scale-105 ease-in-out transition duration-150 font-bold"
+              >
+                {link.titulo_link}
+              </a>
+              <button
+                data-id={link.id}
+                class="ml-4 text-red-500 hover:text-red-800 cursor-pointer delete-link font-bold"
+              >
+                Eliminar
+              </button>
+            </li>
+          </ul>
+        ))
+      ) : (
+        <li class="text-gray-400">No hay links para este departamento.</li>
+      )
+    }
   </nav>
 </section>
 
 <script type="module">
-  window.addEventListener('DOMContentLoaded', () => {
-    const URL_BACKEND = document.getElementById("editar-dep").dataset.urlBackend
-    const depId = document.getElementById("depId").value
+  window.addEventListener("DOMContentLoaded", () => {
+    const URL_BACKEND =
+      document.getElementById("editar-dep").dataset.urlBackend;
 
-    const formEditar = document.getElementById("formEditarDep")
+    const formEditar = document.getElementById("formEditarDep");
     formEditar.addEventListener("submit", async (e) => {
-      e.preventDefault()
-      console.log("Enviando cambios para depId", depId, "a", URL_BACKEND)
+      e.preventDefault();
+      const depId = document.getElementById("depId").value; // Read ID just-in-time
+      if (!depId) {
+        alert("Error: No se pudo encontrar el ID del departamento.");
+        return;
+      }
 
-      const descripcion = document.getElementById("descripcion").value
-      const imagen = document.getElementById("imagen").files[0]
+      console.log("Enviando cambios para depId", depId, "a", URL_BACKEND);
 
-      const form = new FormData()
-      form.append("descripcion", descripcion)
-      if (imagen) form.append("imagen", imagen)
+      const descripcion = document.getElementById("descripcion").value;
+      const imagen = document.getElementById("imagen").files[0];
+
+      const form = new FormData();
+      form.append("descripcion", descripcion);
+      if (imagen) form.append("imagen", imagen);
 
       try {
-        const res = await fetch(`${URL_BACKEND}/departamento/editar-dep/${depId}`, {
-          method: "PUT",
-          credentials: "include",
-          body: form,
-        })
+        const res = await fetch(
+          `${URL_BACKEND}/departamento/editar-dep/${depId}`,
+          {
+            method: "PUT",
+            credentials: "include",
+            body: form,
+          },
+        );
 
         if (res.ok) {
-          alert("Departamento actualizado")
-          formEditar.reset()
+          alert("Departamento actualizado");
         } else {
-          const errorText = await res.text()
-          console.error("Error en respuesta:", errorText)
-          alert(`Error al guardar cambios: ${res.status}`)
+          const errorText = await res.text();
+          console.error("Error en respuesta:", errorText);
+          alert(`Error al guardar cambios: ${res.status}`);
         }
       } catch (error) {
-        console.error("Error al enviar la petición:", error)
-        alert("Error de conexión al guardar cambios")
+        console.error("Error al enviar la petición:", error);
+        alert("Error de conexión al guardar cambios");
       }
-    })
+    });
 
-    const formLink = document.getElementById("formLink")
+    const formLink = document.getElementById("formLink");
     formLink.addEventListener("submit", async (e) => {
-      e.preventDefault()
+      e.preventDefault();
+      const depId = document.getElementById("depId").value; // Read ID just-in-time
+      if (!depId) {
+        alert("Error: No se pudo encontrar el ID del departamento para agregar el link.");
+        return;
+      }
 
-      const titulo = document.getElementById("titulo_link").value
-      const urlLink = document.getElementById("url").value
-      const archivo = document.getElementById("archivo").files[0]
+      const titulo = document.getElementById("titulo_link").value;
+      const urlLink = document.getElementById("url").value;
+      const archivo = document.getElementById("archivo").files[0];
 
       if (urlLink && archivo) {
-        alert("Solo uno: archivo o URL")
-        return
+        alert("Solo uno: archivo o URL");
+        return;
       }
 
-      const form = new FormData()
-      form.append("titulo_link", titulo)
-      if (urlLink) form.append("link_url", urlLink)
-      if (archivo) form.append("link_file", archivo)
+      const form = new FormData();
+      form.append("titulo_link", titulo);
+      if (urlLink) form.append("link_url", urlLink);
+      if (archivo) form.append("link_file", archivo);
 
       try {
-        const res = await fetch(`${URL_BACKEND}/departamento/${depId}/agregar-link`, {
-          method: "POST",
-          credentials: "include",
-          body: form,
-        })
+        const res = await fetch(
+          `${URL_BACKEND}/departamento/${depId}/agregar-link`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: form,
+          },
+        );
 
         if (res.ok) {
-          alert("Link agregado")
-          formLink.reset()
-          location.reload()
+          alert("Link agregado");
+          location.reload();
         } else {
-          const errorText = await res.text()
-          console.error("Error al agregar link:", errorText)
-          alert(`Error al agregar link: ${res.status}`)
+          const errorText = await res.text();
+          console.error("Error al agregar link:", errorText);
+          alert(`Error al agregar link: ${res.status}`);
         }
       } catch (error) {
-        console.error("Error al enviar la petición para agregar link:", error)
-        alert("Error de conexión al agregar link")
+        console.error("Error al enviar la petición para agregar link:", error);
+        alert("Error de conexión al agregar link");
       }
-    })
+    });
 
-    document.addEventListener('click', async (e) => {
-      if (e.target.classList.contains('delete-link')) {
-        const linkId = Number(e.target.getAttribute('data-id'))
+    document.addEventListener("click", async (e) => {
+      if (e.target.classList.contains("delete-link")) {
+        const linkId = e.target.getAttribute("data-id");
 
         const res = await fetch(`${URL_BACKEND}/departamento/link/${linkId}`, {
-          method: 'DELETE',
-          credentials: 'include'
-        })
+          method: "DELETE",
+          credentials: "include",
+        });
 
         if (res.ok) {
-          alert('Link eliminado correctamente.')
-          e.target.parentElement.remove()
-          location.reload()
+          alert("Link eliminado correctamente.");
+          location.reload();
         } else {
-          alert('Error al eliminar el link.')
+          alert("Error al eliminar el link.");
         }
       }
-    })
-  })
+    });
+  });
 </script>
-
-
-

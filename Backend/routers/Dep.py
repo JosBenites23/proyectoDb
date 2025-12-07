@@ -35,6 +35,34 @@ async def crear_departamento(
         with open(file_location, "wb+") as file_object:
             file_object.write(imagen.file.read())
         url_contenido_dep = f"{URLBACK}/uploads/{imagen.filename}"
+
+        '''
+        # --- LÓGICA ORIGINAL ---
+        if titulo_link and (link_file or link_url):
+            if link_file:
+                file_location = f"{upload_dir}/{link_file.filename}"
+                with open(file_location, "wb+") as file_object:
+                    file_object.write(link_file.file.read())
+
+                url_file = f"{URLBACK}/uploads/{link_file.filename}"
+                nuevo_link = Link(
+                    titulo_link=titulo_link,
+                    url=url_file,
+                    dep_id=nuevo_dep.id
+                )
+                db.add(nuevo_link)
+
+            elif link_url:
+                nuevo_link = Link(
+                    titulo_link=titulo_link,
+                    url=link_url,
+                    dep_id=nuevo_dep.id
+                )
+                db.add(nuevo_link)
+
+        db.commit()
+        '''
+
         
         # --- LÓGICA REFACTORIZADA ---
         if titulo_link and (link_file or link_url):
